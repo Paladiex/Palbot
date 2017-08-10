@@ -1,6 +1,20 @@
 localPath = scriptPath()
 isTrial = false
 maxTrialTimeout = 3600
+
+getNewestVersion = loadstring(httpGet("https://raw.githubusercontent.com/Paladiex/Palbot/master/version.lua"))
+latestVersion = getNewestVersion()
+currentVersion = dofile(localPath .."version.lua")
+print (currentVersion)
+print (latestVersion)
+if currentVersion == latestVersion then
+    toast ("You are up to date!")
+else
+    httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/version.lua", localPath .."version.lua")
+    httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/Palbot.lua", localPath .."Palbot.lua")
+    scriptExit("You have Updated Palbot!")
+end
+
 winCount = 0
 loseCount = 0
 arenaWinCount = 0
