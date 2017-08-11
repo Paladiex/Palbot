@@ -2197,7 +2197,7 @@ function sellGetRune()
       sellRune()
       toast("5* rune sold!")
     end
-  elseif grindstoneRegion:exists(Pattern("grindstone.png"):similar(.55), 0.1) then
+  elseif grindstoneRegion:exists(Pattern("grindstone.png"):similar(.5), 0.1) then
     getRune()
     toast("Grindstone.  Get!")
   elseif enchantedGemRegion:exists(Pattern("enchantedGem.png"):similar(.55), 0.1) then
