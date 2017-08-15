@@ -1143,6 +1143,7 @@ end
 function replayOrNext()
   if nextArea then
     nextRegion:existsClick(Pattern("next.png"), 5)
+    toaNextStageRegion:existsClick(Pattern("next.png"), 0.1)
   elseif not replayRegion:existsClick(Pattern("replay.png"), 5) then
     toaNextStageRegion:existsClick(Pattern("next.png"), 0.1)
   end
