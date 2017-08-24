@@ -1,10 +1,9 @@
---
--- Created by IntelliJ IDEA.
--- User: Zack
--- Date: 8/23/2017
--- Time: 7:07 PM
--- To change this template use File | Settings | File Templates.
---
+localPath = scriptPath()
+setImagePath(localPath .. "images")
+Settings:setScriptDimension(true, 1920)
+Settings:setCompareDimension(true, 1920)
+commonLib = loadstring(httpGet("https://raw.githubusercontent.com/AnkuLua/commonLib/master/commonLib.lua"))()
+
 local loc1 = Location(732, 364)
 local r1, g1, b1 = getColor(loc1)
 local loc2 = Location(715, 364)
