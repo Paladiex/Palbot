@@ -2214,19 +2214,19 @@ function findMainStat()
   mainStatRegion:highlight()
   local bestMatchIndex = existsMultiMax(mainStatImages, mainStatRegion)
   if (bestMatchIndex == 1) then
-    if  mainStatValueRegion:exists(Pattern("percentMain.png"):similar(.70)) then
+    if  mainStatRegion:exists(Pattern("percentMain.png"):similar(.70)) then
       mainStat = ("HP%")
     else
       mainStat = ("HP")
     end
   elseif (bestMatchIndex == 2) then
-    if  mainStatValueRegion:exists(Pattern("percentMain.png"):similar(.70)) then
+    if  mainStatRegion:exists(Pattern("percentMain.png"):similar(.70)) then
       mainStat = ("DEF%")
     else
       mainStat = ("DEF")
     end
   elseif (bestMatchIndex == 3) then
-    if  mainStatValueRegion:exists(Pattern("percentMain.png"):similar(.70)) then
+    if  mainStatRegion:exists(Pattern("percentMain.png"):similar(.70)) then
       mainStat = ("ATK%")
     else
       mainStat = ("ATK")
