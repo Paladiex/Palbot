@@ -1,6 +1,7 @@
 localPath = scriptPath()
 isTrial = false
 maxTrialTimeout = 3600
+commonLib = loadstring(httpGet("https://raw.githubusercontent.com/AnkuLua/commonLib/master/commonLib.lua"))()
 getNewestVersion = loadstring(httpGet("https://raw.githubusercontent.com/Paladiex/Palbot/master/version.lua"))
 latestVersion = getNewestVersion()
 currentVersion = dofile(localPath .."version.lua")
@@ -126,6 +127,23 @@ fodderSlot4X = Location(595, 745)
 fodderSlot3X = Location(435, 745)
 fodderSlot2X = Location(270, 745)
 fodderSlot1X = Location(110, 745)
+mainStatRegion = Region(760, 350, 400, 60)
+runeSlotRegion = Region(630, 340, 130, 130)
+runeRarityRegion = Region(725, 445, 20, 20)
+runeRankRegion = Region(630, 350, 130, 30)
+keepLegendary = false
+keepHero = false
+keepRare = false
+keepMagic = false
+keepNormal = false
+keep6Star = false
+keep5Star = false
+keep4Star = false
+keep3Star = false
+keep2Star = false
+keep1Star = false
+keepAll = false
+keepPercent = false
 function setScriptRegion()
   startRegion = setRegion(1490, 765, 125, 55)
   startDialogRegion = setRegion(0, 0, 500, 75)
@@ -469,16 +487,33 @@ function dialogBox()
   addEditNumber("customRunLmt", 10)
   addTextView("(Must select Custom Runs)")
   newRow()
-  spinnerRuneOption = {
-    "Save all runes",
-    "Save all 6* & 5* runes",
-    "Save 6* & 5* runes, Sell all flat runes 2/4/6",
-    "Save 6* & 5* percent/spd, Sell other 5* runes",
-    "Save all 6* runes",
-    "Save 6* runes, Sell flat all runes 2/4/6  ",
-    "SELL all runes"
+  spinnerRuneRarity = {
+    "Legendary",
+    "Hero",
+    "Rare",
+    "Magic",
+    "Normal"
   }
-  addSpinner("runeOption", spinnerRuneOption, spinnerRuneOption[3])
+  addTextView("Min Rarity: ")
+  addSpinner("runeRaritySelect", spinnerRuneRarity, spinnerRuneRarity[1])
+  addTextView("  ")
+  spinnerRuneRank = {
+    "6*",
+    "5*",
+    "4*",
+    "3*",
+    "2*",
+    "1*"
+  }
+  addTextView("Min Rank: ")
+  addSpinner("runeRuneRankSelect", spinnerRuneRank, spinnerRuneRank[1])
+  addTextView("  ")
+  spinnerMainStat = {
+    "Save all",
+    "Save %/spd 2/4/6"
+  }
+  addTextView("Main Stat: ")
+  addSpinner("runeMainStatSelect", spinnerMainStat, spinnerMainStat[1])
   addTextView("  (save runes option)")
   newRow()
   spinnerRefillOption = {
@@ -749,28 +784,59 @@ function setDialogOptions()
   elseif runLmtOption == spinnerBattleLimit[8] then
     runAutoSwitchFodder = true
   end
-  if runeOption == spinnerRuneOption[1] then
-    saveAllRune = true
-  elseif runeOption == spinnerRuneOption[2] then
-    save6Star = true
-    save5Star = true
-  elseif runeOption == spinnerRuneOption[3] then
-    save6Star = true
-    save6StarPct = true
-    save5Star = true
-    save5StarPct = true
-  elseif runeOption == spinnerRuneOption[4] then
-    save6Star = true
-    save6StarPct = true
-    save5Star = false
-    save5StarPct = true
-  elseif runeOption == spinnerRuneOption[5] then
-    save6Star = true
-  elseif runeOption == spinnerRuneOption[6] then
-    save6Star = true
-    save6StarPct = true
-  elseif runeOption == spinnerRuneOption[7] then
-    sellAllRunes = true
+  if runeRaritySelect == spinnerRuneRarity[1] then
+    keepLegendary = true
+  elseif runeRaritySelect == spinnerRuneRarity[2] then
+    keepLegendary = true
+    keepHero = true
+  elseif runeRaritySelect == spinnerRuneRarity[3] then
+    keepLegendary = true
+    keepHero = true
+    keepRare = true
+  elseif runeRaritySelect == spinnerRuneRarity[4] then
+    keepLegendary = true
+    keepHero = true
+    keepRare = true
+    keepMagic = true
+  elseif runeRaritySelect == spinnerRuneRarity[5] then
+    keepLegendary = true
+    keepHero = true
+    keepRare = true
+    keepMagic = true
+    keepNormal = true
+  end
+  if runeMainStatSelect == spinnerMainStat[1] then
+    keepAll = true
+  elseif runeMainStatSelect == spinnerMainStat[2] then
+    keepPercent = true
+  end
+  if runeRuneRankSelect == spinnerRuneRank[1] then
+    keep6Star = true
+  elseif rruneRuneRankSelect == spinnerRuneRank[2] then
+    keep6Star = true
+    keep5Star = true
+  elseif runeRuneRankSelect == spinnerRuneRank[3] then
+    keep6Star = true
+    keep5Star = true
+    keep4Star = true
+  elseif runeRuneRankSelect == spinnerRuneRank[4] then
+    keep6Star = true
+    keep5Star = true
+    keep4Star = true
+    keep3Star = true
+  elseif runeRuneRankSelect == spinnerRuneRank[5] then
+    keep6Star = true
+    keep5Star = true
+    keep4Star = true
+    keep3Star = true
+    keep2Star = true
+  elseif runeRuneRankSelect == spinnerRuneRank[6] then
+    keep6Star = true
+    keep5Star = true
+    keep4Star = true
+    keep3Star = true
+    keep2Star = true
+    keep1Star = true
   end
   if refillOption == spinnerRefillOption[1] then
     refillEnergy = false
@@ -1108,6 +1174,8 @@ function setAdvancedOptions()
   end
   connectionTimeout = connectionTimeout * 4
 end
+mainStatImages = {  "hpMain.png", "defMain.png", "atkMain.png", "spdMain.png", "criRateMain.png",
+  "criDmgMain.png", "resMain.png", "accMain.png" }
 function setDimension16by9()
   local screen = getAppUsableScreenSize()
   screenW = screen:getX()
@@ -2058,6 +2126,125 @@ function stopSoundVibrate()
     stopMusic()
   end
 end
+function findRuneRarity()
+  runeRarityRegion:highlight()
+  local loc = Location(735, 455)
+  local r,g,b = getColor(loc)
+  if (r > 40 and b < 40 and g < 40) then
+    runeRarity = "Legendary"
+  elseif (r > 40 and b > 40 and g < 40) then
+    runeRarity = "Hero"
+  elseif (r < 40 and b > 40 and g > 40) then
+    runeRarity = "Rare"
+  elseif (r < 40 and b < 40 and g > 40) then
+    runeRarity = "Magic"
+  elseif (r > 40 and b < 40 and g > 40) then
+    runeRarity = "Normal"
+  else
+    runeRarity = "NONE"
+    scriptExit ( "This rune's rarity cannot be determined")
+  end
+  runeRarityRegion:highlight()
+end
+function findRuneRank()
+  runeRankRegion:highlight()
+  local loc = Location(732, 364)
+  local r, g, b = getColor(loc)
+  if (r > 200 and g > 200 and b > 200) then
+    runeRank = 6
+  else
+    local loc = Location(715, 364)
+    local r, g, b = getColor(loc)
+    if (r > 200 and g > 200 and b > 200) then
+      runeRank = 5
+    else
+      local loc = Location(698, 364)
+      local r, g, b = getColor(loc)
+      if (r > 200 and g > 200 and b > 200) then
+        runeRank = 4
+      else
+        local loc = Location(681, 364)
+        local r, g, b = getColor(loc)
+        if (r > 200 and g > 200 and b > 200) then
+          runeRank = 3
+        else
+          local loc = Location(664, 364)
+          local r, g, b = getColor(loc)
+          if (r > 200 and g > 200 and b > 200) then
+            runeRank = 2
+          else
+            local loc = Location(647, 364)
+            local r, g, b = getColor(loc)
+            if (r > 200 and g > 200 and b > 200) then
+              runeRank = 1
+            else
+              runeRank = "NONE"
+            end
+          end
+        end
+      end
+    end
+  end
+  runeRankRegion:highlight()
+end
+function findRuneSlot()
+  runeSlotRegion:highlight()
+  local loc = Location(731, 384)
+  local r, g, b = getColor(loc)
+  if (r > 70 and r < 150 and g > 70 and g < 150 and b > 70 and b < 150) then
+    runeSlot = 2
+  else
+    local loc = Location(697, 447)
+    local r, g, b = getColor(loc)
+    if (r > 70 and r < 150 and g > 70 and g < 150 and b > 70 and b < 150) then
+      runeSlot = 4
+    else
+      local loc = Location(660, 387)
+      local r, g, b = getColor(loc)
+      if (r > 70 and r < 150 and g > 70 and g < 150 and b > 70 and b < 150) then
+        runeSlot = 6
+      else
+        runeSlot = 0
+      end
+    end
+  end
+  runeSlotRegion:highlight()
+end
+function findMainStat()
+  mainStatRegion:highlight()
+  local bestMatchIndex = existsMultiMax(mainStatImages, mainStatRegion)
+  if (bestMatchIndex == 1) then
+    if  mainStatValueRegion:exists(Pattern("percentMain.png"):similar(.70)) then
+      mainStat = ("HP%")
+    else
+      mainStat = ("HP")
+    end
+  elseif (bestMatchIndex == 2) then
+    if  mainStatValueRegion:exists(Pattern("percentMain.png"):similar(.70)) then
+      mainStat = ("DEF%")
+    else
+      mainStat = ("DEF")
+    end
+  elseif (bestMatchIndex == 3) then
+    if  mainStatValueRegion:exists(Pattern("percentMain.png"):similar(.70)) then
+      mainStat = ("ATK%")
+    else
+      mainStat = ("ATK")
+    end
+  elseif (bestMatchIndex == 4) then
+    mainStat = ("SPD")
+  elseif (bestMatchIndex == 5) then
+    mainStat = ("CRI Rate")
+  elseif (bestMatchIndex == 6) then
+    mainStat = ("CRI DMG")
+  elseif (bestMatchIndex == 7) then
+    mainStat = ("RES")
+  elseif (bestMatchIndex == 8) then
+    mainStat = ("ACC")
+  else mainStat = ("NONE")
+  end
+  mainStatRegion:highlight()
+end
 function sellRune()
   sellRegion:existsClick(Pattern("sell.png"):similar(imgAccuracy), 2)
   runeYesRegion:existsClick(Pattern("yes.png"):similar(imgAccuracy * 0.9), 1)
@@ -2065,148 +2252,120 @@ end
 function getRune()
   getRegion:existsClick(Pattern("get.png"):similar(imgAccuracy), 1)
 end
-function sellGet6StarRune()
-  if runeRegion:exists(Pattern("rune2Slot.png"):similar(runeAccuracy), 0.1) then
-    if runeMainStatRegion:exists(Pattern("rune6StarFlat.png"):similar(runeAccuracy * 0.9), 0.1) then
-      r6Sold = r6Sold + 1
-      sellRune()
-      toast("6* flat rune.  Sold!")
-    elseif runeMainStatRegion:exists(Pattern("rune6StarHpFlat.png"):similar(runeAccuracy * 0.9), 0.1) then
-      r6Sold = r6Sold + 1
-      sellRune()
-      toast("6* flat rune.  Sold!")
-    else
-      r6Count = r6Count + 1
-      getRune()
-      toast("6* % rune.  Get!")
-    end
-  elseif runeRegion:exists(Pattern("rune4Slot.png"):similar(runeAccuracy), 0.1) then
-    if runeMainStatRegion:exists(Pattern("rune6StarFlat.png"):similar(runeAccuracy * 0.9), 0.1) then
-      r6Sold = r6Sold + 1
-      sellRune()
-      toast("6* flat rune.  Sold!")
-    elseif runeMainStatRegion:exists(Pattern("rune6StarHpFlat.png"):similar(runeAccuracy * 0.9), 0.1) then
-      r6Sold = r6Sold + 1
-      sellRune()
-      toast("6* flat rune.  Sold!")
-    else
-      r6Count = r6Count + 1
-      getRune()
-      toast("6* % rune.  Get!")
-    end
-  elseif runeRegion:exists(Pattern("rune6Slot.png"):similar(runeAccuracy), 0.1) then
-    if runeMainStatRegion:exists(Pattern("rune6StarFlat.png"):similar(runeAccuracy * 0.9), 0.1) then
-      r6Sold = r6Sold + 1
-      sellRune()
-      toast("6* flat rune.  Sold!")
-    elseif runeMainStatRegion:exists(Pattern("rune6StarHpFlat.png"):similar(runeAccuracy * 0.9), 0.1) then
-      r6Sold = r6Sold + 1
-      sellRune()
-      toast("6* flat rune.  Sold!")
-    else
-      r6Count = r6Count + 1
-      getRune()
-      toast("6* % rune.  Get!")
-    end
-  elseif save6Star then
-    r6Count = r6Count + 1
-    getRune()
-    toast("6* rune.  Get!")
+function runeKeep1 ()
+  if runeRarity == "Legendary" and keepLegendary == true then
+    runeKeep2 ()
+  elseif runeRarity == "Hero" and keepHero == true then
+    runeKeep2 ()
+  elseif runeRarity == "Rare" and keepRare == true then
+    runeKeep2 ()
+  elseif runeRarity == "Magic" and keepMagic == true then
+    runeKeep2 ()
+  elseif runeRarity == "Normal" and keepNormal == true then
+    runeKeep2 ()
+  else
+    sellRune()
   end
 end
-function sellGet5StarRune()
-  if runeRegion:exists(Pattern("rune2Slot.png"):similar(runeAccuracy), 0.1) then
-    if runeMainStatRegion:exists(Pattern("rune5StarFlat.png"):similar(runeAccuracy * 0.9), 0.1) then
-      r5Sold = r5Sold + 1
-      sellRune()
-      toast("5* flat rune.  Sold!")
-    elseif runeMainStatRegion:exists(Pattern("rune5StarHpFlat.png"):similar(runeAccuracy * 0.9), 0.1) then
-      r5Sold = r5Sold + 1
-      sellRune()
-      toast("5* flat rune.  Sold!")
-    else
-      r5Count = r5Count + 1
-      getRune()
-      toast("5* % rune.  Get!")
-    end
-  elseif runeRegion:exists(Pattern("rune4Slot.png"):similar(runeAccuracy), 0.1) then
-    if runeMainStatRegion:exists(Pattern("rune5StarFlat.png"):similar(runeAccuracy * 0.9), 0.1) then
-      r5Sold = r5Sold + 1
-      sellRune()
-      toast("5* flat rune.  Sold!")
-    elseif runeMainStatRegion:exists(Pattern("rune5StarHpFlat.png"):similar(runeAccuracy * 0.9), 0.1) then
-      r5Sold = r5Sold + 1
-      sellRune()
-      toast("5* flat rune.  Sold!")
-    else
-      r5Count = r5Count + 1
-      getRune()
-      toast("5* % rune.  Get!")
-    end
-  elseif runeRegion:exists(Pattern("rune6Slot.png"):similar(runeAccuracy), 0.1) then
-    if runeMainStatRegion:exists(Pattern("rune5StarFlat.png"):similar(runeAccuracy * 0.9), 0.1) then
-      r5Sold = r5Sold + 1
-      sellRune()
-      toast("5* flat rune.  Sold!")
-    elseif runeMainStatRegion:exists(Pattern("rune5StarHpFlat.png"):similar(runeAccuracy * 0.9), 0.1) then
-      r5Sold = r5Sold + 1
-      sellRune()
-      toast("5* flat rune.  Sold!")
-    else
-      r5Count = r5Count + 1
-      getRune()
-      toast("5* % rune.  Get!")
-    end
-  elseif not save5Star then
-    r5Sold = r5Sold + 1
+function runeKeep2 ()
+  if runeRank == 6 and keep6Star == true then
+    runeKeep3 ()
+  elseif runeRank == 5 and keep5Star == true then
+    runeKeep3 ()
+  elseif runeRank == 4 and keep4Star == true then
+    runeKeep3 ()
+  elseif runeRank == 3 and keep3Star == true then
+    runeKeep3 ()
+  elseif runeRank == 2 and keep2Star == true then
+    runeKeep3 ()
+  elseif runeRank == 1 and keep1Star == true then
+    runeKeep3 ()
+  else
     sellRune()
-    toast("5* rune.  Sold!")
-  elseif save5Star then
-    r5Count = r5Count + 1
-    getRune()
-    toast("5* rune.  Get!")
   end
 end
-function sellGetRune()
-  if saveAllRune then
+function runeKeep3 ()
+  if keepAll == true then
     getRune()
-    toast("All rune.  Get!")
-  elseif sellAllRune then
+    toast("Rune obtained!")
+    if runeRank == 6 then r6Count = r6Count + 1
+    elseif runeRank == 5 then r5Count = r5Count + 1
+    end
+  elseif runeSlot == 2 and keepPercent == true and mainStat == ("HP") then
     sellRune()
-    toast("All rune.  Sell!")
-  elseif runeRegion:exists(Pattern("rune6Star.png"):similar(runeAccuracy), 0.1) then
-    if save6StarPct then
-      sellGet6StarRune()
-    elseif save6Star then
-      r6Count = r6Count + 1
-      getRune()
-      toast("6* rune.  Get!")
-    else
-      r6Sold = r6Sold + 1
-      sellRune()
-      toast("6* rune sold!")
+    toast("Flat rune Sold!")
+    if runeRank == 6 then r6Sold = r6Sold + 1
+    elseif runeRank == 5 then r5Sold = r5Sold + 1
     end
-  elseif runeRegion:exists(Pattern("rune5Star.png"):similar(runeAccuracy), 0.1) then
-    if save5StarPct then
-      sellGet5StarRune()
-    elseif save5Star then
-      r5Count = r5Count + 1
-      getRune()
-      toast("5* rune.  Get!")
-    else
-      r5Sold = r5Sold + 1
-      sellRune()
-      toast("5* rune sold!")
+  elseif runeSlot == 2 and keepPercent == true and mainStat == ("ATK") then
+    sellRune()
+    toast("Flat rune Sold!")
+    if runeRank == 6 then r6Sold = r6Sold + 1
+    elseif runeRank == 5 then r5Sold = r5Sold + 1
     end
-  elseif grindstoneRegion:exists(Pattern("grindstone.png"):similar(.3), 0.1) then
+  elseif runeSlot == 2 and keepPercent == true and mainStat == ("DEF") then
+    sellRune()
+    toast("Flat rune Sold!")
+    if runeRank == 6 then r6Sold = r6Sold + 1
+    elseif runeRank == 5 then r5Sold = r5Sold + 1
+    end
+  elseif runeSlot == 4 and keepPercent == true and mainStat == ("HP") then
+    sellRune()
+    toast("Flat rune Sold!")
+    if runeRank == 6 then r6Sold = r6Sold + 1
+    elseif runeRank == 5 then r5Sold = r5Sold + 1
+    end
+  elseif runeSlot == 4 and keepPercent == true and mainStat == ("ATK") then
+    sellRune()
+    toast("Flat rune Sold!")
+    if runeRank == 6 then r6Sold = r6Sold + 1
+    elseif runeRank == 5 then r5Sold = r5Sold + 1
+    end
+  elseif runeSlot == 4 and keepPercent == true and mainStat == ("DEF") then
+    sellRune()
+    toast("Flat rune Sold!")
+    if runeRank == 6 then r6Sold = r6Sold + 1
+    elseif runeRank == 5 then r5Sold = r5Sold + 1
+    end
+  elseif runeSlot == 6 and keepPercent == true and mainStat == ("HP") then
+    sellRune()
+    toast("Flat rune Sold!")
+    if runeRank == 6 then r6Sold = r6Sold + 1
+    elseif runeRank == 5 then r5Sold = r5Sold + 1
+    end
+  elseif runeSlot == 6 and keepPercent == true and mainStat == ("ATK") then
+    sellRune()
+    toast("Flat rune Sold!")
+    if runeRank == 6 then r6Sold = r6Sold + 1
+    elseif runeRank == 5 then r5Sold = r5Sold + 1
+    end
+  elseif runeSlot == 6 and keepPercent == true and mainStat == ("DEF") then
+    sellRune()
+    toast("Flat rune Sold!")
+    if runeRank == 6 then r6Sold = r6Sold + 1
+    elseif runeRank == 5 then r5Sold = r5Sold + 1
+    end
+  else
+    getRune ()
+    toast("Rune obtained!")
+    if runeRank == 6 then r6Count = r6Count + 1
+    elseif runeRank == 5 then r5Count = r5Count + 1
+    end
+  end
+end
+function sellGetRune ()
+  if grindstoneRegion:exists(Pattern("grindstone.png"):similar(.5), 0.1) then
     getRune()
     toast("Grindstone.  Get!")
-  elseif enchantedGemRegion:exists(Pattern("enchantedGem.png"):similar(.3), 0.1) then
+  elseif enchantedGemRegion:exists(Pattern("enchantedGem.png"):similar(.5), 0.1) then
     getRune()
     toast("Enchanted Gem.  Get!")
   else
-    runeSold = runeSold + 1
-    sellRune()
+    findRuneRarity()
+    findRuneRank()
+    findRuneSlot()
+    findMainStat()
+    runeKeep1()
   end
 end
 function setLocation(a, b)
