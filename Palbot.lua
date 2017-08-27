@@ -2145,6 +2145,7 @@ function findRuneRarity()
     scriptExit ( "This rune's rarity cannot be determined")
   end
   runeRarityRegion:highlight()
+  toast("Rune Rarity:" .. runeRarity)
 end
 function findRuneRank()
   runeRankRegion:highlight()
@@ -2186,6 +2187,7 @@ function findRuneRank()
     end
   end
   runeRankRegion:highlight()
+  toast("Rune Rank:" .. runeRank)
 end
 function findRuneSlot()
   runeSlotRegion:highlight()
@@ -2209,6 +2211,7 @@ function findRuneSlot()
     end
   end
   runeSlotRegion:highlight()
+  toast("Rune Slot:" .. runeSlot)
 end
 function findMainStat()
   mainStatRegion:highlight()
@@ -2244,6 +2247,7 @@ function findMainStat()
   else mainStat = ("NONE")
   end
   mainStatRegion:highlight()
+  toast("Main Stat:" .. mainStat)
 end
 function sellRune()
   sellRegion:existsClick(Pattern("sell.png"):similar(imgAccuracy), 2)
