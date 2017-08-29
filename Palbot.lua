@@ -2269,6 +2269,7 @@ function runeKeep1 ()
     runeKeep2 ()
   else
     sellRune()
+    toast("Rune sold due to rarity!")
   end
 end
 function runeKeep2 ()
@@ -2286,6 +2287,7 @@ function runeKeep2 ()
     runeKeep3 ()
   else
     sellRune()
+    toast("Rune sold due to rank!")
   end
 end
 function runeKeep3 ()
