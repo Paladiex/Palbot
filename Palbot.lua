@@ -861,7 +861,7 @@ function setAdvancedOptions()
         compareW = 2560
         compareH = 1440
         is16by9 = true
-        scriptexit ("This bot is no longer compatible with your version")
+        scriptExit ("This bot is no longer compatible with your version")
       elseif screenH == 1600 then
         setImagePath(localPath .. "1920x1080")
         Settings:setScriptDimension(true, 1920)
@@ -869,7 +869,7 @@ function setAdvancedOptions()
         compareW = 1920
         compareH = 1080
         is16by10 = true
-        scriptexit ("This bot is no longer compatible with your version")
+        scriptExit ("This bot is no longer compatible with your version")
       elseif screenH > 1440 and screenH < 1600 then
         setImagePath(localPath .. "1920x1080")
         Settings:setScriptDimension(true, 1920)
@@ -877,7 +877,7 @@ function setAdvancedOptions()
         compareW = 1920
         compareH = 1080
         is16by10 = true
-        scriptexit ("This bot is no longer compatible with your version")
+        scriptExit ("This bot is no longer compatible with your version")
       end
     elseif screenW == 1920 then
       if screenH == 1080 then
@@ -894,7 +894,7 @@ function setAdvancedOptions()
         compareW = 1920
         compareH = 1080
         is16by10 = true
-        scriptexit ("This bot is no longer compatible with your version")
+        scriptExit ("This bot is no longer compatible with your version")
       elseif screenH > 1080 and screenH < 1200 then
         setImagePath(localPath .. "1920x1080")
         Settings:setScriptDimension(true, 1920)
@@ -902,7 +902,7 @@ function setAdvancedOptions()
         compareW = 1920
         compareH = 1080
         is16by10 = true
-        scriptexit ("This bot is no longer compatible with your version")
+        scriptExit ("This bot is no longer compatible with your version")
       end
     elseif screenW == 1680 then
       if screenH == 1050 then
@@ -912,7 +912,7 @@ function setAdvancedOptions()
         compareW = 1920
         compareH = 1080
         is16by9 = true
-        scriptexit ("This bot is no longer compatible with your version")
+        scriptExit ("This bot is no longer compatible with your version")
       elseif screenH > 900 and screenH < 1050 then
         setImagePath(localPath .. "1920x1080")
         Settings:setScriptDimension(true, 1920)
@@ -920,7 +920,7 @@ function setAdvancedOptions()
         compareW = 1920
         compareH = 1080
         is16by10 = true
-        scriptexit ("This bot is no longer compatible with your version")
+        scriptExit ("This bot is no longer compatible with your version")
       end
     elseif screenW == 1600 then
       if screenH == 900 then
@@ -930,7 +930,7 @@ function setAdvancedOptions()
         compareW = 1920
         compareH = 1080
         is16by10 = true
-        scriptexit ("This bot is no longer compatible with your version")
+        scriptExit ("This bot is no longer compatible with your version")
       end
     elseif screenW == 1440 then
       if screenH == 900 then
@@ -940,7 +940,7 @@ function setAdvancedOptions()
         compareW = 1920
         compareH = 1080
         is16by9 = true
-        scriptexit ("This bot is no longer compatible with your version")
+        scriptExit ("This bot is no longer compatible with your version")
       elseif screenH > 800 and screenH < 900 then
         setImagePath(localPath .. "1920x1080")
         Settings:setScriptDimension(true, 1920)
@@ -948,7 +948,7 @@ function setAdvancedOptions()
         compareW = 1920
         compareH = 1080
         is16by10 = true
-        scriptexit ("This bot is no longer compatible with your version")
+        scriptExit ("This bot is no longer compatible with your version")
       end
     elseif screenW == 1366 then
       if screenH == 768 then
@@ -958,7 +958,7 @@ function setAdvancedOptions()
         compareW = 1920
         compareH = 1080
         is16by10 = true
-        scriptexit ("This bot is no longer compatible with your version")
+        scriptExit ("This bot is no longer compatible with your version")
       end
     elseif screenW == 1280 then
       if screenH == 720 then
@@ -968,7 +968,7 @@ function setAdvancedOptions()
         compareW = 1280
         compareH = 720
         is16by9 = true
-        scriptexit ("This bot is no longer compatible with your version")
+        scriptExit ("This bot is no longer compatible with your version")
       elseif screenH == 800 then
         setImagePath(localPath .. "1920x1080")
         Settings:setScriptDimension(true, 1920)
@@ -976,7 +976,7 @@ function setAdvancedOptions()
         compareW = 1920
         compareH = 1080
         is16by10 = true
-        scriptexit ("This bot is no longer compatible with your version")
+        scriptExit ("This bot is no longer compatible with your version")
       elseif screenH > 720 and screenH < 800 then
         setImagePath(localPath .. "1920x1080")
         Settings:setScriptDimension(true, 1920)
@@ -984,7 +984,7 @@ function setAdvancedOptions()
         compareW = 1920
         compareH = 1080
         is16by10 = true
-        scriptexit ("This bot is no longer compatible with your version")
+        scriptExit ("This bot is no longer compatible with your version")
       end
     elseif screenW == 1152 then
       if screenH == 648 then
@@ -994,7 +994,7 @@ function setAdvancedOptions()
         compareW = 1920
         compareH = 1080
         is16by9 = true
-        scriptexit ("This bot is no longer compatible with your version")
+        scriptExit ("This bot is no longer compatible with your version")
       end
     elseif screenW == 1024 then
       if screenH == 576 then
@@ -1004,7 +1004,7 @@ function setAdvancedOptions()
         compareW = 1920
         compareH = 1080
         is16by9 = true
-        scriptexit ("This bot is no longer compatible with your version")
+        scriptExit ("This bot is no longer compatible with your version")
       elseif screenH == 600 then
         setImagePath(localPath .. "1920x1080")
         Settings:setScriptDimension(true, 1920)
@@ -1012,7 +1012,7 @@ function setAdvancedOptions()
         compareW = 1920
         compareH = 1080
         is16by10 = true
-        scriptexit ("This bot is no longer compatible with your version")
+        scriptExit ("This bot is no longer compatible with your version")
       end
     elseif screenW == 2392 then
       if screenH == 1440 then
@@ -1022,7 +1022,7 @@ function setAdvancedOptions()
         compareW = 1920
         compareH = 1080
         isNavBar = true
-        scriptexit ("This bot is no longer compatible with your version")
+        scriptExit ("This bot is no longer compatible with your version")
       end
     elseif screenW == 1809 then
       if screenH == 1080 then
@@ -1032,7 +1032,7 @@ function setAdvancedOptions()
         compareW = 1920
         compareH = 1080
         isNavBar = true
-        scriptexit ("This bot is no longer compatible with your version")
+        scriptExit ("This bot is no longer compatible with your version")
       end
     else
       toast("Cannot Find Screen Resolution.  Set to 1280x720")
@@ -1042,7 +1042,7 @@ function setAdvancedOptions()
       compareW = 1920
       compareH = 1080
       is16by9 = true
-      scriptexit ("This bot is no longer compatible with your version")
+      scriptExit ("This bot is no longer compatible with your version")
     end
   elseif screenRes == "2560x1440 (16:9)" then
     setImagePath(localPath .. "2560x1440")
@@ -1051,7 +1051,7 @@ function setAdvancedOptions()
     compareW = 2560
     compareH = 1440
     is16by9 = true
-    scriptexit ("This bot is no longer compatible with your version")
+    scriptExit ("This bot is no longer compatible with your version")
   elseif screenRes == "1920x1080 (16:9)" then
     setImagePath(localPath .. "1920x1080")
     Settings:setScriptDimension(true, 1920)
@@ -1080,7 +1080,7 @@ function setAdvancedOptions()
     compareW = 1280
     compareH = 720
     is16by9 = true
-    scriptexit ("This bot is no longer compatible with your version")
+    scriptExit ("This bot is no longer compatible with your version")
   elseif screenRes == "1152x648 (16:9)" then
     setImagePath(localPath .. "1920x1080")
     Settings:setScriptDimension(true, 1920)
@@ -1102,7 +1102,7 @@ function setAdvancedOptions()
     compareW = 1920
     compareH = 1080
     is16by10 = true
-    scriptexit ("This bot is no longer compatible with your version")
+    scriptExit ("This bot is no longer compatible with your version")
   elseif screenRes == "1920x1200 (16:10)" then
     setImagePath(localPath .. "1920x1080")
     Settings:setScriptDimension(true, 1920)
@@ -1110,7 +1110,7 @@ function setAdvancedOptions()
     compareW = 1920
     compareH = 1080
     is16by10 = true
-    scriptexit ("This bot is no longer compatible with your version")
+    scriptExit ("This bot is no longer compatible with your version")
   elseif screenRes == "1680x1050 (16:10)" then
     setImagePath(localPath .. "1920x1080")
     Settings:setScriptDimension(true, 1920)
@@ -1118,7 +1118,7 @@ function setAdvancedOptions()
     compareW = 1920
     compareH = 1080
     is16by10 = true
-    scriptexit ("This bot is no longer compatible with your version")
+    scriptExit ("This bot is no longer compatible with your version")
   elseif screenRes == "1440x900 (16:10)" then
     setImagePath(localPath .. "1920x1080")
     Settings:setScriptDimension(true, 1920)
@@ -1126,7 +1126,7 @@ function setAdvancedOptions()
     compareW = 1920
     compareH = 1080
     is16by10 = true
-    scriptexit ("This bot is no longer compatible with your version")
+    scriptExit ("This bot is no longer compatible with your version")
   elseif screenRes == "1280x800 (16:10)" then
     setImagePath(localPath .. "1920x1080")
     Settings:setScriptDimension(true, 1920)
@@ -1134,7 +1134,7 @@ function setAdvancedOptions()
     compareW = 1920
     compareH = 1080
     is16by10 = true
-    scriptexit ("This bot is no longer compatible with your version")
+    scriptExit ("This bot is no longer compatible with your version")
   elseif screenRes == "2392x1440" then
     setImagePath(localPath .. "1920x1080N")
     Settings:setScriptDimension(true, 1920)
@@ -1142,7 +1142,7 @@ function setAdvancedOptions()
     compareW = 1920
     compareH = 1080
     isNavBar = true
-    scriptexit ("This bot is no longer compatible with your version")
+    scriptExit ("This bot is no longer compatible with your version")
   elseif screenRes == "1809x1080" then
     setImagePath(localPath .. "1920x1080N")
     Settings:setScriptDimension(true, 1920)
@@ -1150,7 +1150,7 @@ function setAdvancedOptions()
     compareW = 1920
     compareH = 1080
     isNavBar = true
-    scriptexit ("This bot is no longer compatible with your version")
+    scriptExit ("This bot is no longer compatible with your version")
   elseif screenRes == "1024x600" then
     setImagePath(localPath .. "1920x1080N")
     Settings:setScriptDimension(true, 1920)
@@ -1158,7 +1158,7 @@ function setAdvancedOptions()
     compareW = 1920
     compareH = 1080
     isNavBar = true
-    scriptexit ("This bot is no longer compatible with your version")
+    scriptExit ("This bot is no longer compatible with your version")
   else
     setImagePath(localPath .. "1920x1080")
     Settings:setScriptDimension(true, 1920)
@@ -1176,7 +1176,7 @@ function setAdvancedOptions()
     compareW = 1920
     compareH = 1080
     isNavBar = true
-    scriptexit ("This bot is no longer compatible with your version")
+    scriptExit ("This bot is no longer compatible with your version")
   end
   if immersiveMode then
     setImmersiveMode(true)
