@@ -2252,9 +2252,17 @@ end
 function sellRune()
   sellRegion:existsClick(Pattern("sell.png"):similar(imgAccuracy), 2)
   runeYesRegion:existsClick(Pattern("yes.png"):similar(imgAccuracy * 0.9), 1)
+  if runeRank == 6 then r6Sold = r6Sold + 1
+  elseif runeRank == 5 then r5Sold = r5Sold + 1
+  else runeSold = runeSold + 1
+  end
 end
 function getRune()
   getRegion:existsClick(Pattern("get.png"):similar(imgAccuracy), 1)
+  if runeRank == 6 then r6Count = r6Count + 1
+  elseif runeRank == 5 then r5Count = r5Count + 1
+  else r6Count = r6Count + 1
+  end
 end
 function runeKeep1 ()
   if runeRarity == "Legendary" and keepLegendary == true then
@@ -2294,69 +2302,36 @@ function runeKeep3 ()
   if keepAll == true then
     getRune()
     toast("Rune obtained!")
-    if runeRank == 6 then r6Count = r6Count + 1
-    elseif runeRank == 5 then r5Count = r5Count + 1
-    end
   elseif runeSlot == 2 and keepPercent == true and mainStat == ("HP") then
     sellRune()
     toast("Flat rune Sold!")
-    if runeRank == 6 then r6Sold = r6Sold + 1
-    elseif runeRank == 5 then r5Sold = r5Sold + 1
-    end
   elseif runeSlot == 2 and keepPercent == true and mainStat == ("ATK") then
     sellRune()
     toast("Flat rune Sold!")
-    if runeRank == 6 then r6Sold = r6Sold + 1
-    elseif runeRank == 5 then r5Sold = r5Sold + 1
-    end
   elseif runeSlot == 2 and keepPercent == true and mainStat == ("DEF") then
     sellRune()
     toast("Flat rune Sold!")
-    if runeRank == 6 then r6Sold = r6Sold + 1
-    elseif runeRank == 5 then r5Sold = r5Sold + 1
-    end
   elseif runeSlot == 4 and keepPercent == true and mainStat == ("HP") then
     sellRune()
     toast("Flat rune Sold!")
-    if runeRank == 6 then r6Sold = r6Sold + 1
-    elseif runeRank == 5 then r5Sold = r5Sold + 1
-    end
   elseif runeSlot == 4 and keepPercent == true and mainStat == ("ATK") then
     sellRune()
     toast("Flat rune Sold!")
-    if runeRank == 6 then r6Sold = r6Sold + 1
-    elseif runeRank == 5 then r5Sold = r5Sold + 1
-    end
   elseif runeSlot == 4 and keepPercent == true and mainStat == ("DEF") then
     sellRune()
     toast("Flat rune Sold!")
-    if runeRank == 6 then r6Sold = r6Sold + 1
-    elseif runeRank == 5 then r5Sold = r5Sold + 1
-    end
   elseif runeSlot == 6 and keepPercent == true and mainStat == ("HP") then
     sellRune()
     toast("Flat rune Sold!")
-    if runeRank == 6 then r6Sold = r6Sold + 1
-    elseif runeRank == 5 then r5Sold = r5Sold + 1
-    end
   elseif runeSlot == 6 and keepPercent == true and mainStat == ("ATK") then
     sellRune()
     toast("Flat rune Sold!")
-    if runeRank == 6 then r6Sold = r6Sold + 1
-    elseif runeRank == 5 then r5Sold = r5Sold + 1
-    end
   elseif runeSlot == 6 and keepPercent == true and mainStat == ("DEF") then
     sellRune()
     toast("Flat rune Sold!")
-    if runeRank == 6 then r6Sold = r6Sold + 1
-    elseif runeRank == 5 then r5Sold = r5Sold + 1
-    end
   else
     getRune ()
     toast("Rune obtained!")
-    if runeRank == 6 then r6Count = r6Count + 1
-    elseif runeRank == 5 then r5Count = r5Count + 1
-    end
   end
 end
 function sellGetRune ()
