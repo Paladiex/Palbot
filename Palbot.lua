@@ -812,7 +812,7 @@ function setDialogOptions()
   end
   if runeRuneRankSelect == spinnerRuneRank[1] then
     keep6Star = true
-  elseif rruneRuneRankSelect == spinnerRuneRank[2] then
+  elseif runeRuneRankSelect == spinnerRuneRank[2] then
     keep6Star = true
     keep5Star = true
   elseif runeRuneRankSelect == spinnerRuneRank[3] then
