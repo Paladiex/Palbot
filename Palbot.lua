@@ -4240,7 +4240,7 @@ while runQuickClick do
     showBattleResult("Rift Battle Start")
     printBattleMessage()
   end
-  if sellGetRegion:exists(Pattern("sell.png"):similar(imgAccuracy), 0.1) then
+  if sellGetRegion:exists(Pattern("sell.png"):similar(.6)) then
     sellGetRune()
     start()
   end
@@ -4331,7 +4331,7 @@ while true do
         break
       end
     end
-    if sellRegion:exists(Pattern("sell.png"), 0.1) then
+    if sellRegion:exists(Pattern("sell.png"):similar(.6)) then
       sellGetRune()
       start()
     end
