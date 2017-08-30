@@ -2176,7 +2176,6 @@ function findRuneRarity()
     scriptExit ( "This rune's rarity cannot be determined")
   end
   runeRarityRegion:highlight()
-  toast("Rune Rarity:" .. runeRarity)
 end
 function findRuneRank()
   runeRankRegion:highlight()
@@ -2218,7 +2217,6 @@ function findRuneRank()
     end
   end
   runeRankRegion:highlight()
-  toast("Rune Rank:" .. runeRank)
 end
 function findRuneSlot()
   runeSlotRegion:highlight()
@@ -2242,7 +2240,6 @@ function findRuneSlot()
     end
   end
   runeSlotRegion:highlight()
-  toast("Rune Slot:" .. runeSlot)
 end
 function findMainStat()
   mainStatRegion:highlight()
@@ -2278,7 +2275,6 @@ function findMainStat()
   else mainStat = ("NONE")
   end
   mainStatRegion:highlight()
-  toast("Main Stat:" .. mainStat)
 end
 function sellRune()
   sellRegion:existsClick(Pattern("sell.png"):similar(.6))
@@ -2308,7 +2304,6 @@ function runeKeep1 ()
     runeKeep2 ()
   else
     sellRune()
-    toast("Rune sold due to rarity!")
   end
 end
 function runeKeep2 ()
@@ -2326,52 +2321,38 @@ function runeKeep2 ()
     runeKeep3 ()
   else
     sellRune()
-    toast("Rune sold due to rank!")
   end
 end
 function runeKeep3 ()
   if keepAll == true then
     getRune()
-    toast("Rune obtained!")
   elseif runeSlot == 2 and keepPercent == true and mainStat == ("HP") then
     sellRune()
-    toast("Flat rune Sold!")
   elseif runeSlot == 2 and keepPercent == true and mainStat == ("ATK") then
     sellRune()
-    toast("Flat rune Sold!")
   elseif runeSlot == 2 and keepPercent == true and mainStat == ("DEF") then
     sellRune()
-    toast("Flat rune Sold!")
   elseif runeSlot == 4 and keepPercent == true and mainStat == ("HP") then
     sellRune()
-    toast("Flat rune Sold!")
   elseif runeSlot == 4 and keepPercent == true and mainStat == ("ATK") then
     sellRune()
-    toast("Flat rune Sold!")
   elseif runeSlot == 4 and keepPercent == true and mainStat == ("DEF") then
     sellRune()
-    toast("Flat rune Sold!")
   elseif runeSlot == 6 and keepPercent == true and mainStat == ("HP") then
     sellRune()
-    toast("Flat rune Sold!")
   elseif runeSlot == 6 and keepPercent == true and mainStat == ("ATK") then
     sellRune()
-    toast("Flat rune Sold!")
   elseif runeSlot == 6 and keepPercent == true and mainStat == ("DEF") then
     sellRune()
-    toast("Flat rune Sold!")
   else
     getRune ()
-    toast("Rune obtained!")
   end
 end
 function sellGetRune ()
   if grindstoneRegion:exists(Pattern("grindstone.png"):similar(.45), 0.1) then
     getRune()
-    toast("Grindstone.  Get!")
   elseif enchantedGemRegion:exists(Pattern("enchantedGem.png"):similar(.45), 0.1) then
     getRune()
-    toast("Enchanted Gem.  Get!")
   else
     findRuneRarity()
     findRuneRank()
