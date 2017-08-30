@@ -2653,9 +2653,9 @@ function clickRiftBack()
   riftBackRegion:existsClick(Pattern("back2Button.png"), 2)
 end
 function clickMatchupArena()
-  existsClick(Pattern("mapArena.png"):similar(imgAccuracy), 1)
-  existsClick(Pattern("startArenaSelect.png"):similar(imgAccuracy), 1)
-  existsClick(Pattern("startArenaBattle.png"):similar(imgAccuracy), 1)
+  existsClick(Pattern("mapArena.png"):similar(.5))
+  existsClick(Pattern("startArenaSelect.png"):similar(.5))
+  existsClick(Pattern("startArenaBattle.png"):similar(.5))
   existsArenaRival()
 end
 function findArena()
