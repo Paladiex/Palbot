@@ -4278,7 +4278,7 @@ while runRiftRaid do
   if raidJoinRegion:exists(Pattern("raidJoinParty.png"), 0.1) then
     raidJoinRegion:existsClick(Pattern("raidJoinParty.png"):similar(0.6), 0.1)
     okRaidRegion:existsClick(Pattern("ok.png"):similar(0.6), 0.1)
-    raidReadyRegion:existsClick(Pattern("raidReady.png"):similar(0.6), 0.1)
+    raidReadyRegion:existsClick(Pattern("raidReady.png"):similar(0.6), 2)
   end
   if checkNoRaidActivity == true then
   end
