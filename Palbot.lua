@@ -4276,9 +4276,9 @@ function resetNoRaidActivity()
 end
 while runRiftRaid do
   if raidJoinRegion:exists(Pattern("raidJoinParty.png"), 0.1) then
-    raidJoinRegion:existsClick(Pattern("raidJoinParty.png"), 0.1)
-    okRaidRegion:existsClick(Pattern("ok.png"):similar(0.7), 0.1)
-    raidReadyRegion:existsClick(Pattern("raidReady.png"):similar(0.7), 0.1)
+    raidJoinRegion:existsClick(Pattern("raidJoinParty.png"):similar(0.6), 0.1)
+    okRaidRegion:existsClick(Pattern("ok.png"):similar(0.6), 0.1)
+    raidReadyRegion:existsClick(Pattern("raidReady.png"):similar(0.6), 0.1)
   end
   if checkNoRaidActivity == true then
   end
