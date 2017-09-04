@@ -136,6 +136,7 @@ enchantedGemRegion = Region(750, 400, 350, 100)
 raidJoinRegion = Region(1300, 845, 250, 65)
 raidReadyRegion = Region(1600, 950, 200, 75)
 okRaidRegion = Region(910, 615, 100, 80)
+raidVictoryTotalRegion = Region(165, 600, 110, 50)
 keepLegendary = false
 keepHero = false
 keepRare = false
@@ -4275,9 +4276,18 @@ function resetNoRaidActivity()
   timerNoRaidActivity:set()
 end
 while runRiftRaid do
-    raidJoinRegion:existsClick(Pattern("raidJoinParty.png"):similar(0.6), 0.1)
-    okRaidRegion:existsClick(Pattern("ok.png"):similar(0.6), 0.1)
-    raidReadyRegion:existsClick(Pattern("raidReady.png"):similar(0.6), 0.1)
+  raidJoinRegion:existsClick(Pattern("raidJoinParty.png"):similar(0.6), 0.1)
+  okRaidRegion:existsClick(Pattern("ok.png"):similar(0.6), 0.1)
+  raidReadyRegion:existsClick(Pattern("raidReady.png"):similar(0.6), 0.1)
+  raidVictoryTotalRegion:existsClick(Pattern("raidVictoryTotal.png"):similar(0.6), 0.1)
+  if notEnoughEnergyRegion:exists(Pattern("notEnoughEnergy.png"):similar(imgAccuracy), 0.1) then
+    refill()
+  end
+  if grindstoneRegion:exists(Pattern("grindstone.png"):similar(.41), 0.1) then
+    getRune()
+  elseif enchantedGemRegion:exists(Pattern("enchantedGem.png"):similar(.41), 0.1) then
+    getRune()
+  end
   if checkNoRaidActivity == true then
   end
 end
