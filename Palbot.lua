@@ -4267,7 +4267,7 @@ function raidJoin()
   raidJoinRegion:existsClick(Pattern("raidJoinParty.png"), 2)
 end
 function raidReady()
-  raidReadyRegion:existsClick(Pattern("raidReady.png"), 2)
+  raidReadyRegion:existsClick(Pattern("raidReady.png"):similar(0.7), 2)
 end
 function checkNoRaidActivity()
   if timerNoRaidActivity:check() > maxNoRaidActivity then
