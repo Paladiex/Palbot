@@ -133,6 +133,7 @@ runeRarityRegion = Region(725, 445, 20, 20)
 runeRankRegion = Region(630, 350, 130, 30)
 grindstoneRegion = Region(750, 400, 250, 100)
 enchantedGemRegion = Region(750, 400, 350, 100)
+raidJoinRegion = Region(1300, 845, 250, 65)
 keepLegendary = false
 keepHero = false
 keepRare = false
