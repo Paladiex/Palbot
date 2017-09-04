@@ -131,6 +131,8 @@ mainStatRegion = Region(760, 350, 400, 60)
 runeSlotRegion = Region(630, 340, 130, 130)
 runeRarityRegion = Region(725, 445, 20, 20)
 runeRankRegion = Region(630, 350, 130, 30)
+grindstoneRegion = Region(750, 400, 250, 100)
+enchantedGemRegion = Region(750, 400, 350, 100)
 keepLegendary = false
 keepHero = false
 keepRare = false
@@ -260,8 +262,6 @@ function setScriptRegion()
   slot10Region = setRegion(620, 825, 200, 225)
   closeNowYesRegion = setRegion(600, 630, 350, 200)
   closeNowRegion = setRegion(525, 420, 75, 80)
-  grindstoneRegion = setRegion(750, 400, 250, 100)
-  enchantedGemRegion = setRegion(750, 400, 350, 100)
 end
 function setRegion(a, b, c, d)
   if is16by9 then
@@ -2349,9 +2349,9 @@ function runeKeep3 ()
   end
 end
 function sellGetRune ()
-  if grindstoneRegion:exists(Pattern("grindstone.png"):similar(.45), 0.1) then
+  if grindstoneRegion:exists(Pattern("grindstone.png"):similar(.41), 0.1) then
     getRune()
-  elseif enchantedGemRegion:exists(Pattern("enchantedGem.png"):similar(.45), 0.1) then
+  elseif enchantedGemRegion:exists(Pattern("enchantedGem.png"):similar(.41), 0.1) then
     getRune()
   else
     findRuneRarity()
