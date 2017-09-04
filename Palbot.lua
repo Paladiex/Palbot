@@ -135,6 +135,7 @@ grindstoneRegion = Region(750, 400, 250, 100)
 enchantedGemRegion = Region(750, 400, 350, 100)
 raidJoinRegion = Region(1300, 845, 250, 65)
 raidReadyRegion = Region(1600, 950, 200, 75)
+okRaidRegion = Region(910, 615, 100, 80)
 keepLegendary = false
 keepHero = false
 keepRare = false
@@ -4263,12 +4264,6 @@ while runQuickClick do
     break
   end
 end
-function raidJoin()
-  raidJoinRegion:existsClick(Pattern("raidJoinParty.png"), 2)
-end
-function raidReady()
-  raidReadyRegion:existsClick(Pattern("raidReady.png"):similar(0.7), 2)
-end
 function checkNoRaidActivity()
   if timerNoRaidActivity:check() > maxNoRaidActivity then
     return true
@@ -4281,8 +4276,9 @@ function resetNoRaidActivity()
 end
 while runRiftRaid do
   if raidJoinRegion:exists(Pattern("raidJoinParty.png"), 0.1) then
-    raidJoin()
-    raidReady()
+    raidJoinRegion:existsClick(Pattern("raidJoinParty.png"), 0.1)
+    okRaidRegion:existsClick(Pattern("ok.png"):similar(0.7), 0.1)
+    raidReadyRegion:existsClick(Pattern("raidReady.png"):similar(0.7), 0.1)
   end
   if checkNoRaidActivity == true then
   end
