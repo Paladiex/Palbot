@@ -4279,6 +4279,9 @@ while runRiftRaid do
   raidJoinRegion:existsClick(Pattern("raidJoinParty.png"):similar(0.6), 0.1)
   okRaidRegion:existsClick(Pattern("ok.png"):similar(0.6), 0.1)
   raidReadyRegion:existsClick(Pattern("raidReady.png"):similar(0.6), 0.1)
+  if noLeaderSkillRegion:exists(Pattern("noLeaderSkill.png"):similar(imgAccuracy), 2) then
+    noLeaderSkillYesRegion:existsClick(Pattern("yes.png"):similar(imgAccuracy), 0.1)
+  end
   raidVictoryTotalRegion:existsClick(Pattern("raidVictoryTotal.png"):similar(0.5), 0.1)
   if notEnoughEnergyRegion:exists(Pattern("notEnoughEnergy.png"):similar(0.6), 0.1) then
     refill()
