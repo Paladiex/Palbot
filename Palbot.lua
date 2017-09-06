@@ -4281,7 +4281,7 @@ while runRiftRaid do
   raidJoinRegion:existsClick(Pattern("raidJoinParty.png"):similar(0.6), 0.1)
   raidJoinRegion:highlight()
   okRaidRegion:highlight()
-  okRaidRegion:existsClick(Pattern("ok.png"):similar(0.35), 2)
+  okRaidRegion:existsClick(Pattern("ok.png"):similar(0.60), .1)
   okRaidRegion:highlight()
   raidReadyRegion:highlight()
   raidReadyRegion:existsClick(Pattern("raidReady.png"):similar(0.6), 0.1)
@@ -4295,7 +4295,7 @@ while runRiftRaid do
   raidVictoryTotalRegion:existsClick(Pattern("raidVictoryTotal.png"):similar(0.4), 0.1)
   raidVictoryTotalRegion:highlight()
   raidOkRegion:highlight()
-  raidOkRegion:exists(Pattern("liveArenaSameMonOk.png"):similar(0.6), 0.1)
+  raidOkRegion:exists(Pattern("ok.png"):similar(0.6), 0.1)
   raidOkRegion:highlight()
   notEnoughEnergyRegion:highlight()
   if notEnoughEnergyRegion:exists(Pattern("notEnoughEnergy.png"):similar(0.6), 0.1) then
