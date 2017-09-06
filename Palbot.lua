@@ -139,6 +139,7 @@ okRaidRegion = Region(910, 615, 100, 80)
 raidVictoryTotalRegion = Region(125, 600, 150, 50)
 raidOkRegion = Region(825, 625, 250, 250)
 sameSessionRegion = Region(780, 360, 180, 50)
+raidGetRegion = Region(1035, 635, 145, 115)
 keepLegendary = false
 keepHero = false
 keepRare = false
@@ -4301,9 +4302,9 @@ while runRiftRaid do
     refill()
   end
   notEnoughEnergyRegion:highlight()
-  getRegion:highlight()
-  getRegion:existsClick(Pattern("get.png"):similar(0.6))
-  getRegion:highlight()
+  raidGetRegion:highlight()
+  raidGetRegion:existsClick(Pattern("get.png"):similar(0.6))
+  raidGetRegion:highlight()
   sameSessionRegion:highlight()
   if sameSessionRegion:exists(Pattern("sameSession.png"):similar(0.6), 0.1) then
     refillYesRegion:existsClick(Pattern("yes.png"):similar(0.6), 0.1)
