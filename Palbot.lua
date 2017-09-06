@@ -4293,23 +4293,21 @@ while runRiftRaid do
   raidVictoryTotalRegion:existsClick(Pattern("raidVictoryTotal.png"):similar(0.6), 0.1)
   raidVictoryTotalRegion:highlight()
   raidOkRegion:highlight()
-  raidOkRegion:exists(Pattern("ok.png"):similar(0.6), 0.1)
+  raidOkRegion:existsClick(Pattern("ok.png"):similar(0.6), 0.1)
   raidOkRegion:highlight()
   notEnoughEnergyRegion:highlight()
   if notEnoughEnergyRegion:exists(Pattern("notEnoughEnergy.png"):similar(0.6), 0.1) then
     refill()
   end
   notEnoughEnergyRegion:highlight()
-  grindstoneRegion:highlight()
-  if grindstoneRegion:exists(Pattern("grindstone.png"):similar(.35), 0.1) then
-    getRune()
-  elseif enchantedGemRegion:exists(Pattern("enchantedGem.png"):similar(.35), 0.1) then
-    getRune()
+  getRegion:highlight()
+  getRegion:existsClick(Pattern("get.png"):similar(0.6))
+  getRegion:highlight()
+  sameSessionRegion:highlight()
+  if sameSessionRegion:exists(Pattern("sameSession.png"):similar(0.6), 0.1) then
+    refillYesRegion:existsClick(Pattern("yes.png"):similar(0.6), 0.1)
   end
-  grindstoneRegion:highlight()
-  refillYesRegion:highlight()
-  refillYesRegion:existsClick(Pattern("yes.png"):similar(.6), 0.1)
-  refillYesRegion:highlight()
+  sameSessionRegion:highlight()
   if checkNoRaidActivity == true then
     keyevent(4)
   end
