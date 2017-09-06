@@ -4303,7 +4303,7 @@ while runRiftRaid do
   end
   notEnoughEnergyRegion:highlight()
   raidGetRegion:highlight()
-  raidGetRegion:existsClick(Pattern("get.png"):similar(0.6))
+  raidGetRegion:existsClick(Pattern("get.png"):similar(0.6), 0.1)
   raidGetRegion:highlight()
   sameSessionRegion:highlight()
   if sameSessionRegion:exists(Pattern("sameSession.png"):similar(0.6), 0.1) then
