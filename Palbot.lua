@@ -4277,23 +4277,40 @@ function resetNoRaidActivity()
   timerNoRaidActivity:set()
 end
 while runRiftRaid do
+  raidJoinRegion:highlight()
   raidJoinRegion:existsClick(Pattern("raidJoinParty.png"):similar(0.6), 0.1)
+  raidJoinRegion:highlight()
+  okRaidRegion:highlight()
   okRaidRegion:existsClick(Pattern("ok.png"):similar(0.6), 0.1)
+  okRaidRegion:highlight()
+  raidReadyRegion:highlight()
   raidReadyRegion:existsClick(Pattern("raidReady.png"):similar(0.6), 0.1)
+  raidReadyRegion:highlight()
+  noLeaderSkillRegion:highlight()
   if noLeaderSkillRegion:exists(Pattern("noLeaderSkill.png"):similar(imgAccuracy), 2) then
     noLeaderSkillYesRegion:existsClick(Pattern("yes.png"):similar(imgAccuracy), 0.1)
   end
+  noLeaderSkillRegion:highlight()
+  raidVictoryTotalRegion:highlight()
   raidVictoryTotalRegion:existsClick(Pattern("raidVictoryTotal.png"):similar(0.4), 0.1)
+  raidVictoryTotalRegion:highlight()
+  raidOkRegion:highlight()
   raidOkRegion:exists(Pattern("liveArenaSameMonOk.png"):similar(0.6), 0.1)
+  raidOkRegion:highlight()
+  notEnoughEnergyRegion:highlight()
   if notEnoughEnergyRegion:exists(Pattern("notEnoughEnergy.png"):similar(0.6), 0.1) then
     refill()
   end
+  notEnoughEnergyRegion:highlight()
+  grindstoneRegion:highlight()
   if grindstoneRegion:exists(Pattern("grindstone.png"):similar(.4), 0.1) then
     getRune()
   elseif enchantedGemRegion:exists(Pattern("enchantedGem.png"):similar(.4), 0.1) then
     getRune()
   end
+  grindstoneRegion:highlight()
   if checkNoRaidActivity == true then
+    scriptExit ("I got lost, sorry.")
   end
 end
 while true do
