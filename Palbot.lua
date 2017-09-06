@@ -136,7 +136,7 @@ enchantedGemRegion = Region(750, 350, 350, 150)
 raidJoinRegion = Region(1300, 845, 250, 65)
 raidReadyRegion = Region(1600, 950, 200, 75)
 okRaidRegion = Region(910, 615, 100, 80)
-raidVictoryTotalRegion = Region(165, 600, 110, 50)
+raidVictoryTotalRegion = Region(125, 600, 150, 50)
 raidOkRegion = Region(905, 725, 120, 75)
 keepLegendary = false
 keepHero = false
@@ -4313,7 +4313,7 @@ while runRiftRaid do
   refillYesRegion:existsClick(Pattern("yes.png"):similar(.6))
   refillYesRegion:highlight()
   if checkNoRaidActivity == true then
-    scriptExit ("I got lost, sorry.")
+    keyevent(4)
   end
 end
 while true do
