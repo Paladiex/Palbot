@@ -4286,9 +4286,9 @@ while runRiftRaid do
   if notEnoughEnergyRegion:exists(Pattern("notEnoughEnergy.png"):similar(0.6), 0.1) then
     refill()
   end
-  if grindstoneRegion:exists(Pattern("grindstone.png"):similar(.41), 0.1) then
+  if grindstoneRegion:exists(Pattern("grindstone.png"):similar(.4), 0.1) then
     getRune()
-  elseif enchantedGemRegion:exists(Pattern("enchantedGem.png"):similar(.41), 0.1) then
+  elseif enchantedGemRegion:exists(Pattern("enchantedGem.png"):similar(.4), 0.1) then
     getRune()
   end
   if checkNoRaidActivity == true then
