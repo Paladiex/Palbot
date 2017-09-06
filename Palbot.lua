@@ -137,7 +137,7 @@ raidJoinRegion = Region(1300, 845, 250, 65)
 raidReadyRegion = Region(1600, 950, 200, 75)
 okRaidRegion = Region(910, 615, 100, 80)
 raidVictoryTotalRegion = Region(125, 600, 150, 50)
-raidOkRegion = Region(905, 725, 120, 75)
+raidOkRegion = Region(825, 700, 200, 100)
 keepLegendary = false
 keepHero = false
 keepRare = false
@@ -4281,7 +4281,7 @@ while runRiftRaid do
   raidJoinRegion:existsClick(Pattern("raidJoinParty.png"):similar(0.6), 0.1)
   raidJoinRegion:highlight()
   okRaidRegion:highlight()
-  okRaidRegion:existsClick(Pattern("ok.png"):similar(0.35), 0.1)
+  okRaidRegion:existsClick(Pattern("ok.png"):similar(0.6), 0.1)
   okRaidRegion:highlight()
   raidReadyRegion:highlight()
   raidReadyRegion:existsClick(Pattern("raidReady.png"):similar(0.6), 0.1)
