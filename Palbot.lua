@@ -4284,7 +4284,9 @@ while runRiftRaid do
   raidJoinRegion:highlight()
   raidReadyRegion:highlight()
   raidReadyRegion:existsClick(Pattern("raidReady.png"):similar(0.6), 0.1)
-  raidReadyRegion:existsClick(Pattern("raidStart.png"):similar(0.6), 0.1)
+  if raidReadyRegion:existsClick(Pattern("raidStart.png"):similar(0.6), 0.1) then
+      refillYesRegion:existsClick(Pattern("yes.png"):similar(0.6), 0.1)
+  end
   raidReadyRegion:highlight()
   noLeaderSkillRegion:highlight()
   if noLeaderSkillRegion:exists(Pattern("noLeaderSkill.png"):similar(0.6), 0.1) then
