@@ -4281,7 +4281,7 @@ while runRiftRaid do
   raidJoinRegion:existsClick(Pattern("raidJoinParty.png"):similar(0.6), 0.1)
   raidJoinRegion:highlight()
   okRaidRegion:highlight()
-  okRaidRegion:existsClick(Pattern("ok.png"):similar(0.6), 0.1)
+  okRaidRegion:existsClick(Pattern("ok.png"):similar(0.5), 0.1)
   okRaidRegion:highlight()
   raidReadyRegion:highlight()
   raidReadyRegion:existsClick(Pattern("raidReady.png"):similar(0.6), 0.1)
