@@ -4277,6 +4277,7 @@ function resetNoRaidActivity()
   timerNoRaidActivity:set()
 end
 while runRiftRaid do
+  usePreviousSnap(true)
   raidJoinRegion:highlight()
   raidJoinRegion:existsClick(Pattern("raidJoinParty.png"):similar(0.6), 0.1)
   raidJoinRegion:highlight()
@@ -4312,6 +4313,7 @@ while runRiftRaid do
   if checkNoRaidActivity == true then
     scriptExit ("I got lost, sorry.")
   end
+  usePreviousSnap(false)
 end
 while true do
   if not runLiveArena or not runQuickClick or not runRiftRaid then
