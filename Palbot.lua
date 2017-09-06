@@ -4285,12 +4285,12 @@ while runRiftRaid do
   raidReadyRegion:existsClick(Pattern("start.png"):similar(0.6), 0.1)
   raidReadyRegion:highlight()
   noLeaderSkillRegion:highlight()
-  if noLeaderSkillRegion:exists(Pattern("noLeaderSkill.png"):similar(imgAccuracy), 0.1) then
-    noLeaderSkillYesRegion:existsClick(Pattern("yes.png"):similar(imgAccuracy), 0.1)
+  if noLeaderSkillRegion:exists(Pattern("noLeaderSkill.png"):similar(0.6), 0.1) then
+    noLeaderSkillYesRegion:existsClick(Pattern("yes.png"):similar(0.6), 0.1)
   end
   noLeaderSkillRegion:highlight()
   raidVictoryTotalRegion:highlight()
-  raidVictoryTotalRegion:existsClick(Pattern("raidVictoryTotal.png"):similar(0.4), 0.1)
+  raidVictoryTotalRegion:existsClick(Pattern("raidVictoryTotal.png"):similar(0.6), 0.1)
   raidVictoryTotalRegion:highlight()
   raidOkRegion:highlight()
   raidOkRegion:exists(Pattern("ok.png"):similar(0.6), 0.1)
@@ -4308,7 +4308,7 @@ while runRiftRaid do
   end
   grindstoneRegion:highlight()
   refillYesRegion:highlight()
-  refillYesRegion:existsClick(Pattern("yes.png"):similar(.6))
+  refillYesRegion:existsClick(Pattern("yes.png"):similar(.6), 0.1)
   refillYesRegion:highlight()
   if checkNoRaidActivity == true then
     keyevent(4)
