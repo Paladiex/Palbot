@@ -4309,6 +4309,9 @@ while runRiftRaid do
     getRune()
   end
   grindstoneRegion:highlight()
+  refillYesRegion:highlight()
+  refillYesRegion:existsClick(Pattern("yes.png"):similar(.6))
+  refillYesRegion:highlight()
   if checkNoRaidActivity == true then
     scriptExit ("I got lost, sorry.")
   end
