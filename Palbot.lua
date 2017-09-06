@@ -138,6 +138,7 @@ raidReadyRegion = Region(1600, 950, 200, 75)
 okRaidRegion = Region(910, 615, 100, 80)
 raidVictoryTotalRegion = Region(125, 600, 150, 50)
 raidOkRegion = Region(825, 700, 250, 170)
+sameSessionRegion = Region(780, 360, 180, 50)
 keepLegendary = false
 keepHero = false
 keepRare = false
