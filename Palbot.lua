@@ -137,6 +137,7 @@ raidJoinRegion = Region(1300, 845, 250, 65)
 raidReadyRegion = Region(1600, 950, 200, 75)
 okRaidRegion = Region(910, 615, 100, 80)
 raidVictoryTotalRegion = Region(165, 600, 110, 50)
+raidOkRegion = Region(905, 725, 120, 75)
 keepLegendary = false
 keepHero = false
 keepRare = false
@@ -4283,6 +4284,7 @@ while runRiftRaid do
     noLeaderSkillYesRegion:existsClick(Pattern("yes.png"):similar(imgAccuracy), 0.1)
   end
   raidVictoryTotalRegion:existsClick(Pattern("raidVictoryTotal.png"):similar(0.4), 0.1)
+  raidOkRegion:exists(Pattern("liveArenaSameMonOk.png"):similar(0.6), 0.1)
   if notEnoughEnergyRegion:exists(Pattern("notEnoughEnergy.png"):similar(0.6), 0.1) then
     refill()
   end
