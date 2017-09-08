@@ -136,7 +136,7 @@ enchantedGemRegion = Region(750, 350, 350, 150)
 raidJoinRegion = Region(1300, 845, 250, 65)
 raidReadyRegion = Region(1550, 950, 250, 75)
 okRaidRegion = Region(910, 615, 100, 80)
-raidVictoryTotalRegion = Region(125, 600, 150, 50)
+raidVictoryTotalRegion = Region(125, 600, 150, 250)
 raidOkRegion = Region(825, 625, 250, 250)
 sameSessionRegion = Region(780, 360, 180, 50)
 raidGetRegion = Region(1035, 635, 145, 115)
@@ -2356,9 +2356,9 @@ function runeKeep3 ()
   end
 end
 function sellGetRune ()
-  if grindstoneRegion:exists(Pattern("grindstone.png"):similar(.41), 0.1) then
+  if grindstoneRegion:exists(Pattern("grindstone.png"):similar(.6), 0.1) then
     getRune()
-  elseif enchantedGemRegion:exists(Pattern("enchantedGem.png"):similar(.41), 0.1) then
+  elseif enchantedGemRegion:exists(Pattern("enchantedGem.png"):similar(.6), 0.1) then
     getRune()
   else
     findRuneRarity()
