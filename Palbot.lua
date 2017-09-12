@@ -1278,10 +1278,10 @@ function refill()
   end
 end
 function defeated()
-  reviveNoRegion:existsClick(Pattern("noRevive.png"):similar(imgAccuracy), 3)
+  reviveNoRegion:existsClick(Pattern("noRevive.png"):similar(.7), 3)
   checkMaxLevel()
-  victoryDiamondRegion:existsClick(Pattern("victoryDiamond.png"):similar(imgAccuracy), 3)
-  replayRegion:existsClick(Pattern("replay.png"):similar(imgAccuracy), 3)
+  victoryDiamondRegion:existsClick(Pattern("victoryDiamond.png"):similar(.7), 3)
+  replayRegion:existsClick(Pattern("replay.png"):similar(.7), 3)
 end
 function victory()
   checkMaxLevel()
