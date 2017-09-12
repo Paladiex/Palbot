@@ -4321,7 +4321,7 @@ while true do
     if startRegion:exists(Pattern("start.png"):similar(imgAccuracy), 0.1) then
       start()
     end
-    if victoryDiamondRegion:exists(Pattern("victoryDiamond.png"):similar(imgAccuracy * 1.1), 0.1) and not victoryDefeatStageRegion:exists(Pattern("arena.png"):similar(imgAccuracy), 0.3) then
+    if victoryDiamondRegion:exists(Pattern("victoryDiamond.png"):similar(.7), 0.1) and not victoryDefeatStageRegion:exists(Pattern("arena.png"):similar(.7), 0.3) then
       winCount = winCount + 1
       runLmt = runLmt - 1
       showBattleResult("Start Battle")
