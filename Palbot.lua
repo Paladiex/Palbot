@@ -15,6 +15,7 @@ else
     httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/imageupdater.lua", localPath .."imageupdater.lua")
     scriptExit("You have Updated Palbot!")
 end
+function defaultValues()
 winCount = 0
 loseCount = 0
 arenaWinCount = 0
@@ -36,9 +37,6 @@ imgAccuracy = 0.7
 runeAccuracy = 0.9
 textSize = ""
 textSizeNum = 12
-isArenaRival = false
-playSound = false
-playVibrate = false
 timerMagicShop = 0
 timerNoActivity = 0
 timerNoRaidActivity = 0
@@ -47,6 +45,23 @@ maxConnectionTimeout = 600
 maxNoRaidActivity = 120
 waitTimer = 30
 timerTrial = 0
+searchMagicShopCount = 0
+mysticalCount = 0
+legendaryCount = 0
+lightDarkCount = 0
+screenH = 0
+screenW = 0
+bottombar = 0
+sidebar = 0
+compareW = 0
+compareH = 0
+nextFodder = 1
+fodderX = 1245
+end
+function defaultTrueFalse ()
+isArenaRival = false
+playSound = false
+playVibrate = false
 stopMaxLevel = false
 isMaxLevel = false
 useFriend = false
@@ -102,24 +117,27 @@ runQuickClick = false
 isDungeon = false
 isArena = false
 isScenario = false
-searchMagicShopCount = 0
-mysticalCount = 0
-legendaryCount = 0
-lightDarkCount = 0
 firstCheckMagicShop = true
-screenH = 0
-screenW = 0
-bottombar = 0
-sidebar = 0
-compareW = 0
-compareH = 0
 immersiveMode = false
 is16by9 = false
 is16by10 = false
 isNavBar = false
 slot8FodderScan = false
-nextFodder = 1
-fodderX = 1245
+keepLegendary = false
+keepHero = false
+keepRare = false
+keepMagic = false
+keepNormal = false
+keep6Star = false
+keep5Star = false
+keep4Star = false
+keep3Star = false
+keep2Star = false
+keep1Star = false
+keepAll = false
+keepPercent = false
+end
+function defaultRegionLocation ()
 fodderSlot8X = Location(1245, 745)
 fodderSlot7X = Location(1085, 745)
 fodderSlot6X = Location(920, 745)
@@ -141,148 +159,123 @@ raidVictoryTotalRegion = Region(125, 600, 150, 250)
 raidOkRegion = Region(825, 625, 250, 250)
 sameSessionRegion = Region(780, 360, 180, 50)
 raidGetRegion = Region(1035, 635, 145, 115)
-keepLegendary = false
-keepHero = false
-keepRare = false
-keepMagic = false
-keepNormal = false
-keep6Star = false
-keep5Star = false
-keep4Star = false
-keep3Star = false
-keep2Star = false
-keep1Star = false
-keepAll = false
-keepPercent = false
-function setScriptRegion()
-  startRegion = setRegion(1490, 765, 125, 55)
-  startDialogRegion = setRegion(0, 0, 500, 75)
-  victoryDefeatRegion = setRegion(860, 105, 230, 145)
-  victoryDefeatStageRegion = setRegion(670, 235, 605, 65)
-  victoryDiamondRegion = setRegion(1430, 485, 120, 120)
-  okRegion = setRegion(900, 730, 120, 300)
-  replayRegion = setRegion(490, 550, 170, 75)
-  nextRegion = setRegion(1145, 555, 250, 65)
-  toaNextStageRegion = setRegion(320, 510, 585, 145)
-  reviveNoRegion = setRegion(1190, 675, 95, 60)
-  noLeaderSkillRegion = setRegion(1160, 360, 110, 55)
-  noLeaderSkillYesRegion = setRegion(740, 620, 105, 65)
-  arenaWingRegion = setRegion(1455, 200, 200, 750)
-  arenaRankRegion = setRegion(910, 115, 400, 400)
-  arenaMatchupRegion = setRegion(180, 200, 400, 400)
-  arenaRivalRegion = setRegion(265, 295, 400, 400)
-  arenaRivalNumberRegion = setRegion(175, 325, 300, 150)
-  arenaRivalDialogRegion = setRegion(0, 775, 125, 125)
-  arenaBottomRegion = setRegion(985, 810, 230, 60)
-  arenaOkRegion = setRegion(920, 625, 85, 55)
-  arenaXRegion = setRegion(1600, 100, 200, 200)
-  arenaFailLoadRegion = setRegion(575, 355, 255, 55)
-  refreshListRegion = setRegion(1300, 200, 400, 400)
-  refreshList2Region = setRegion(845, 560, 155, 55)
-  refreshListNotReadyRegion = setRegion(925, 555, 110, 50)
-  runeRegion = setRegion(630, 345, 135, 130)
-  runeMainStatRegion = setRegion(775, 335, 460, 90)
-  runeYesRegion = setRegion(740, 625, 100, 55)
-  sellRegion = setRegion(750, 820, 100, 60)
-  getRegion = setRegion(985, 635, 500, 515)
-  runeSellTextRegion = setRegion(535, 360, 865, 130)
-  refillYesRegion = setRegion(735, 625, 105, 55)
-  refillNoRegion = setRegion(1050, 625, 120, 60)
-  notEnoughEnergyRegion = setRegion(955, 355, 225, 65)
-  notEnoughWingRegion = setRegion(850, 355, 260, 65)
-  rechargeFlashRegion = setRegion(455, 395, 195, 235)
-  yesPurchaseRegion = setRegion(745, 635, 110, 60)
-  okPurchaseRegion = setRegion(915, 625, 90, 60)
-  closePurchaseRegion = setRegion(900, 895, 125, 60)
-  dialogTextCenterRegion = setRegion(600, 0, 750, 275)
-  dialogToaRegion = setRegion(710, 65, 305, 85)
-  closeXCairoDungeonRegion = setRegion(1635, 75, 70, 70)
-  closeXScenarioRegion = setRegion(1825, 55, 70, 70)
-  closeXMagicShopRegion = setRegion(1815, 55, 70, 70)
-  closeXToaRegion = setRegion(1650, 75, 70, 70)
-  closeXPurchaseRegion = setRegion(1600, 0, 320, 320)
-  closeXStartDialog = setRegion(1820, 0, 100, 100)
-  yesRegion = setRegion(740, 600, 125, 300)
-  dialogCairoDungeonRegion = setRegion(715, 70, 485, 60)
-  dungeonListRegion = setRegion(235, 265, 550, 800)
-  dungeonBattleRegion = setRegion(800, 255, 850, 815)
-  sdChargeRegion = setRegion(1450, 310, 185, 140)
-  dropInfoRegion = setRegion(1045, 180, 175, 55)
-  closeXRiftRegion = setRegion(1635, 35, 70, 70)
-  riftBattleRegion = setRegion(1345, 850, 155, 65)
-  riftRankRegion = setRegion(1440, 740, 225, 90)
-  riftYesRegion = setRegion(650, 585, 285, 140)
-  riftStrategyRegion = setRegion(290, 155, 270, 75)
-  riftBackRegion = setRegion(1735, 900, 175, 160)
-  playRegion = setRegion(325, 970, 60, 75)
-  pauseRegion = setRegion(825, 430, 270, 85)
-  connectionDelayRegion = setRegion(530, 330, 870, 195)
-  connectionYesRegion = setRegion(740, 685, 95, 65)
-  backButtonRegion = setRegion(1760, 960, 115, 95)
-  samsungSearchRegion = setRegion(150, 75, 215, 50)
-  dontShowRegion = setRegion(205, 950, 295, 85)
-  touchStartRegion = setRegion(890, 400, 140, 155)
-  monthlyEventXRegion = setRegion(1525, 35, 70, 70)
-  mailboxXRegion = setRegion(1575, 115, 70, 70)
-  closeXRegion = setRegion(1350, 0, 570, 350)
-  iconPurchaseRegion = setRegion(1360, 895, 180, 170)
-  magicShopItemRegion = setRegion(1170, 190, 195, 745)
-  magicShopTimeRegion = setRegion(1310, 200, 75, 50)
-  battleIconRegion = setRegion(975, 880, 205, 190)
-  moveIconRegion = setRegion(1730, 880, 190, 200)
-  fodderCommandRegion = setRegion(640, 550, 600, 50)
-  commandRegion = setRegion(660, 450, 600, 50)
-  resultRegion = setRegion(1580, 200, 700, 250)
-  slot1MaxLevelRegion = setRegion(495, 640, 120, 120)
-  slot2MaxLevelRegion = setRegion(885, 640, 120, 120)
-  slot3MaxLevelRegion = setRegion(1280, 640, 120, 120)
-  slot4MaxLevelRegion = setRegion(495, 770, 120, 120)
-  battleSlot1Region = setRegion(400, 200, 170, 170)
-  battleSlot2Region = setRegion(200, 305, 170, 170)
-  battleSlot3Region = setRegion(600, 305, 170, 170)
-  battleSlot4Region = setRegion(400, 410, 170, 170)
-  fodderListRegion = setRegion(125, 655, 1305, 170)
-  fodderSlot8Region = setRegion(1155, 765, 165, 50)
-  fodderSlot7Region = setRegion(995, 765, 160, 50)
-  fodderSlot6Region = setRegion(830, 765, 165, 50)
-  fodderSlot5Region = setRegion(670, 765, 160, 50)
-  fodderSlot4Region = setRegion(505, 765, 165, 50)
-  fodderSlot3Region = setRegion(355, 765, 160, 50)
-  fodderSlot2Region = setRegion(180, 765, 165, 50)
-  fodderSlot1Region = setRegion(40, 765, 120, 50)
-  dialogScenarioRegion = setRegion(950, 0, 1000, 200)
-  closeDialogScenarioRegion = setRegion(1650, 0, 300, 200)
-  liveArenaMapRegion = setRegion(0, 750, 250, 500)
-  liveArenaTopRegion = setRegion(350, 0, 1100, 200)
-  liveArenaBattleRegion = setRegion(1150, 650, 500, 250)
-  liveArenaLookingRegion = setRegion(550, 400, 900, 200)
-  liveArenaDialogRegion = setRegion(600, 0, 800, 150)
-  liveArenaSameMonOkRegion = setRegion(750, 500, 450, 200)
-  slot1Region = setRegion(0, 675, 200, 225)
-  slot2Region = setRegion(0, 825, 200, 225)
-  slot3Region = setRegion(190, 675, 200, 225)
-  slot4Region = setRegion(190, 825, 200, 225)
-  slot5Region = setRegion(300, 675, 200, 225)
-  slot6Region = setRegion(300, 825, 200, 225)
-  slot7Region = setRegion(470, 675, 200, 225)
-  slot8Region = setRegion(470, 825, 200, 225)
-  slot9Region = setRegion(620, 675, 200, 225)
-  slot10Region = setRegion(620, 825, 200, 225)
-  closeNowYesRegion = setRegion(600, 630, 350, 200)
-  closeNowRegion = setRegion(525, 420, 75, 80)
-end
-function setRegion(a, b, c, d)
-  if is16by9 then
-    return Region(a, b, c, d)
-  else
-    local x = math.floor(a - sidebar - 200)
-    local y = math.floor(b - bottombar - 100)
-    local w = math.floor(c + 2 + 400)
-    local h = math.floor(d + 2 + 200)
-    return Region(x, y, w, h)
-  end
-end
+startRegion = Region(1490, 765, 125, 55)
+startDialogRegion = Region(0, 0, 500, 75)
+victoryDefeatRegion = Region(860, 105, 230, 145)
+victoryDefeatStageRegion = Region(670, 235, 605, 65)
+victoryDiamondRegion = Region(1430, 485, 120, 120)
+okRegion = Region(900, 730, 120, 300)
+replayRegion = Region(490, 550, 170, 75)
+nextRegion = Region(1145, 555, 250, 65)
+toaNextStageRegion = Region(320, 510, 585, 145)
+reviveNoRegion = Region(1190, 675, 95, 60)
+noLeaderSkillRegion = Region(1160, 360, 110, 55)
+noLeaderSkillYesRegion = Region(740, 620, 105, 65)
+arenaWingRegion = Region(1455, 200, 200, 750)
+arenaRankRegion = Region(910, 115, 400, 400)
+arenaMatchupRegion = Region(180, 200, 400, 400)
+arenaRivalRegion = Region(265, 295, 400, 400)
+arenaRivalNumberRegion = Region(175, 325, 300, 150)
+arenaRivalDialogRegion = Region(0, 775, 125, 125)
+arenaBottomRegion = Region(985, 810, 230, 60)
+arenaOkRegion = Region(920, 625, 85, 55)
+arenaXRegion = Region(1600, 100, 200, 200)
+arenaFailLoadRegion = Region(575, 355, 255, 55)
+refreshListRegion = Region(1300, 200, 400, 400)
+refreshList2Region = Region(845, 560, 155, 55)
+refreshListNotReadyRegion = Region(925, 555, 110, 50)
+runeRegion = Region(630, 345, 135, 130)
+runeMainStatRegion = Region(775, 335, 460, 90)
+runeYesRegion = Region(740, 625, 100, 55)
+sellRegion = Region(750, 820, 100, 60)
+getRegion = Region(985, 635, 500, 515)
+runeSellTextRegion = Region(535, 360, 865, 130)
+refillYesRegion = Region(735, 625, 105, 55)
+refillNoRegion = Region(1050, 625, 120, 60)
+notEnoughEnergyRegion = Region(955, 355, 225, 65)
+notEnoughWingRegion = Region(850, 355, 260, 65)
+rechargeFlashRegion = Region(455, 395, 195, 235)
+yesPurchaseRegion = Region(745, 635, 110, 60)
+okPurchaseRegion = Region(915, 625, 90, 60)
+closePurchaseRegion = Region(900, 895, 125, 60)
+dialogTextCenterRegion = Region(600, 0, 750, 275)
+dialogToaRegion = Region(710, 65, 305, 85)
+closeXCairoDungeonRegion = Region(1635, 75, 70, 70)
+closeXScenarioRegion = Region(1825, 55, 70, 70)
+closeXMagicShopRegion = Region(1815, 55, 70, 70)
+closeXToaRegion = Region(1650, 75, 70, 70)
+closeXPurchaseRegion = Region(1600, 0, 320, 320)
+closeXStartDialog = Region(1820, 0, 100, 100)
+yesRegion = Region(740, 600, 125, 300)
+dialogCairoDungeonRegion = Region(715, 70, 485, 60)
+dungeonListRegion = Region(235, 265, 550, 800)
+dungeonBattleRegion = Region(800, 255, 850, 815)
+sdChargeRegion = Region(1450, 310, 185, 140)
+dropInfoRegion = Region(1045, 180, 175, 55)
+closeXRiftRegion = Region(1635, 35, 70, 70)
+riftBattleRegion = Region(1345, 850, 155, 65)
+riftRankRegion = Region(1440, 740, 225, 90)
+riftYesRegion = Region(650, 585, 285, 140)
+riftStrategyRegion = Region(290, 155, 270, 75)
+riftBackRegion = Region(1735, 900, 175, 160)
+playRegion = Region(325, 970, 60, 75)
+pauseRegion = Region(825, 430, 270, 85)
+connectionDelayRegion = Region(530, 330, 870, 195)
+connectionYesRegion = Region(740, 685, 95, 65)
+backButtonRegion = Region(1760, 960, 115, 95)
+samsungSearchRegion = Region(150, 75, 215, 50)
+dontShowRegion = Region(205, 950, 295, 85)
+touchStartRegion = Region(890, 400, 140, 155)
+monthlyEventXRegion = Region(1525, 35, 70, 70)
+mailboxXRegion = Region(1575, 115, 70, 70)
+closeXRegion = Region(1350, 0, 570, 350)
+iconPurchaseRegion = Region(1360, 895, 180, 170)
+magicShopItemRegion = Region(1170, 190, 195, 745)
+magicShopTimeRegion = Region(1310, 200, 75, 50)
+battleIconRegion = Region(975, 880, 205, 190)
+moveIconRegion = Region(1730, 880, 190, 200)
+fodderCommandRegion = Region(640, 550, 600, 50)
+commandRegion = Region(660, 450, 600, 50)
+resultRegion = Region(1580, 200, 700, 250)
+slot1MaxLevelRegion = Region(495, 640, 120, 120)
+slot2MaxLevelRegion = Region(885, 640, 120, 120)
+slot3MaxLevelRegion = Region(1280, 640, 120, 120)
+slot4MaxLevelRegion = Region(495, 770, 120, 120)
+battleSlot1Region = Region(400, 200, 170, 170)
+battleSlot2Region = Region(200, 305, 170, 170)
+battleSlot3Region = Region(600, 305, 170, 170)
+battleSlot4Region = Region(400, 410, 170, 170)
+fodderListRegion = Region(125, 655, 1305, 170)
+fodderSlot8Region = Region(1155, 765, 165, 50)
+fodderSlot7Region = Region(995, 765, 160, 50)
+fodderSlot6Region = Region(830, 765, 165, 50)
+fodderSlot5Region = Region(670, 765, 160, 50)
+fodderSlot4Region = Region(505, 765, 165, 50)
+fodderSlot3Region = Region(355, 765, 160, 50)
+fodderSlot2Region = Region(180, 765, 165, 50)
+fodderSlot1Region = Region(40, 765, 120, 50)
+dialogScenarioRegion = Region(950, 0, 1000, 200)
+closeDialogScenarioRegion = Region(1650, 0, 300, 200)
+liveArenaMapRegion = Region(0, 750, 250, 500)
+liveArenaTopRegion = Region(350, 0, 1100, 200)
+liveArenaBattleRegion = Region(1450, 420, 420, 125)
+liveArenaLookingRegion = Region(550, 400, 900, 200)
+liveArenaDialogRegion = Region(600, 0, 800, 150)
+liveArenaSameMonOkRegion = Region(750, 500, 450, 200)
+slot1Region = Region(0, 675, 200, 225)
+slot2Region = Region(0, 825, 200, 225)
+slot3Region = Region(190, 675, 200, 225)
+slot4Region = Region(190, 825, 200, 225)
+slot5Region = Region(300, 675, 200, 225)
+slot6Region = Region(300, 825, 200, 225)
+slot7Region = Region(470, 675, 200, 225)
+slot8Region = Region(470, 825, 200, 225)
+slot9Region = Region(620, 675, 200, 225)
+slot10Region = Region(620, 825, 200, 225)
+closeNowYesRegion = Region(600, 630, 350, 200)
+closeNowRegion = Region(525, 420, 75, 80)
 friend1Location = Location(15, 1060)
+end
 function captureScreenshot()
   wait(1)
   rgn = Region(0, 0, getRealScreenSize():getX(), getRealScreenSize():getY())
@@ -1175,7 +1168,6 @@ function setAdvancedOptions()
     compareH = 1080
     is16by9 = true
   end
-  setScriptRegion()
   setScriptMovement()
   if navBar then
     setImagePath(localPath .. "1920x1080N")
@@ -1407,7 +1399,7 @@ function clickNonMaxFodder()
       end
       if fodderSlot8Region:exists(Pattern(levelString):similar(accuracy), 0.1) then
         fodderX = fodderSlot8Region:exists(Pattern(levelString):similar(accuracy), 0.1):getX()
-        fodderStarRegion = setRegion(fodderX - 175, 665, 180, 50)
+        fodderStarRegion = Region(fodderX - 175, 665, 180, 50)
         showFodderCommand("slot 1: " .. levelString)
         if a == 40 then
           isFodderMaxLevel = true
@@ -1460,7 +1452,7 @@ function clickNonMaxFodder()
       end
       if fodderSlot7Region:exists(Pattern(levelString):similar(accuracy), 0.1) then
         fodderX = fodderSlot7Region:exists(Pattern(levelString):similar(accuracy), 0.1):getX()
-        fodderStarRegion = setRegion(fodderX - 175, 665, 180, 50)
+        fodderStarRegion = Region(fodderX - 175, 665, 180, 50)
         showFodderCommand("slot 2: " .. levelString)
         if a == 40 then
           isFodderMaxLevel = true
@@ -1513,7 +1505,7 @@ function clickNonMaxFodder()
       end
       if fodderSlot6Region:exists(Pattern(levelString):similar(accuracy), 0.1) then
         fodderX = fodderSlot6Region:exists(Pattern(levelString):similar(accuracy), 0.1):getX()
-        fodderStarRegion = setRegion(fodderX - 175, 665, 180, 50)
+        fodderStarRegion = Region(fodderX - 175, 665, 180, 50)
         showFodderCommand("slot 3: " .. levelString)
         if a == 40 then
           isFodderMaxLevel = true
@@ -1566,7 +1558,7 @@ function clickNonMaxFodder()
       end
       if fodderSlot5Region:exists(Pattern(levelString):similar(accuracy), 0.1) then
         fodderX = fodderSlot5Region:exists(Pattern(levelString):similar(accuracy), 0.1):getX()
-        fodderStarRegion = setRegion(fodderX - 175, 665, 180, 50)
+        fodderStarRegion = Region(fodderX - 175, 665, 180, 50)
         showFodderCommand("slot 4: " .. levelString)
         if a == 40 then
           isFodderMaxLevel = true
@@ -1619,7 +1611,7 @@ function clickNonMaxFodder()
       end
       if fodderSlot4Region:exists(Pattern(levelString):similar(accuracy), 0.1) then
         fodderX = fodderSlot4Region:exists(Pattern(levelString):similar(accuracy), 0.1):getX()
-        fodderStarRegion = setRegion(fodderX - 175, 665, 180, 50)
+        fodderStarRegion = Region(fodderX - 175, 665, 180, 50)
         showFodderCommand("slot 5: " .. levelString)
         if a == 40 then
           isFodderMaxLevel = true
@@ -1672,7 +1664,7 @@ function clickNonMaxFodder()
       end
       if fodderSlot3Region:exists(Pattern(levelString):similar(accuracy), 0.1) then
         fodderX = fodderSlot3Region:exists(Pattern(levelString):similar(accuracy), 0.1):getX()
-        fodderStarRegion = setRegion(fodderX - 175, 665, 180, 50)
+        fodderStarRegion = Region(fodderX - 175, 665, 180, 50)
         showFodderCommand("slot 6: " .. levelString)
         if a == 40 then
           isFodderMaxLevel = true
@@ -1725,7 +1717,7 @@ function clickNonMaxFodder()
       end
       if fodderSlot2Region:exists(Pattern(levelString):similar(accuracy), 0.1) then
         fodderX = fodderSlot2Region:exists(Pattern(levelString):similar(accuracy), 0.1):getX()
-        fodderStarRegion = setRegion(fodderX - 175, 665, 180, 50)
+        fodderStarRegion = Region(fodderX - 175, 665, 180, 50)
         showFodderCommand("slot 7: " .. levelString)
         if a == 40 then
           isFodderMaxLevel = true
@@ -2552,9 +2544,7 @@ function arenaBattle()
   end
 end
 function liveArenaSelectMon(choice)
-  if not slot1Region:exists(Pattern("liveArenaNotSelectable.png"):similar(0.5), 0.1) and not slot1Region:exists(Pattern("liveArenaCheck.png"), 0.1) then
-    click(Location(60, 750))
-  elseif not slot2Region:exists(Pattern("liveArenaNotSelectable.png"):similar(0.5), 0.1) and not slot2Region:exists(Pattern("liveArenaCheck.png"), 0.1) then
+  if not slot2Region:exists(Pattern("liveArenaNotSelectable.png"):similar(0.5), 0.1) and not slot2Region:exists(Pattern("liveArenaCheck.png"), 0.1) then
     click(Location(60, 905))
   elseif not slot3Region:exists(Pattern("liveArenaNotSelectable.png"):similar(0.5), 0.1) and not slot3Region:exists(Pattern("liveArenaCheck.png"), 0.1) then
     click(Location(225, 750))
@@ -2745,7 +2735,7 @@ function findArena()
 end
 function clickLiveArena()
   existsClick(Pattern("mapArena.png"), 0.1)
-  liveArenaMapRegion:existsClick(Pattern("mapLiveArena.png"), 2)
+  existsClick(Pattern("worldArena.png"):similar(.6), 3)
 end
 function findLiveArena()
   toast("Finding Live Arena")
@@ -4140,133 +4130,128 @@ function runScenarioDungeon()
   findScenario()
   findTOA()
 end
-dialogBox()
-setDialogOptions()
-setAdvancedOptions()
-showBattleResult("Begin")
-timerNoActivity = Timer()
-timerTrial = Timer()
-timerMagicShop = Timer()
-while runLiveArena do
-  if liveArenaDialogRegion:exists(Pattern("dialogLiveArena.png"), 0.1) then
-    liveArenaBattleRegion:existsClick(Pattern("liveArenaBattle.png"), 0.1)
-  end
-  if liveArenaTopRegion:exists(Pattern("liveArenaSelect.png"), 0.1) then
-    liveArenaSelectMon()
-    liveArenaSelectMon()
-    liveArenaTopRegion:existsClick(Pattern("liveArenaOk.png"), 1)
-  end
-  if liveArenaTopRegion:exists(Pattern("liveArenaBanOpp.png"), 0.1) then
-    toast("Banning Opponent Monster")
-    click(setLocation(1155, 405))
-    click(setLocation(1155, 320))
-    click(setLocation(1155, 215))
-    liveArenaTopRegion:existsClick(Pattern("liveArenaOk.png"), 0.1)
-  end
-  if liveArenaTopRegion:exists(Pattern("liveArenaLeader.png"), 0.1) then
-    toast("Selecting Leader")
-    click(setLocation(435, 405))
-    click(setLocation(435, 215))
-    liveArenaTopRegion:existsClick(Pattern("liveArenaOk.png"), 0.1)
-  end
-  if liveArenaSameMonOkRegion:existsClick(Pattern("liveArenaSameMonOk.png"), 0.1) then
-    liveArenaSameMonOkRegion:existsClick(Pattern("ok.png"), 0.1)
-    liveArenaSelectMon()
-  end
-  if arenaVictoryRegion:existsClick(Pattern("liveArena.png"), 0.1) and arenaVictoryRegion:exists(Pattern("victory.png"):similar(imgAccuracy * 1.1), 0.3) then
-    arenaWinCount = arenaWinCount + 1
-    runLmt = runLmt - 1
-    resetTimerNoActivity()
-    if runLmtCheck() then
-      break
+function runLiveArenaStart()
+  while runLiveArena do
+    if liveArenaBattleRegion:exists(Pattern("liveArenaBattle.png"), 0.1) then
+      liveArenaBattleRegion:existsClick(Pattern("liveArenaBattle.png"), 0.1)
     end
-    showBattleResult("Live Arena Start")
-    printBattleMessage()
-  end
-  if arenaVictoryRegion:existsClick(Pattern("liveArena.png"), 0.1) and arenaVictoryRegion:exists(Pattern("defeat.png"):similar(imgAccuracy * 1.1), 0.3) then
-    arenaLoseCount = arenaLoseCount + 1
-    runLmt = runLmt - 1
-    resetTimerNoActivity()
-    if runLmtCheck() then
-      break
+    if liveArenaTopRegion:exists(Pattern("liveArenaSelect.png"), 0.1) then
+      liveArenaSelectMon()
+      liveArenaSelectMon()
+      liveArenaTopRegion:existsClick(Pattern("liveArenaOk.png"), 1)
     end
-    showBattleResult("Live Arena Defeated")
-    printBattleMessage()
-  end
-  if settingsPlayRegion:exists(Pattern("play.png"):similar(0.9), 0.1) then
-    settingsPlayRegion:existsClick(Pattern("play.png"):similar(0.9), 1)
-  end
-  if (backButtonRegion:exists(Pattern("backButton.png"):similar(0.9), 0.1) or dropInfoRegion:exists(Pattern("dropInfo.png"):similar(imgAccuracy), 0.1)) and not liveArenaDialogRegion:exists(Pattern("dialogLiveArena.png"):similar(imgAccuracy), 0.1) then
-    findLiveArena()
-  end
-  if isTrial and timerTrial:check() > maxTrialTimeout then
-    dialogTrialTimeout()
-    break
+    if liveArenaTopRegion:exists(Pattern("liveArenaBanOpp.png"), 0.1) then
+      toast("Banning Opponent Monster")
+      click(setLocation(1155, 405))
+      click(setLocation(1155, 320))
+      click(setLocation(1155, 215))
+      liveArenaTopRegion:existsClick(Pattern("liveArenaOk.png"), 0.1)
+    end
+    if liveArenaTopRegion:exists(Pattern("liveArenaLeader.png"), 0.1) then
+      toast("Selecting Leader")
+      click(setLocation(435, 405))
+      click(setLocation(435, 215))
+      liveArenaTopRegion:existsClick(Pattern("liveArenaOk.png"), 0.1)
+    end
+    if liveArenaSameMonOkRegion:existsClick(Pattern("liveArenaSameMonOk.png"), 0.1) then
+      liveArenaSameMonOkRegion:existsClick(Pattern("ok.png"), 0.1)
+      liveArenaSelectMon()
+    end
+    if exists(Pattern("victory.png"):similar(.7), 0.1) then
+      arenaWinCount = arenaWinCount + 1
+      runLmt = runLmt - 1
+      resetTimerNoActivity()
+      if runLmtCheck() then
+        break
+      end
+      showBattleResult("Live Arena Start")
+      printBattleMessage()
+      existsClick(Pattern("victory.png"):similar(.7), 0.1)
+    end
+    if exists(Pattern("defeat.png"):similar(.7), 0.1) then
+      arenaLoseCount = arenaLoseCount + 1
+      runLmt = runLmt - 1
+      resetTimerNoActivity()
+      if runLmtCheck() then
+        break
+      end
+      showBattleResult("Live Arena Defeated")
+      printBattleMessage()
+      existsClick(Pattern("defeat.png"):similar(.7), 0.1)
+    end
+    if exists(Pattern("play.png"):similar(0.9), 0.1) then
+      existsClick(Pattern("play.png"):similar(0.9), 1)
+    end
+    if (backButtonRegion:exists(Pattern("backButton.png"):similar(0.9), 0.1) or dropInfoRegion:exists(Pattern("dropInfo.png"):similar(imgAccuracy), 0.1)) and not liveArenaDialogRegion:exists(Pattern("dialogLiveArena.png"):similar(imgAccuracy), 0.1) then
+      findLiveArena()
+    end
   end
 end
-while runQuickClick do
-  if startRegion:exists(Pattern("start.png"):similar(imgAccuracy), 0.1) then
-    start()
-  end
-  if reviveNoRegion:exists(Pattern("noRevive.png"):similar(imgAccuracy), 0.1) then
-    loseCount = loseCount + 1
-    runLmt = runLmt - 1
-    resetTimerNoActivity()
-    if not stopDefeat then
-      defeated()
+function runQuickClickStart()
+  while runQuickClick do
+    if startRegion:exists(Pattern("start.png"):similar(imgAccuracy), 0.1) then
+      start()
+    end
+    if reviveNoRegion:exists(Pattern("noRevive.png"):similar(imgAccuracy), 0.1) then
+      loseCount = loseCount + 1
+      runLmt = runLmt - 1
+      resetTimerNoActivity()
+      if not stopDefeat then
+        defeated()
+        if isMaxLevel then
+          playMusic("victory.mp3", false)
+          printBattleMessage()
+          print("Max Level Reach!")
+          break
+        end
+        start()
+        showBattleResult("Battle Start")
+        printBattleMessage()
+      else
+        printBattleMessage()
+        playMusic("defeat.mp3", true)
+        break
+      end
+    end
+    if victoryDiamondRegion:exists(Pattern("victoryDiamond.png"):similar(imgAccuracy * 1.1), 0.1) then
+      winCount = winCount + 1
+      runLmt = runLmt - 1
+      resetTimerNoActivity()
+      victory()
+      if runLmtCheck() then
+        break
+      end
       if isMaxLevel then
         playMusic("victory.mp3", false)
         printBattleMessage()
         print("Max Level Reach!")
         break
       end
+      replayOrNext()
       start()
-      showBattleResult("Battle Start")
+      showBattleResult("Rift Battle Start")
       printBattleMessage()
-    else
-      printBattleMessage()
-      playMusic("defeat.mp3", true)
+    end
+    if sellGetRegion:exists(Pattern("sell.png"):similar(.6)) then
+      sellGetRune()
+      start()
+    end
+    if replayRegion:exists(Pattern("replay.png"):similar(imgAccuracy), 0.1) then
+      replayOrNext()
+      start()
+    end
+    if notEnoughEnergyRegion:exists(Pattern("notEnoughEnergy.png"):similar(imgAccuracy), 0.1) then
+      refill()
+      replayOrNext()
+      start()
+    end
+    if playRegion:exists(Pattern("play.png"):similar(0.9), 0.1) then
+      playRegion:existsClick(Pattern("play.png"):similar(0.9), 1)
+    end
+    if isTrial and timerTrial:check() > maxTrialTimeout then
+      dialogTrialTimeout()
       break
     end
-  end
-  if victoryDiamondRegion:exists(Pattern("victoryDiamond.png"):similar(imgAccuracy * 1.1), 0.1) and not arenaVictoryRegion:exists(Pattern("arena.png"):similar(imgAccuracy), 0.3) then
-    winCount = winCount + 1
-    runLmt = runLmt - 1
-    resetTimerNoActivity()
-    victory()
-    if runLmtCheck() then
-      break
-    end
-    if isMaxLevel then
-      playMusic("victory.mp3", false)
-      printBattleMessage()
-      print("Max Level Reach!")
-      break
-    end
-    replayOrNext()
-    start()
-    showBattleResult("Rift Battle Start")
-    printBattleMessage()
-  end
-  if sellGetRegion:exists(Pattern("sell.png"):similar(.6)) then
-    sellGetRune()
-    start()
-  end
-  if replayRegion:exists(Pattern("replay.png"):similar(imgAccuracy), 0.1) then
-    replayOrNext()
-    start()
-  end
-  if notEnoughEnergyRegion:exists(Pattern("notEnoughEnergy.png"):similar(imgAccuracy), 0.1) then
-    refill()
-    replayOrNext()
-    start()
-  end
-  if playRegion:exists(Pattern("play.png"):similar(0.9), 0.1) then
-    playRegion:existsClick(Pattern("play.png"):similar(0.9), 1)
-  end
-  if isTrial and timerTrial:check() > maxTrialTimeout then
-    dialogTrialTimeout()
-    break
   end
 end
 function checkNoRaidActivity()
@@ -4280,66 +4265,80 @@ function resetNoRaidActivity()
   timerNoRaidActivity:set()
 end
 function runRiftRaidStart ()
-while runRiftRaid do
-  raidJoinRegion:highlight()
-  raidJoinRegion:existsClick(Pattern("raidJoinParty.png"):similar(0.6), 0.1)
-  raidJoinRegion:highlight()
-  raidReadyRegion:highlight()
-  raidReadyRegion:existsClick(Pattern("raidReady.png"):similar(0.6), 0.1)
-  if raidReadyRegion:existsClick(Pattern("raidStart.png"):similar(0.6), 0.1) then
+  while runRiftRaid do
+    raidJoinRegion:highlight()
+    raidJoinRegion:existsClick(Pattern("raidJoinParty.png"):similar(0.6), 0.1)
+    raidJoinRegion:highlight()
+    raidReadyRegion:highlight()
+    raidReadyRegion:existsClick(Pattern("raidReady.png"):similar(0.6), 0.1)
+    if raidReadyRegion:existsClick(Pattern("raidStart.png"):similar(0.6), 0.1) then
       refillYesRegion:existsClick(Pattern("yes.png"):similar(0.6), 0.1)
-  end
-  raidReadyRegion:highlight()
-  noLeaderSkillRegion:highlight()
-  if noLeaderSkillRegion:exists(Pattern("noLeaderSkill.png"):similar(0.6), 0.1) then
-    noLeaderSkillYesRegion:existsClick(Pattern("yes.png"):similar(0.6), 0.1)
-  end
-  noLeaderSkillRegion:highlight()
-  raidVictoryTotalRegion:highlight()
-  raidVictoryTotalRegion:existsClick(Pattern("raidVictoryTotal.png"):similar(0.6), 0.1)
-  raidVictoryTotalRegion:highlight()
-  raidOkRegion:highlight()
-  raidOkRegion:existsClick(Pattern("ok.png"):similar(0.6), 0.1)
-  raidOkRegion:highlight()
-  notEnoughEnergyRegion:highlight()
-  if notEnoughEnergyRegion:exists(Pattern("notEnoughEnergy.png"):similar(0.6), 0.1) then
-    if not arenaCheck and runArena then
-      arenaCheck = true
-      runRiftRaid = false
-      refillNoRegion:existsClick(Pattern("noPurchase.png"):similar(.6), 3)
-      raidVictoryTotalRegion:existsClick(Pattern("raidVictoryTotal.png"):similar(0.6), 0.1)
-      if sameSessionRegion:exists(Pattern("sameSession.png"):similar(0.6), 0.1) then
-        refillNoRegion:existsClick(Pattern("noPurchase.png"):similar(0.6), 0.1)
+    end
+    raidReadyRegion:highlight()
+    noLeaderSkillRegion:highlight()
+    if noLeaderSkillRegion:exists(Pattern("noLeaderSkill.png"):similar(0.6), 0.1) then
+      noLeaderSkillYesRegion:existsClick(Pattern("yes.png"):similar(0.6), 0.1)
+    end
+    noLeaderSkillRegion:highlight()
+    raidVictoryTotalRegion:highlight()
+    raidVictoryTotalRegion:existsClick(Pattern("raidVictoryTotal.png"):similar(0.6), 0.1)
+    raidVictoryTotalRegion:highlight()
+    raidOkRegion:highlight()
+    raidOkRegion:existsClick(Pattern("ok.png"):similar(0.6), 0.1)
+    raidOkRegion:highlight()
+    notEnoughEnergyRegion:highlight()
+    if notEnoughEnergyRegion:exists(Pattern("notEnoughEnergy.png"):similar(0.6), 0.1) then
+      if not arenaCheck and runArena then
+        arenaCheck = true
+        runRiftRaid = false
+        refillNoRegion:existsClick(Pattern("noPurchase.png"):similar(.6), 3)
+        raidVictoryTotalRegion:existsClick(Pattern("raidVictoryTotal.png"):similar(0.6), 0.1)
+        if sameSessionRegion:exists(Pattern("sameSession.png"):similar(0.6), 0.1) then
+          refillNoRegion:existsClick(Pattern("noPurchase.png"):similar(0.6), 0.1)
+        end
+        existsClick(Pattern("closeX.png"):similar(.6), 3)
+        existsClick(Pattern("back2Button.png"):similar(.6), 3)
+        findArena()
+      else
+        arenaCheck = false
+        refill()
+        replayOrNext()
+        start()
       end
-      existsClick(Pattern("closeX.png"):similar(.6), 3)
-      existsClick(Pattern("back2Button.png"):similar(.6), 3)
-      findArena()
-    else
-      arenaCheck = false
-      refill()
-      replayOrNext()
-      start()
+    end
+    notEnoughEnergyRegion:highlight()
+    raidGetRegion:highlight()
+    raidGetRegion:existsClick(Pattern("get.png"):similar(0.6), 0.1)
+    raidGetRegion:highlight()
+    sameSessionRegion:highlight()
+    if sameSessionRegion:exists(Pattern("sameSession.png"):similar(0.6), 0.1) then
+      refillYesRegion:existsClick(Pattern("yes.png"):similar(0.6), 0.1)
+    end
+    sameSessionRegion:highlight()
+    if checkNoRaidActivity == true then
+      keyevent(4)
     end
   end
-  notEnoughEnergyRegion:highlight()
-  raidGetRegion:highlight()
-  raidGetRegion:existsClick(Pattern("get.png"):similar(0.6), 0.1)
-  raidGetRegion:highlight()
-  sameSessionRegion:highlight()
-  if sameSessionRegion:exists(Pattern("sameSession.png"):similar(0.6), 0.1) then
-    refillYesRegion:existsClick(Pattern("yes.png"):similar(0.6), 0.1)
-  end
-  sameSessionRegion:highlight()
-  if checkNoRaidActivity == true then
-    keyevent(4)
-  end
 end
-end
+defaultValues ()
+defaultTrueFalse ()
+defaultRegionLocation ()
+dialogBox()
+setDialogOptions()
+setAdvancedOptions()
+showBattleResult("Begin")
+timerNoActivity = Timer()
+timerTrial = Timer()
+timerMagicShop = Timer()
 while true do
   if runRiftRaid == true then
     findRift ()
     clickRiftRaid()
     runRiftRaidStart()
+  elseif runQuickClick == true then
+    runQuickClickStart()
+  elseif runLiveArena == true then
+    runLiveArenaStart()
   elseif not runLiveArena or not runQuickClick or not runRiftRaid then
     if startRegion:exists(Pattern("start.png"):similar(imgAccuracy), 0.1) then
       start()

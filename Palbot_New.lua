@@ -3656,3 +3656,10 @@ function runScenarioDungeon()
     findScenario()
     findTOA()
 end
+
+dialogBox()
+setDialogOptions()
+setAdvancedOptions()
+showBattleResult("Begin")
+timerNoActivity = Timer()
+timerMagicShop = Timer()
