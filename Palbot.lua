@@ -187,7 +187,7 @@ function setScriptRegion()
   getRegion = setRegion(985, 635, 500, 515)
   runeSellTextRegion = setRegion(535, 360, 865, 130)
   refillYesRegion = setRegion(735, 625, 105, 55)
-  refillNoRegion = setRegion(1090, 625, 80, 60)
+  refillNoRegion = setRegion(1050, 625, 120, 60)
   notEnoughEnergyRegion = setRegion(955, 355, 225, 65)
   notEnoughWingRegion = setRegion(850, 355, 260, 65)
   rechargeFlashRegion = setRegion(455, 395, 195, 235)
@@ -4279,6 +4279,7 @@ end
 function resetNoRaidActivity()
   timerNoRaidActivity:set()
 end
+function runRiftRaidStart ()
 while runRiftRaid do
   raidJoinRegion:highlight()
   raidJoinRegion:existsClick(Pattern("raidJoinParty.png"):similar(0.6), 0.1)
@@ -4302,7 +4303,23 @@ while runRiftRaid do
   raidOkRegion:highlight()
   notEnoughEnergyRegion:highlight()
   if notEnoughEnergyRegion:exists(Pattern("notEnoughEnergy.png"):similar(0.6), 0.1) then
-    refill()
+    if not arenaCheck and runArena then
+      arenaCheck = true
+      runRiftRaid = false
+      refillNoRegion:existsClick(Pattern("noPurchase.png"):similar(.6), 3)
+      raidVictoryTotalRegion:existsClick(Pattern("raidVictoryTotal.png"):similar(0.6), 0.1)
+      if sameSessionRegion:exists(Pattern("sameSession.png"):similar(0.6), 0.1) then
+        refillNoRegion:existsClick(Pattern("noPurchase.png"):similar(0.6), 0.1)
+      end
+      existsClick(Pattern("closeX.png"):similar(.6), 3)
+      existsClick(Pattern("back2Button.png"):similar(.6), 3)
+      findArena()
+    else
+      arenaCheck = false
+      refill()
+      replayOrNext()
+      start()
+    end
   end
   notEnoughEnergyRegion:highlight()
   raidGetRegion:highlight()
@@ -4317,8 +4334,13 @@ while runRiftRaid do
     keyevent(4)
   end
 end
+end
 while true do
-  if not runLiveArena or not runQuickClick or not runRiftRaid then
+  if runRiftRaid == true then
+    findRift ()
+    clickRiftRaid()
+    runRiftRaidStart()
+  elseif not runLiveArena or not runQuickClick or not runRiftRaid then
     if startRegion:exists(Pattern("start.png"):similar(imgAccuracy), 0.1) then
       start()
     end
@@ -4450,10 +4472,18 @@ while true do
       clickTOAStage()
       start()
     end
-    if notEnoughWingRegion:exists(Pattern("notEnoughWing.png"):similar(imgAccuracy * 0.9), 0.1) then
-      refillNoRegion:existsClick(Pattern("noPurchase.png"), 3)
-      runScenarioDungeon()
-      start()
+    if notEnoughWingRegion:exists(Pattern("notEnoughWing.png"):similar(.6), 0.1) then
+      refillNoRegion:existsClick(Pattern("noPurchase.png"):similar(0.6), 3)
+      if farmLoc == spinnerFarmLoc[19] then
+        runRiftRaid = true
+        existsClick(Pattern("closeX.png"):similar(.6), 3)
+        existsClick(Pattern("back2Button.png"):similar(.6), 3)
+        runScenarioDungeon()
+        runRiftRaidStart()
+      else
+        runScenarioDungeon()
+        start()
+      end
     end
     if notEnoughEnergyRegion:exists(Pattern("notEnoughEnergy.png"):similar(imgAccuracy * 0.9), 0.1) or notEnoughEnergyRegion:exists(Pattern("notEnoughEnergy2.png"):similar(imgAccuracy * 0.9), 0.1) then
       if not arenaCheck and runArena then
