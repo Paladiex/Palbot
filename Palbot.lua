@@ -15,6 +15,14 @@ else
     httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/imageupdater.lua", localPath .."imageupdater.lua")
     scriptExit("You have Updated Palbot!")
 end
+mainStatImages = {  "hpMain.png", "defMain.png", "atkMain.png", "spdMain.png", "criRateMain.png",
+  "criDmgMain.png", "resMain.png", "accMain.png" }
+levelBattleImages = {"level40Battle.png", "level35Battle.png", "level30Battle.png", "level25Battle.png",
+  "level20Battle.png", "level15Battle.png" }
+battleSlotStarLevelImages = { "star6BattlePink.png", "star6BattleWhite.png", "star5BattlePink.png",
+  "star5BattleWhite.png", "star4BattlePink.png", "star4BattleWhite.png",
+  "star3BattlePink.png", "star3BattleWhite.png", "star2BattlePink.png",
+  "star2BattleWhite.png", "star1BattleWhite.png",}
 function defaultValues()
 winCount = 0
 loseCount = 0
@@ -1205,8 +1213,6 @@ function setAdvancedOptions()
   end
   connectionTimeout = connectionTimeout * 4
 end
-mainStatImages = {  "hpMain.png", "defMain.png", "atkMain.png", "spdMain.png", "criRateMain.png",
-  "criDmgMain.png", "resMain.png", "accMain.png" }
 function setDimension16by9()
   local screen = getAppUsableScreenSize()
   screenW = screen:getX()
@@ -1907,105 +1913,109 @@ end
 function getBattleSlotStarLevel(slot)
   local accuracy = runeAccuracy * 0.86
   if slot == 1 then
-    if battleSlot1Region:exists(Pattern("star6BattlePink.png"):similar(accuracy), 0.1) then
+    bestMatchIndex = existsMultiMax(battleSlotStarLevelImages, battleSlot1Region)
+    if (bestMatchIndex == 1) then
       return 6
-    elseif battleSlot1Region:exists(Pattern("star6BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 2) then
       return 6
-    elseif battleSlot1Region:exists(Pattern("star5BattlePink.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 3) then
       return 5
-    elseif battleSlot1Region:exists(Pattern("star5BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 4) then
       return 5
-    elseif battleSlot1Region:exists(Pattern("star4BattlePink.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 5) then
       return 4
-    elseif battleSlot1Region:exists(Pattern("star4BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 6) then
       return 4
-    elseif battleSlot1Region:exists(Pattern("star3BattlePink.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 7) then
       return 3
-    elseif battleSlot1Region:exists(Pattern("star3BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 8) then
       return 3
-    elseif battleSlot1Region:exists(Pattern("star2BattlePink.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 9) then
       return 2
-    elseif battleSlot1Region:exists(Pattern("star2BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 10) then
       return 2
-    elseif battleSlot1Region:exists(Pattern("star1BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 11) then
       return 1
     else
       return 0
     end
   elseif slot == 2 then
-    if battleSlot2Region:exists(Pattern("star6BattlePink.png"):similar(accuracy), 0.1) then
+    bestMatchIndex = existsMultiMax(battleSlotStarLevelImages, battleSlot2Region)
+    if (bestMatchIndex == 1) then
       return 6
-    elseif battleSlot2Region:exists(Pattern("star6BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 2) then
       return 6
-    elseif battleSlot2Region:exists(Pattern("star5BattlePink.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 3) then
       return 5
-    elseif battleSlot2Region:exists(Pattern("star5BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 4) then
       return 5
-    elseif battleSlot2Region:exists(Pattern("star4BattlePink.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 5) then
       return 4
-    elseif battleSlot2Region:exists(Pattern("star4BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 6) then
       return 4
-    elseif battleSlot2Region:exists(Pattern("star3BattlePink.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 7) then
       return 3
-    elseif battleSlot2Region:exists(Pattern("star3BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 8) then
       return 3
-    elseif battleSlot2Region:exists(Pattern("star2BattlePink.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 9) then
       return 2
-    elseif battleSlot2Region:exists(Pattern("star2BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 10) then
       return 2
-    elseif battleSlot2Region:exists(Pattern("star1BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 11) then
       return 1
     else
       return 0
     end
   elseif slot == 3 then
-    if battleSlot3Region:exists(Pattern("star6BattlePink.png"):similar(accuracy), 0.1) then
+    bestMatchIndex = existsMultiMax(battleSlotStarLevelImages, battleSlot3Region)
+    if (bestMatchIndex == 1) then
       return 6
-    elseif battleSlot3Region:exists(Pattern("star6BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 2) then
       return 6
-    elseif battleSlot3Region:exists(Pattern("star5BattlePink.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 3) then
       return 5
-    elseif battleSlot3Region:exists(Pattern("star5BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 4) then
       return 5
-    elseif battleSlot3Region:exists(Pattern("star4BattlePink.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 5) then
       return 4
-    elseif battleSlot3Region:exists(Pattern("star4BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 6) then
       return 4
-    elseif battleSlot3Region:exists(Pattern("star3BattlePink.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 7) then
       return 3
-    elseif battleSlot3Region:exists(Pattern("star3BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 8) then
       return 3
-    elseif battleSlot3Region:exists(Pattern("star2BattlePink.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 9) then
       return 2
-    elseif battleSlot3Region:exists(Pattern("star2BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 10) then
       return 2
-    elseif battleSlot3Region:exists(Pattern("star1BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 11) then
       return 1
     else
       return 0
     end
   elseif slot == 4 then
-    if battleSlot4Region:exists(Pattern("star6BattlePink.png"):similar(accuracy), 0.1) then
+    bestMatchIndex = existsMultiMax(battleSlotStarLevelImages, battleSlot4Region)
+    if (bestMatchIndex == 1) then
       return 6
-    elseif battleSlot4Region:exists(Pattern("star6BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 2) then
       return 6
-    elseif battleSlot4Region:exists(Pattern("star5BattlePink.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 3) then
       return 5
-    elseif battleSlot4Region:exists(Pattern("star5BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 4) then
       return 5
-    elseif battleSlot4Region:exists(Pattern("star4BattlePink.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 5) then
       return 4
-    elseif battleSlot4Region:exists(Pattern("star4BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 6) then
       return 4
-    elseif battleSlot4Region:exists(Pattern("star3BattlePink.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 7) then
       return 3
-    elseif battleSlot4Region:exists(Pattern("star3BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 8) then
       return 3
-    elseif battleSlot4Region:exists(Pattern("star2BattlePink.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 9) then
       return 2
-    elseif battleSlot4Region:exists(Pattern("star2BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 10) then
       return 2
-    elseif battleSlot4Region:exists(Pattern("star1BattleWhite.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 11) then
       return 1
     else
       return 0
@@ -2015,68 +2025,64 @@ end
 function getBattleSlotLevel(slot)
   local accuracy = runeAccuracy * 0.92
   if slot == 1 then
-    if battleSlot1Region:exists(Pattern("level40Battle.png"):similar(accuracy), 0.1) then
+    bestMatchIndex = existsMultiMax(levelBattleImages, battleSlot1Region)
+    if (bestMatchIndex == 1) then
       return 40
-    elseif battleSlot1Region:exists(Pattern("level35Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 2) then
       return 35
-    elseif battleSlot1Region:exists(Pattern("level30Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 3) then
       return 30
-    elseif battleSlot1Region:exists(Pattern("level25Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 4) then
       return 25
-    elseif battleSlot1Region:exists(Pattern("level20Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 5) then
       return 20
-    elseif battleSlot1Region:exists(Pattern("level15Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 6) then
       return 15
-    else
-      return 0
     end
   elseif slot == 2 then
-    if battleSlot2Region:exists(Pattern("level40Battle.png"):similar(accuracy), 0.1) then
+    bestMatchIndex = existsMultiMax(levelBattleImages, battleSlot2Region)
+    if (bestMatchIndex == 1) then
       return 40
-    elseif battleSlot2Region:exists(Pattern("level35Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 2) then
       return 35
-    elseif battleSlot2Region:exists(Pattern("level30Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 3) then
       return 30
-    elseif battleSlot2Region:exists(Pattern("level25Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 4) then
       return 25
-    elseif battleSlot2Region:exists(Pattern("level20Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 5) then
       return 20
-    elseif battleSlot2Region:exists(Pattern("level15Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 6) then
       return 15
-    else
-      return 0
     end
   elseif slot == 3 then
-    if battleSlot3Region:exists(Pattern("level40Battle.png"):similar(accuracy), 0.1) then
+    bestMatchIndex = existsMultiMax(levelBattleImages, battleSlot3Region)
+    if (bestMatchIndex == 1) then
       return 40
-    elseif battleSlot3Region:exists(Pattern("level35Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 2) then
       return 35
-    elseif battleSlot3Region:exists(Pattern("level30Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 3) then
       return 30
-    elseif battleSlot3Region:exists(Pattern("level25Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 4) then
       return 25
-    elseif battleSlot3Region:exists(Pattern("level20Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 5) then
       return 20
-    elseif battleSlot3Region:exists(Pattern("level15Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 6) then
       return 15
-    else
-      return 0
     end
   elseif slot == 4 then
-    if battleSlot4Region:exists(Pattern("level40Battle.png"):similar(accuracy), 0.1) then
+    bestMatchIndex = existsMultiMax(levelBattleImages, battleSlot4Region)
+    if (bestMatchIndex == 1) then
       return 40
-    elseif battleSlot4Region:exists(Pattern("level35Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 2) then
       return 35
-    elseif battleSlot4Region:exists(Pattern("level30Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 3) then
       return 30
-    elseif battleSlot4Region:exists(Pattern("level25Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 4) then
       return 25
-    elseif battleSlot4Region:exists(Pattern("level20Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 5) then
       return 20
-    elseif battleSlot4Region:exists(Pattern("level15Battle.png"):similar(accuracy), 0.1) then
+    elseif (bestMatchIndex == 6) then
       return 15
-    else
-      return 0
     end
   end
 end
