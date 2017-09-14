@@ -2038,6 +2038,8 @@ function getBattleSlotLevel(slot)
       return 20
     elseif (bestMatchIndex == 6) then
       return 15
+    else
+      return 0
     end
   elseif slot == 2 then
     bestMatchIndex = existsMultiMax(levelBattleImages, battleSlot2Region)
@@ -2053,6 +2055,8 @@ function getBattleSlotLevel(slot)
       return 20
     elseif (bestMatchIndex == 6) then
       return 15
+    else
+      return 0
     end
   elseif slot == 3 then
     bestMatchIndex = existsMultiMax(levelBattleImages, battleSlot3Region)
@@ -2068,6 +2072,8 @@ function getBattleSlotLevel(slot)
       return 20
     elseif (bestMatchIndex == 6) then
       return 15
+    else
+      return 0
     end
   elseif slot == 4 then
     bestMatchIndex = existsMultiMax(levelBattleImages, battleSlot4Region)
@@ -2083,6 +2089,8 @@ function getBattleSlotLevel(slot)
       return 20
     elseif (bestMatchIndex == 6) then
       return 15
+    else
+      return 0
     end
   end
 end
