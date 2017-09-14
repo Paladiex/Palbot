@@ -16,7 +16,7 @@ battleSlotStarLevelImages = { "star6BattlePink.png", "star6BattleWhite.png", "st
   "star3BattlePink.png", "star3BattleWhite.png", "star2BattlePink.png",
   "star2BattleWhite.png", "star1BattleWhite.png", }
 function automaticUpdates ()
-  if autoUpdates == true then
+  if autoUpdate == true then
     if currentVersion == latestVersion then
       toast ("You are up to date!")
     else
