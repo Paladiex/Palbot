@@ -4310,6 +4310,7 @@ function runRiftRaidStart ()
       resetTimerNoActivity()
       showBattleResult("Battle Start")
       printBattleMessage()
+      wait(6)
     end
     raidVictoryTotalRegion:highlight()
     raidLossTotalRegion:highlight()
@@ -4323,6 +4324,7 @@ function runRiftRaidStart ()
       if stopDefeat == true then
         scriptExit ("Defeated, stopping as requested!")
       end
+      wait(4)
     end
     raidLossTotalRegion:highlight()
     raidOkRegion:highlight()
