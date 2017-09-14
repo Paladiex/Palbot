@@ -4300,12 +4300,24 @@ function runRiftRaidStart ()
     if raidVictoryTotalRegion:exists(Pattern("raidVictoryTotal.png"):similar(0.6), 0.1) then
       raidVictoryTotalRegion:existsClick(Pattern("raidVictoryTotal.png"):similar(0.6), 0.1)
       winCount = winCount + 1
+      runLmt = runLmt - 1
+      showBattleResult("Start Battle")
+      resetTimerNoActivity()
+      showBattleResult("Battle Start")
+      printBattleMessage()
     end
     raidVictoryTotalRegion:highlight()
     raidLossTotalRegion:highlight()
     if raidLossTotalRegion:exists(Pattern("raidVictoryTotal.png"):similar(0.6), 0.1) then
       raidLossTotalRegion:existsClick(Pattern("raidVictoryTotal.png"):similar(0.6), 0.1)
       loseCount = loseCount + 1
+      runLmt = runLmt - 1
+      showBattleResult("Battle Start")
+      printBattleMessage()
+      resetTimerNoActivity()
+      if stopDefeat == true then
+        scriptExit ("Defeated, stopping as requested!")
+      end
     end
     raidLossTotalRegion:highlight()
     raidOkRegion:highlight()
