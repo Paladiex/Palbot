@@ -2368,7 +2368,7 @@ function sellGetRune ()
   elseif enchantedGemRegion:exists(Pattern("enchantedGem.png"):similar(.6), 0.1) then
     getRune()
   elseif sellAllRune == true then
-    sellrune()
+    sellRune()
   else
     findRuneRarity()
     findRuneRank()
