@@ -525,6 +525,7 @@ function dialogBox()
   addTextView("Main Stat: ")
   addSpinner("runeMainStatSelect", spinnerMainStat, spinnerMainStat[1])
   addTextView("  (save runes option)")
+  addCheckBox("sellAllRune", "Sell all runes?", false)
   newRow()
   spinnerRefillOption = {
     "NO Refills",
@@ -2366,6 +2367,8 @@ function sellGetRune ()
     getRune()
   elseif enchantedGemRegion:exists(Pattern("enchantedGem.png"):similar(.6), 0.1) then
     getRune()
+  elseif sellAllRune == true then
+    sellrune()
   else
     findRuneRarity()
     findRuneRank()
