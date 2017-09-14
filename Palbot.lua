@@ -7,14 +7,6 @@ latestVersion = getNewestVersion()
 currentVersion = dofile(localPath .."version.lua")
 print (currentVersion)
 print (latestVersion)
-if currentVersion == latestVersion then
-    toast ("You are up to date!")
-else
-    httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/version.lua", localPath .."version.lua")
-    httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/Palbot.lua", localPath .."Palbot.lua")
-    httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/imageupdater.lua", localPath .."imageupdater.lua")
-    scriptExit("You have Updated Palbot!")
-end
 mainStatImages = {  "hpMain.png", "defMain.png", "atkMain.png", "spdMain.png", "criRateMain.png",
   "criDmgMain.png", "resMain.png", "accMain.png" }
 levelBattleImages = {"level40Battle.png", "level35Battle.png", "level30Battle.png", "level25Battle.png",
@@ -22,7 +14,19 @@ levelBattleImages = {"level40Battle.png", "level35Battle.png", "level30Battle.pn
 battleSlotStarLevelImages = { "star6BattlePink.png", "star6BattleWhite.png", "star5BattlePink.png",
   "star5BattleWhite.png", "star4BattlePink.png", "star4BattleWhite.png",
   "star3BattlePink.png", "star3BattleWhite.png", "star2BattlePink.png",
-  "star2BattleWhite.png", "star1BattleWhite.png",}
+  "star2BattleWhite.png", "star1BattleWhite.png", }
+function automaticUpdates ()
+  if autoUpdates == true then
+    if currentVersion == latestVersion then
+      toast ("You are up to date!")
+    else
+      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/version.lua", localPath .."version.lua")
+      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/Palbot.lua", localPath .."Palbot.lua")
+      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/imageupdater.lua", localPath .."imageupdater.lua")
+      scriptExit("You have Updated Palbot!")
+    end
+  end
+end
 function defaultValues()
 winCount = 0
 loseCount = 0
@@ -646,6 +650,7 @@ function dialogBox()
   addTextView("Text Size    ")
   addCheckBox("playSound", "Play Sound    ", true)
   addCheckBox("playVibrate", "Vibrate    ", false)
+  addCheckBox("autoUpdate", "Auto Update    ", true)
   newRow()
   addSpinner("noActivityTimeout", spinnerNoActivityTimeout, spinnerNoActivityTimeout[3])
   addTextView("minutes.  No Script Activity Warning")
@@ -4363,6 +4368,7 @@ defaultRegionLocation ()
 dialogBox()
 setDialogOptions()
 setAdvancedOptions()
+automaticUpdates ()
 showBattleResult("Begin")
 timerNoActivity = Timer()
 timerTrial = Timer()
