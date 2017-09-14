@@ -1912,7 +1912,6 @@ function isBattleSlotMax(slot)
   end
 end
 function getBattleSlotStarLevel(slot)
-  local accuracy = runeAccuracy * 0.86
   if slot == 1 then
     bestMatchIndex = existsMultiMax(battleSlotStarLevelImages, battleSlot1Region)
     if (bestMatchIndex == 1) then
@@ -2024,7 +2023,6 @@ function getBattleSlotStarLevel(slot)
   end
 end
 function getBattleSlotLevel(slot)
-  local accuracy = runeAccuracy * 0.92
   if slot == 1 then
     bestMatchIndex = existsMultiMax(levelBattleImages, battleSlot1Region)
     if (bestMatchIndex == 1) then
