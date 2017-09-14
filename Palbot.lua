@@ -163,7 +163,8 @@ enchantedGemRegion = Region(750, 350, 350, 150)
 raidJoinRegion = Region(1300, 845, 250, 65)
 raidReadyRegion = Region(1550, 950, 250, 75)
 okRaidRegion = Region(910, 615, 100, 80)
-raidVictoryTotalRegion = Region(125, 600, 150, 250)
+raidVictoryTotalRegion = Region(125, 600, 150, 50)
+  raidLossTotalRegion = Region(125, 725, 150, 50)
 raidOkRegion = Region(825, 625, 250, 250)
 sameSessionRegion = Region(780, 360, 180, 50)
 raidGetRegion = Region(1035, 635, 145, 115)
@@ -4295,8 +4296,17 @@ function runRiftRaidStart ()
     end
     noLeaderSkillRegion:highlight()
     raidVictoryTotalRegion:highlight()
-    raidVictoryTotalRegion:existsClick(Pattern("raidVictoryTotal.png"):similar(0.6), 0.1)
+    if raidVictoryTotalRegion:exists(Pattern("raidVictoryTotal.png"):similar(0.6), 0.1) then
+      raidVictoryTotalRegion:existsClick(Pattern("raidVictoryTotal.png"):similar(0.6), 0.1)
+      winCount = winCount + 1
+    end
     raidVictoryTotalRegion:highlight()
+    raidLossTotalRegion:highlight()
+    if raidLossTotalRegion:exists(Pattern("raidVictoryTotal.png"):similar(0.6), 0.1) then
+      raidLossTotalRegion:existsClick(Pattern("raidVictoryTotal.png"):similar(0.6), 0.1)
+      loseCount = loseCount + 1
+    end
+    raidLossTotalRegion:highlight()
     raidOkRegion:highlight()
     raidOkRegion:existsClick(Pattern("ok.png"):similar(0.6), 0.1)
     raidOkRegion:highlight()
