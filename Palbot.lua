@@ -4310,7 +4310,7 @@ function runRiftRaidStart ()
       resetTimerNoActivity()
       showBattleResult("Battle Start")
       printBattleMessage()
-      wait(6)
+      wait(4)
     end
     raidVictoryTotalRegion:highlight()
     raidLossTotalRegion:highlight()
@@ -4324,11 +4324,11 @@ function runRiftRaidStart ()
       if stopDefeat == true then
         scriptExit ("Defeated, stopping as requested!")
       end
-      wait(4)
+      wait(3)
     end
     raidLossTotalRegion:highlight()
     raidOkRegion:highlight()
-    raidOkRegion:existsClick(Pattern("ok.png"):similar(0.6), 0.1)
+    raidOkRegion:existsClick(Pattern("ok.png"):similar(0.6), 2)
     raidOkRegion:highlight()
     notEnoughEnergyRegion:highlight()
     if notEnoughEnergyRegion:exists(Pattern("notEnoughEnergy.png"):similar(0.6), 0.1) then
@@ -4355,7 +4355,7 @@ function runRiftRaidStart ()
     raidGetRegion:existsClick(Pattern("get.png"):similar(0.6), 0.1)
     raidGetRegion:highlight()
     sameSessionRegion:highlight()
-    if sameSessionRegion:exists(Pattern("sameSession.png"):similar(0.6), 0.1) then
+    if sameSessionRegion:exists(Pattern("sameSession.png"):similar(0.6), 2) then
       refillYesRegion:existsClick(Pattern("yes.png"):similar(0.6), 0.1)
     end
     sameSessionRegion:highlight()
