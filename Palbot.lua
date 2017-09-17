@@ -501,6 +501,19 @@ function dialogBox()
   addEditNumber("customRunLmt", 10)
   addTextView("(Must select Custom Runs)")
   newRow()
+  spinnerRefillOption = {
+    "NO Refills",
+    "Refill Energy with Crystals  "
+  }
+  addSpinner("refillOption", spinnerRefillOption, spinnerRefillOption[1])
+  addTextView("  (refill options)")
+  newRow()
+  addCheckBox("dim", "Dim Screen", false)
+  addTextView("  ")
+  addCheckBox("stopDefeat", "Stop when defeated", false)
+  addTextView("  ")
+  addCheckBox("nextArea", "Next stage", false)
+  newRow()
     addTextView("-------------------- Rune Options --------------------")
     newRow()
     spinnerRuneRarity = {
@@ -532,19 +545,6 @@ function dialogBox()
   addSpinner("runeMainStatSelect", spinnerMainStat, spinnerMainStat[1])
     newRow()
   addCheckBox("sellAllRune", "Sell all runes?", false)
-  newRow()
-  spinnerRefillOption = {
-    "NO Refills",
-    "Refill Energy with Crystals  "
-  }
-  addSpinner("refillOption", spinnerRefillOption, spinnerRefillOption[1])
-  addTextView("  (refill options)")
-  newRow()
-  addCheckBox("dim", "Dim Screen", false)
-  addTextView("  ")
-  addCheckBox("stopDefeat", "Stop when defeated", false)
-  addTextView("  ")
-  addCheckBox("nextArea", "Next stage", false)
   newRow()
   addTextView("-------------------- Advanced Options --------------------")
   newRow()
