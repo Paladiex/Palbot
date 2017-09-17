@@ -501,7 +501,9 @@ function dialogBox()
   addEditNumber("customRunLmt", 10)
   addTextView("(Must select Custom Runs)")
   newRow()
-  spinnerRuneRarity = {
+    addTextView("-------------------- Rune Options --------------------")
+    newRow()
+    spinnerRuneRarity = {
     "Legendary",
     "Hero",
     "Rare",
@@ -528,7 +530,7 @@ function dialogBox()
   }
   addTextView("Main Stat: ")
   addSpinner("runeMainStatSelect", spinnerMainStat, spinnerMainStat[1])
-  addTextView("  (save runes option)")
+    newRow()
   addCheckBox("sellAllRune", "Sell all runes?", false)
   newRow()
   spinnerRefillOption = {
