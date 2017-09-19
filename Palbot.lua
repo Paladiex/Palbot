@@ -4330,7 +4330,7 @@ function runRiftRaidStart ()
     end
     raidLossTotalRegion:highlight()
     raidOkRegion:highlight()
-    raidOkRegion:existsClick(Pattern("ok.png"):similar(0.6), 2)
+    raidOkRegion:existsClick(Pattern("ok.png"):similar(0.6), 0.1)
     raidOkRegion:highlight()
     notEnoughEnergyRegion:highlight()
     if notEnoughEnergyRegion:exists(Pattern("notEnoughEnergy.png"):similar(0.6), 0.1) then
