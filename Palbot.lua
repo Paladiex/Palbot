@@ -4305,6 +4305,7 @@ function runRiftRaidStart ()
     noLeaderSkillRegion:highlight()
     raidVictoryTotalRegion:highlight()
     if raidVictoryTotalRegion:exists(Pattern("raidVictoryTotal.png"):similar(0.6), 0.1) then
+      wait(4)
       raidVictoryTotalRegion:existsClick(Pattern("raidVictoryTotal.png"):similar(0.6), 0.1)
       winCount = winCount + 1
       runLmt = runLmt - 1
@@ -4312,7 +4313,6 @@ function runRiftRaidStart ()
       resetTimerNoActivity()
       showBattleResult("Battle Start")
       printBattleMessage()
-      wait(4)
     end
     raidVictoryTotalRegion:highlight()
     raidLossTotalRegion:highlight()
