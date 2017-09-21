@@ -58,7 +58,7 @@ httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/dialogVrofagus.png", imagePath .."dialogVrofagus.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/dialogWhiteRagon.png", imagePath .."dialogWhiteRagon.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/dontShow.png", imagePath .."dontShow.png")
-httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/dropinfo.png", imagePath .."dropinfo.png")
+httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/dropInfo.png", imagePath .."dropInfo.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/emptySlot.png", imagePath .."emptySlot.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/enchantedGem.png", imagePath .."enchantedGem.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/get.png", imagePath .."get.png")
