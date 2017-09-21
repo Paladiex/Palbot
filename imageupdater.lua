@@ -203,7 +203,7 @@ httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/runeAccuracy.png", imagePath .."runeAccuracy.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/runeCriDmg.png", imagePath .."runeCriDmg.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/runeCriRate.png", imagePath .."runeCriRate.png")
-httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/runeResistance.png", imagePath .."runeResistance.png")
+httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/runeResistence.png", imagePath .."runeResistence.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/runeSellText.png", imagePath .."runeSellText.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/runeSpeed.png", imagePath .."runeSpeed.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/sameSession.png", imagePath .."sameSession.png")
