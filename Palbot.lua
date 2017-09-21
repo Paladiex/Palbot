@@ -7,6 +7,9 @@ latestVersion = getNewestVersion()
 currentVersion = dofile(localPath .."version.lua")
 print (currentVersion)
 print (latestVersion)
+setDragDropTiming(100, 100)
+setDragDropStepCount(10)
+setDragDropStepInterval(100)
 mainStatImages = {  "hpMain.png", "defMain.png", "atkMain.png", "spdMain.png", "criRateMain.png",
   "criDmgMain.png", "resMain.png", "accMain.png" }
 levelBattleImages = {"level40Battle.png", "level35Battle.png", "level30Battle.png", "level25Battle.png",
@@ -15,6 +18,7 @@ battleSlotStarLevelImages = { "star6BattlePink.png", "star6BattleWhite.png", "st
   "star5BattleWhite.png", "star4BattlePink.png", "star4BattleWhite.png",
   "star3BattlePink.png", "star3BattleWhite.png", "star2BattlePink.png",
   "star2BattleWhite.png", "star1BattleWhite.png", }
+FodderSlotImages = {"0FodderSlot.png", "1FodderSlot.png", "2FodderSlot.png", "3FodderSlot.png", "4FodderSlot.png"}
 function automaticUpdates ()
   if autoUpdate == true then
     if currentVersion == latestVersion then
@@ -28,6 +32,8 @@ function automaticUpdates ()
   end
 end
 function defaultValues()
+  monX = 0
+  monY = 0
 winCount = 0
 loseCount = 0
 arenaWinCount = 0
@@ -150,6 +156,10 @@ keepAll = false
 keepPercent = false
 end
 function defaultRegionLocation ()
+  FindEmptyFodderSlotsRegion = Region(1540, 210, 30, 35)
+  FindFillFodderSlotsRegion = Region(1502, 210, 30, 35)
+  fodderStorageOkRegion = Region(910, 915, 90, 60)
+  storageIconRegion = Region(30, 660, 160, 160)
 fodderSlot8X = Location(1245, 745)
 fodderSlot7X = Location(1085, 745)
 fodderSlot6X = Location(920, 745)
@@ -432,13 +442,6 @@ function showCommand(command)
 end
 function hideCommand()
   commandRegion:highlightOff()
-end
-function showFodderCommand(command)
-  fodderCommandRegion:highlightOff()
-  fodderCommandRegion:highlight(command)
-end
-function hideFodderCommand()
-  fodderCommandRegion:highlightOff()
 end
 function dialogBox()
   dialogInit()
@@ -1244,6 +1247,7 @@ function start()
   if startRegion:exists(Pattern("start.png"):similar(imgAccuracy), 2) then
     takeSnapshot()
     if not startDialogRegion:exists(Pattern("startArenaBattle.png"), 0.1) and not startDialogRegion:exists(Pattern("startGiant.png"), 0.1) and not startDialogRegion:exists(Pattern("startDragon.png"), 0.1) and not startDialogRegion:exists(Pattern("startNecro.png"), 0.1) and not startDialogRegion:exists(Pattern("startSD.png"), 0.1) and not startDialogRegion:exists(Pattern("startHall.png"), 0.1) and not startDialogRegion:exists(Pattern("startRaid.png"), 0.1) and not startDialogRegion:exists(Pattern("startRift.png"), 0.1) and not startDialogRegion:exists(Pattern("startToa.png"), 0.1) then
+      checkMaxLevel()
       autoSwitchFodder()
     end
     startRegion:existsClick(Pattern("start.png"):similar(imgAccuracy), 3)
@@ -1287,12 +1291,10 @@ function refill()
 end
 function defeated()
   reviveNoRegion:existsClick(Pattern("noRevive.png"):similar(.7), 3)
-  checkMaxLevel()
   victoryDiamondRegion:existsClick(Pattern("victoryDiamond.png"):similar(.7), 3)
   replayRegion:existsClick(Pattern("replay.png"):similar(.7), 3)
 end
 function victory()
-  checkMaxLevel()
   victoryDiamondRegion:existsClick(Pattern("victoryDiamond.png"):similar(imgAccuracy), 3)
   victoryDiamondRegion:existsClick(Pattern("victoryDiamond.png"):similar(imgAccuracy), 1)
   victoryDiamondRegion:existsClick(Pattern("victoryDiamond.png"):similar(imgAccuracy), 2)
@@ -1330,7 +1332,6 @@ function autoSwitchFodder()
     if startRegion:exists(Pattern("start.png"):similar(imgAccuracy), 0.1) then
       clearBattleSlotMax()
       fillEmptySlot()
-      hideFodderCommand()
       return true
     else
       return false
@@ -1338,24 +1339,22 @@ function autoSwitchFodder()
   end
 end
 function clearBattleSlotMax()
-  showFodderCommand("Scanning Fodder Level")
-  usePreviousSnap(true)
-  if isSwitchFodderSlot1 and isBattleSlotMax(1) then
-    click(battleSlot1Region)
-  end
-  if isSwitchFodderSlot2 and isBattleSlotMax(2) then
+  usePreviousSnap(false)
+  getBattleSlotStarLevel()
+  getBattleSlotLevel()
+  isBattleSlotMax()
+---  if slot1Max == true then
+---   click(battleSlot1Region)
+---  end
+  if slot2Max == true then
     click(battleSlot2Region)
   end
-  if isSwitchFodderSlot3 and isBattleSlotMax(3) then
+  if slot3Max == true then
     click(battleSlot3Region)
   end
-  if isSwitchFodderSlot4 and isBattleSlotMax(4) then
+  if slot4Max == true then
     click(battleSlot4Region)
   end
-  slot8FodderScan = false
-  nextFodder = 1
-  fodderX = 1245
-  usePreviousSnap(false)
 end
 function clickFriend()
   if friendSlot1Region:exists(Pattern("stopFriend.png"), 0.1) then
@@ -1370,735 +1369,421 @@ function clickFriend()
   end
   isClickFriend = true
 end
-function moveFodderList()
-  if isMoveRightFodderList then
-    return
+function StorageFodderEvaluater()
+  evaluateStorage = true
+  while evaluateStorage do
+    if fodderFill < 1 then
+      fodderStorageOkRegion:click(Pattern("ok.png"):similar(.80))
+      evaluateStorage = false
+    end
+    if monX > 7 then monX = 0 monY = monY+1
+    end
+    if monY > 3 then monY = 0
+      dragDrop(Location(574, 273), Location(574, 582))
+      wait (.1)
+      dragDrop(Location(574, 273), Location(574, 583))
+      a = a + 1
+    end
+    monLevelSpot = Region(1436 - monX*156, 830 - monY*156, 150, 55)
+    checkMonsRegion = Region(1491 - monX*156, 725 - monY*156, 90, 60)
+    if  monLevelSpot:exists(Pattern("maxFodder.png"):similar(.80), 0.1) then
+      if monLevelSpot:exists(Pattern("maxFodder40.png"):similar(.90), 0.1) then
+        scriptExit("No more monsters to max!")
+      end
+    elseif monLevelSpot:exists(Pattern("emptyFodder.png"):similar(.80), 0.1) then
+    elseif checkMonsRegion:exists(Pattern("checkMons.png"):similar(.80), 0.1) then
+    else
+      if fodderFill > 0 then
+        click(Location (1511 - monX*156, 830 - monY*156))
+        fodderFill = fodderFill - 1
+        if fodderFill < 1 then
+          fodderStorageOkRegion:click(Pattern("ok.png"):similar(.80))
+          evaluateStorage = false
+        end
+      end
+    end
+    monX = monX+1
   end
-  local a = 13
+end
+function StorageFodderScrollBottom()
+  local a = 15
   while a > 0 do
-    showFodderCommand("Swiping List " .. a)
-    moveRightFodderList()
+    dragDrop(Location(574, 581), Location(574, 273))
+    wait (.1)
+    dragDrop(Location(574, 582), Location(574, 273))
     a = a - 1
   end
-  isMoveRightFodderList = true
 end
-function clickNonMaxFodder()
-  showFodderCommand("Searching Fodder")
-  wait(2)
-  takeSnapshot()
-  local fodderFound = false
-  local fodderNum = 1
-  local nextFodderLevelRegion, fodderStarRegion, fodderLevelRegion
-  local isFodderMaxLevel = false
-  local firstScan = true
-  local levelString = "level"
-  local b = 15
-  local a = 40
-  local accuracy = imgAccuracy * 0.85
-  while b > 0 do
-    firstScan = true
-    a = 45
-    while a > 0 do
-      if firstScan then
-        if a > 14 then
-          a = a - 5
-          levelString = "level" .. a .. ".png"
-        else
-          firstScan = false
-          a = 39
-          levelString = "level" .. a .. ".png"
-        end
-      else
-        a = a - 1
-        levelString = "level" .. a .. ".png"
-      end
-      if fodderSlot8Region:exists(Pattern(levelString):similar(accuracy), 0.1) then
-        fodderX = fodderSlot8Region:exists(Pattern(levelString):similar(accuracy), 0.1):getX()
-        fodderStarRegion = Region(fodderX - 175, 665, 180, 50)
-        showFodderCommand("slot 1: " .. levelString)
-        if a == 40 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 35 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 30 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 25 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 20 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 15 then
-          isFodderMaxLevel = true
-          break
-        else
-          isFodderMaxLevel = false
-          break
-        end
-      end
-    end
-    if not isFodderMaxLevel and not fodderStarRegion:exists(Pattern("checkMons.png"), 0.1) then
-      click(fodderSlot8X)
-      fodderFound = true
-      return
-    else
-    end
-    if fodderFound then
-      return
-    end
-    firstScan = true
-    a = 45
-    while a > 0 do
-      if firstScan then
-        if a > 14 then
-          a = a - 5
-          levelString = "level" .. a .. ".png"
-        else
-          firstScan = false
-          a = 39
-          levelString = "level" .. a .. ".png"
-        end
-      else
-        a = a - 1
-        levelString = "level" .. a .. ".png"
-      end
-      if fodderSlot7Region:exists(Pattern(levelString):similar(accuracy), 0.1) then
-        fodderX = fodderSlot7Region:exists(Pattern(levelString):similar(accuracy), 0.1):getX()
-        fodderStarRegion = Region(fodderX - 175, 665, 180, 50)
-        showFodderCommand("slot 2: " .. levelString)
-        if a == 40 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 35 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 30 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 25 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 20 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 15 then
-          isFodderMaxLevel = true
-          break
-        else
-          isFodderMaxLevel = false
-          break
-        end
-      end
-    end
-    if not isFodderMaxLevel and not fodderStarRegion:exists(Pattern("checkMons.png"), 0.1) then
-      click(fodderSlot7X)
-      fodderFound = true
-      return
-    else
-    end
-    if fodderFound then
-      return
-    end
-    firstScan = true
-    a = 45
-    while a > 0 do
-      if firstScan then
-        if a > 14 then
-          a = a - 5
-          levelString = "level" .. a .. ".png"
-        else
-          firstScan = false
-          a = 39
-          levelString = "level" .. a .. ".png"
-        end
-      else
-        a = a - 1
-        levelString = "level" .. a .. ".png"
-      end
-      if fodderSlot6Region:exists(Pattern(levelString):similar(accuracy), 0.1) then
-        fodderX = fodderSlot6Region:exists(Pattern(levelString):similar(accuracy), 0.1):getX()
-        fodderStarRegion = Region(fodderX - 175, 665, 180, 50)
-        showFodderCommand("slot 3: " .. levelString)
-        if a == 40 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 35 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 30 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 25 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 20 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 15 then
-          isFodderMaxLevel = true
-          break
-        else
-          isFodderMaxLevel = false
-          break
-        end
-      end
-    end
-    if not isFodderMaxLevel and not fodderStarRegion:exists(Pattern("checkMons.png"), 0.1) then
-      click(fodderSlot6X)
-      fodderFound = true
-      return
-    else
-    end
-    if fodderFound then
-      return
-    end
-    firstScan = true
-    a = 45
-    while a > 0 do
-      if firstScan then
-        if a > 14 then
-          a = a - 5
-          levelString = "level" .. a .. ".png"
-        else
-          firstScan = false
-          a = 39
-          levelString = "level" .. a .. ".png"
-        end
-      else
-        a = a - 1
-        levelString = "level" .. a .. ".png"
-      end
-      if fodderSlot5Region:exists(Pattern(levelString):similar(accuracy), 0.1) then
-        fodderX = fodderSlot5Region:exists(Pattern(levelString):similar(accuracy), 0.1):getX()
-        fodderStarRegion = Region(fodderX - 175, 665, 180, 50)
-        showFodderCommand("slot 4: " .. levelString)
-        if a == 40 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 35 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 30 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 25 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 20 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 15 then
-          isFodderMaxLevel = true
-          break
-        else
-          isFodderMaxLevel = false
-          break
-        end
-      end
-    end
-    if not isFodderMaxLevel and not fodderStarRegion:exists(Pattern("checkMons.png"), 0.1) then
-      click(fodderSlot5X)
-      fodderFound = true
-      return
-    else
-    end
-    if fodderFound then
-      return
-    end
-    firstScan = true
-    a = 45
-    while a > 0 do
-      if firstScan then
-        if a > 14 then
-          a = a - 5
-          levelString = "level" .. a .. ".png"
-        else
-          firstScan = false
-          a = 39
-          levelString = "level" .. a .. ".png"
-        end
-      else
-        a = a - 1
-        levelString = "level" .. a .. ".png"
-      end
-      if fodderSlot4Region:exists(Pattern(levelString):similar(accuracy), 0.1) then
-        fodderX = fodderSlot4Region:exists(Pattern(levelString):similar(accuracy), 0.1):getX()
-        fodderStarRegion = Region(fodderX - 175, 665, 180, 50)
-        showFodderCommand("slot 5: " .. levelString)
-        if a == 40 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 35 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 30 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 25 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 20 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 15 then
-          isFodderMaxLevel = true
-          break
-        else
-          isFodderMaxLevel = false
-          break
-        end
-      end
-    end
-    if not isFodderMaxLevel and not fodderStarRegion:exists(Pattern("checkMons.png"), 0.1) then
-      click(fodderSlot4X)
-      fodderFound = true
-      return
-    else
-    end
-    if fodderFound then
-      return
-    end
-    firstScan = true
-    a = 45
-    while a > 0 do
-      if firstScan then
-        if a > 14 then
-          a = a - 5
-          levelString = "level" .. a .. ".png"
-        else
-          firstScan = false
-          a = 39
-          levelString = "level" .. a .. ".png"
-        end
-      else
-        a = a - 1
-        levelString = "level" .. a .. ".png"
-      end
-      if fodderSlot3Region:exists(Pattern(levelString):similar(accuracy), 0.1) then
-        fodderX = fodderSlot3Region:exists(Pattern(levelString):similar(accuracy), 0.1):getX()
-        fodderStarRegion = Region(fodderX - 175, 665, 180, 50)
-        showFodderCommand("slot 6: " .. levelString)
-        if a == 40 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 35 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 30 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 25 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 20 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 15 then
-          isFodderMaxLevel = true
-          break
-        else
-          isFodderMaxLevel = false
-          break
-        end
-      end
-    end
-    if not isFodderMaxLevel and not fodderStarRegion:exists(Pattern("checkMons.png"), 0.1) then
-      click(fodderSlot3X)
-      fodderFound = true
-      return
-    else
-    end
-    if fodderFound then
-      return
-    end
-    firstScan = true
-    a = 45
-    while a > 0 do
-      if firstScan then
-        if a > 14 then
-          a = a - 5
-          levelString = "level" .. a .. ".png"
-        else
-          firstScan = false
-          a = 39
-          levelString = "level" .. a .. ".png"
-        end
-      else
-        a = a - 1
-        levelString = "level" .. a .. ".png"
-      end
-      if fodderSlot2Region:exists(Pattern(levelString):similar(accuracy), 0.1) then
-        fodderX = fodderSlot2Region:exists(Pattern(levelString):similar(accuracy), 0.1):getX()
-        fodderStarRegion = Region(fodderX - 175, 665, 180, 50)
-        showFodderCommand("slot 7: " .. levelString)
-        if a == 40 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 35 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 30 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 25 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 20 then
-          isFodderMaxLevel = true
-          break
-        elseif a == 15 then
-          isFodderMaxLevel = true
-          break
-        else
-          isFodderMaxLevel = false
-          break
-        end
-      end
-    end
-    if not isFodderMaxLevel and not fodderStarRegion:exists(Pattern("checkMons.png"), 0.1) then
-      click(fodderSlot2X)
-      fodderFound = true
-      return
-    else
-    end
-    if fodderFound then
-      return
-    end
-    moveLeftFodderList()
-    b = b - 1
-    a = 40
-    wait(2)
-    takeSnapshot()
+function FindEmptyFodderSlots()
+  bestMatchIndex = existsMultiMax(FodderSlotImages, FindEmptyFodderSlotsRegion)
+  if (bestMatchIndex == 1) then
+    fodderFill = 0
+  elseif (bestMatchIndex == 2) then
+    fodderFill = 1
+  elseif (bestMatchIndex == 3) then
+    fodderFill = 2
+  elseif (bestMatchIndex == 4) then
+    fodderFill = 3
+  elseif (bestMatchIndex == 5) then
+    fodderFill = 4
+  else
+    scriptExit("I can't find out how many fodder you need")
   end
-  usePreviousSnap(false)
+  bestMatchIndex = existsMultiMax(FodderSlotImages, FindFillFodderSlotsRegion)
+  if (bestMatchIndex == 1) then
+    fodderFill = fodderFill - 0
+  elseif (bestMatchIndex == 2) then
+    fodderFill = fodderFill - 1
+  elseif (bestMatchIndex == 3) then
+    fodderFill = fodderFill - 2
+  elseif (bestMatchIndex == 4) then
+    fodderFill = fodderFill - 3
+  elseif (bestMatchIndex == 5) then
+    fodderFill = fodderFill - 4
+  else
+    scriptExit("I can't find out how many fodder you need")
+  end
 end
 function fillEmptySlot()
-  usePreviousSnap(false)
-  if isSwitchFodderSlot1 and battleSlot1Region:exists(Pattern("emptySlot.png"), 0.1) then
-    if useFriendMons then
-      if not isUsedAllFriend then
-        clickFriend()
-      else
-        moveFodderList()
-        clickNonMaxFodder()
-      end
-    else
-      moveFodderList()
-      clickNonMaxFodder()
-    end
-  end
-  usePreviousSnap(false)
-  if isSwitchFodderSlot2 and battleSlot2Region:exists(Pattern("emptySlot.png"), 0.1) then
-    if useFriendMons then
-      if not isUsedAllFriend then
-        clickFriend()
-      else
-        moveFodderList()
-        clickNonMaxFodder()
-      end
-    else
-      moveFodderList()
-      clickNonMaxFodder()
-    end
-  end
-  usePreviousSnap(false)
-  if isSwitchFodderSlot3 and battleSlot3Region:exists(Pattern("emptySlot.png"), 0.1) then
-    if useFriendMons then
-      if not isUsedAllFriend then
-        clickFriend()
-      else
-        moveFodderList()
-        clickNonMaxFodder()
-      end
-    else
-      moveFodderList()
-      clickNonMaxFodder()
-    end
-  end
-  usePreviousSnap(false)
-  if isSwitchFodderSlot4 and battleSlot4Region:exists(Pattern("emptySlot.png"), 0.1) then
-    if useFriendMons then
-      if not isUsedAllFriend then
-        clickFriend()
-      else
-        moveFodderList()
-        clickNonMaxFodder()
-      end
-    else
-      moveFodderList()
-      clickNonMaxFodder()
-    end
-  end
-  usePreviousSnap(false)
-  isClickFriend = false
-  isMoveRightFodderList = false
-end
-function isBattleSlotMax(slot)
-  if slot == 1 then
-    local slotLevel = getBattleSlotLevel(1)
-    local slotStarLevel = getBattleSlotStarLevel(1)
-    showFodderCommand("slot 1: Star:" .. slotStarLevel .. " Level: " .. slotLevel)
-    if slotLevel >= 15 and slotStarLevel == 1 then
-      return true
-    elseif slotLevel >= 20 and slotStarLevel == 2 then
-      return true
-    elseif slotLevel >= 25 and slotStarLevel == 3 then
-      return true
-    elseif slotLevel >= 30 and slotStarLevel == 4 then
-      return true
-    elseif slotLevel >= 35 and slotStarLevel == 5 then
-      return true
-    elseif slotLevel == 40 and slotStarLevel == 6 then
-      return true
-    elseif slotStarLevel == 0 then
-    else
-      return false
-    end
-  elseif slot == 2 then
-    local slotLevel = getBattleSlotLevel(2)
-    local slotStarLevel = getBattleSlotStarLevel(2)
-    showFodderCommand("slot 2: Star:" .. slotStarLevel .. " Level: " .. slotLevel)
-    if slotLevel >= 15 and slotStarLevel == 1 then
-      return true
-    elseif slotLevel >= 20 and slotStarLevel == 2 then
-      return true
-    elseif slotLevel >= 25 and slotStarLevel == 3 then
-      return true
-    elseif slotLevel >= 30 and slotStarLevel == 4 then
-      return true
-    elseif slotLevel >= 35 and slotStarLevel == 5 then
-      return true
-    elseif slotLevel == 40 and slotStarLevel == 6 then
-      return true
-    elseif slotStarLevel == 0 then
-    else
-      return false
-    end
-  elseif slot == 3 then
-    local slotLevel = getBattleSlotLevel(3)
-    local slotStarLevel = getBattleSlotStarLevel(3)
-    showFodderCommand("slot 3: Star:" .. slotStarLevel .. " Level: " .. slotLevel)
-    if slotLevel >= 15 and slotStarLevel == 1 then
-      return true
-    elseif slotLevel >= 20 and slotStarLevel == 2 then
-      return true
-    elseif slotLevel >= 25 and slotStarLevel == 3 then
-      return true
-    elseif slotLevel >= 30 and slotStarLevel == 4 then
-      return true
-    elseif slotLevel >= 35 and slotStarLevel == 5 then
-      return true
-    elseif slotLevel == 40 and slotStarLevel == 6 then
-      return true
-    elseif slotStarLevel == 0 then
-    else
-      return false
-    end
-  elseif slot == 4 then
-    local slotLevel = getBattleSlotLevel(4)
-    local slotStarLevel = getBattleSlotStarLevel(4)
-    showFodderCommand("slot 4: Star:" .. slotStarLevel .. " Level: " .. slotLevel)
-    if slotLevel >= 15 and slotStarLevel == 1 then
-      return true
-    elseif slotLevel >= 20 and slotStarLevel == 2 then
-      return true
-    elseif slotLevel >= 25 and slotStarLevel == 3 then
-      return true
-    elseif slotLevel >= 30 and slotStarLevel == 4 then
-      return true
-    elseif slotLevel >= 35 and slotStarLevel == 5 then
-      return true
-    elseif slotLevel == 40 and slotStarLevel == 6 then
-      return true
-    elseif slotStarLevel == 0 then
-    else
-      return false
-    end
+  if battleSlot2Region:exists(Pattern("emptySlot.png"):similar(.7), 0.1) or battleSlot3Region:exists(Pattern("emptySlot.png"):similar(.7), 0.1) or battleSlot4Region:exists(Pattern("emptySlot.png"):similar(.7), 0.1) then
+    storageIconRegion:existsClick(Pattern("endOfFodderSlot.png"):similar(.7), 0.1)
+    fodderStorageOkRegion:exists(Pattern("ok.png"):similar(.7), 2)
+    FindEmptyFodderSlots()
+    StorageFodderScrollBottom()
+    StorageFodderEvaluater()
   end
 end
-function getBattleSlotStarLevel(slot)
-  if slot == 1 then
-    bestMatchIndex = existsMultiMax(battleSlotStarLevelImages, battleSlot1Region)
-    if (bestMatchIndex == 1) then
-      return 6
-    elseif (bestMatchIndex == 2) then
-      return 6
-    elseif (bestMatchIndex == 3) then
-      return 5
-    elseif (bestMatchIndex == 4) then
-      return 5
-    elseif (bestMatchIndex == 5) then
-      return 4
-    elseif (bestMatchIndex == 6) then
-      return 4
-    elseif (bestMatchIndex == 7) then
-      return 3
-    elseif (bestMatchIndex == 8) then
-      return 3
-    elseif (bestMatchIndex == 9) then
-      return 2
-    elseif (bestMatchIndex == 10) then
-      return 2
-    elseif (bestMatchIndex == 11) then
-      return 1
+function isBattleSlotMax()
+    if slot1Level >= 15 and slot1StarLevel == 1 then
+      slot1Max = true
+    elseif slot1Level >= 20 and slot1StarLevel == 2 then
+      slot1Max = true
+    elseif slot1Level >= 25 and slot1StarLevel == 3 then
+      slot1Max = true
+    elseif slot1Level >= 30 and slot1StarLevel == 4 then
+      slot1Max = true
+    elseif slot1Level >= 35 and slot1StarLevel == 5 then
+      slot1Max = true
+    elseif slot1Level == 40 and slot1StarLevel == 6 then
+      slot1Max = true
+    elseif slot1StarLevel == 0 then
     else
-      return 0
+      slot1Max = false
     end
-  elseif slot == 2 then
-    bestMatchIndex = existsMultiMax(battleSlotStarLevelImages, battleSlot2Region)
-    if (bestMatchIndex == 1) then
-      return 6
-    elseif (bestMatchIndex == 2) then
-      return 6
-    elseif (bestMatchIndex == 3) then
-      return 5
-    elseif (bestMatchIndex == 4) then
-      return 5
-    elseif (bestMatchIndex == 5) then
-      return 4
-    elseif (bestMatchIndex == 6) then
-      return 4
-    elseif (bestMatchIndex == 7) then
-      return 3
-    elseif (bestMatchIndex == 8) then
-      return 3
-    elseif (bestMatchIndex == 9) then
-      return 2
-    elseif (bestMatchIndex == 10) then
-      return 2
-    elseif (bestMatchIndex == 11) then
-      return 1
+    if slot2Level >= 15 and slot2StarLevel == 1 then
+      slot2Max = true
+    elseif slot2Level >= 20 and slot2StarLevel == 2 then
+      slot2Max = true
+    elseif slot2Level >= 25 and slot2StarLevel == 3 then
+      slot2Max = true
+    elseif slot2Level >= 30 and slot2StarLevel == 4 then
+      slot2Max = true
+    elseif slot2Level >= 35 and slot2StarLevel == 5 then
+      slot2Max = true
+    elseif slot2Level == 40 and slot2StarLevel == 6 then
+      slot2Max = true
+    elseif slot2StarLevel == 0 then
     else
-      return 0
+      slot2Max = false
     end
-  elseif slot == 3 then
-    bestMatchIndex = existsMultiMax(battleSlotStarLevelImages, battleSlot3Region)
-    if (bestMatchIndex == 1) then
-      return 6
-    elseif (bestMatchIndex == 2) then
-      return 6
-    elseif (bestMatchIndex == 3) then
-      return 5
-    elseif (bestMatchIndex == 4) then
-      return 5
-    elseif (bestMatchIndex == 5) then
-      return 4
-    elseif (bestMatchIndex == 6) then
-      return 4
-    elseif (bestMatchIndex == 7) then
-      return 3
-    elseif (bestMatchIndex == 8) then
-      return 3
-    elseif (bestMatchIndex == 9) then
-      return 2
-    elseif (bestMatchIndex == 10) then
-      return 2
-    elseif (bestMatchIndex == 11) then
-      return 1
+    if slot3Level >= 15 and slot3StarLevel == 1 then
+      slot3Max = true
+    elseif slot3Level >= 20 and slot3StarLevel == 2 then
+      slot3Max = true
+    elseif slot3Level >= 25 and slot3StarLevel == 3 then
+      slot3Max = true
+    elseif slot3Level >= 30 and slot3StarLevel == 4 then
+      slot3Max = true
+    elseif slot3Level >= 35 and slot3StarLevel == 5 then
+      slot3Max = true
+    elseif slot3Level == 40 and slot3StarLevel == 6 then
+      slot3Max = true
+    elseif slot3StarLevel == 0 then
     else
-      return 0
+      slot3Max = false
     end
-  elseif slot == 4 then
-    bestMatchIndex = existsMultiMax(battleSlotStarLevelImages, battleSlot4Region)
-    if (bestMatchIndex == 1) then
-      return 6
-    elseif (bestMatchIndex == 2) then
-      return 6
-    elseif (bestMatchIndex == 3) then
-      return 5
-    elseif (bestMatchIndex == 4) then
-      return 5
-    elseif (bestMatchIndex == 5) then
-      return 4
-    elseif (bestMatchIndex == 6) then
-      return 4
-    elseif (bestMatchIndex == 7) then
-      return 3
-    elseif (bestMatchIndex == 8) then
-      return 3
-    elseif (bestMatchIndex == 9) then
-      return 2
-    elseif (bestMatchIndex == 10) then
-      return 2
-    elseif (bestMatchIndex == 11) then
-      return 1
+    if slot4Level >= 15 and slot4StarLevel == 1 then
+      slot4Max = true
+    elseif slot4Level >= 20 and slot4StarLevel == 2 then
+      slot4Max = true
+    elseif slot4Level >= 25 and slot4StarLevel == 3 then
+      slot4Max = true
+    elseif slot4Level >= 30 and slot4StarLevel == 4 then
+      slot4Max = true
+    elseif slot4Level >= 35 and slot4StarLevel == 5 then
+      slot4Max = true
+    elseif slot4Level == 40 and slot4StarLevel == 6 then
+      slot4Max = true
+    elseif slot4StarLevel == 0 then
     else
-      return 0
+      slot4Max = false
     end
-  end
 end
-function getBattleSlotLevel(slot)
-  if slot == 1 then
-    bestMatchIndex = existsMultiMax(levelBattleImages, battleSlot1Region)
-    if (bestMatchIndex == 1) then
-      return 40
-    elseif (bestMatchIndex == 2) then
-      return 35
-    elseif (bestMatchIndex == 3) then
-      return 30
-    elseif (bestMatchIndex == 4) then
-      return 25
-    elseif (bestMatchIndex == 5) then
-      return 20
-    elseif (bestMatchIndex == 6) then
-      return 15
-    else
-      return 0
+function getBattleSlotStarLevel()
+    local r, g, b = getColor(Location(540, 232))
+  usePreviousSnap(true)
+    if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+      slot1StarLevel = 6
+    elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+      slot1StarLevel = 6
+    elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+      slot1StarLevel = 6
+    else local r, g, b = getColor(Location(517, 232))
+      if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+        slot1StarLevel = 5
+      elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+        slot1StarLevel = 5
+      elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+        slot1StarLevel = 5
+      else local r, g, b = getColor(Location(494, 232))
+        if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+          slot1StarLevel = 4
+        elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+          slot1StarLevel = 4
+        elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+          slot1StarLevel = 4
+        else local r, g, b = getColor(Location(471, 232))
+          if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+            slot1StarLevel = 3
+          elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+            slot1StarLevel = 3
+          elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+            slot1StarLevel = 3
+          else local r, g, b = getColor(Location(448, 232))
+            if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+              slot1StarLevel = 2
+            elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+              slot1StarLevel = 2
+            elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+              slot1StarLevel = 2
+            else local r, g, b = getColor(Location(425, 232))
+              if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+                slot1StarLevel = 1
+              elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+                slot1StarLevel = 1
+              elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+                slot1StarLevel = 1
+              else
+                slot1StarLevel = 0
+              end
+            end
+          end
+        end
+      end
     end
-  elseif slot == 2 then
-    bestMatchIndex = existsMultiMax(levelBattleImages, battleSlot2Region)
-    if (bestMatchIndex == 1) then
-      return 40
-    elseif (bestMatchIndex == 2) then
-      return 35
-    elseif (bestMatchIndex == 3) then
-      return 30
-    elseif (bestMatchIndex == 4) then
-      return 25
-    elseif (bestMatchIndex == 5) then
-      return 20
-    elseif (bestMatchIndex == 6) then
-      return 15
-    else
-      return 0
+    local r, g, b = getColor(Location(344, 337))
+    if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+      slot2StarLevel = 6
+    elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+      slot2StarLevel = 6
+    elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+      slot2StarLevel = 6
+    else local r, g, b = getColor(Location(321, 337))
+      if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+        slot2StarLevel = 5
+      elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+        slot2StarLevel = 5
+      elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+        slot2StarLevel = 5
+      else local r, g, b = getColor(Location(298, 337))
+        if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+          slot2StarLevel = 4
+        elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+          slot2StarLevel = 4
+        elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+          slot2StarLevel = 4
+        else local r, g, b = getColor(Location(275, 337))
+          if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+            slot2StarLevel = 3
+          elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+            slot2StarLevel = 3
+          elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+            slot2StarLevel = 3
+          else local r, g, b = getColor(Location(252, 337))
+            if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+              slot2StarLevel = 2
+            elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+              slot2StarLevel = 2
+            elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+              slot2StarLevel = 2
+            else local r, g, b = getColor(Location(229, 337))
+              if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+                slot2StarLevel = 1
+              elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+                slot2StarLevel = 1
+              elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+                slot2StarLevel = 1
+              else
+                slot2StarLevel = 0
+              end
+            end
+          end
+        end
+      end
     end
-  elseif slot == 3 then
-    bestMatchIndex = existsMultiMax(levelBattleImages, battleSlot3Region)
-    if (bestMatchIndex == 1) then
-      return 40
-    elseif (bestMatchIndex == 2) then
-      return 35
-    elseif (bestMatchIndex == 3) then
-      return 30
-    elseif (bestMatchIndex == 4) then
-      return 25
-    elseif (bestMatchIndex == 5) then
-      return 20
-    elseif (bestMatchIndex == 6) then
-      return 15
-    else
-      return 0
+    local r, g, b = getColor(Location(736, 337))
+    if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+      slot3StarLevel = 6
+    elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+      slot3StarLevel = 6
+    elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+      slot3StarLevel = 6
+    else local r, g, b = getColor(Location(713, 337))
+      if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+        slot3StarLevel = 5
+      elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+        slot3StarLevel = 5
+      elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+        slot3StarLevel = 5
+      else local r, g, b = getColor(Location(690, 337))
+        if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+          slot3StarLevel = 4
+        elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+          slot3StarLevel = 4
+        elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+          slot3StarLevel = 4
+        else local r, g, b = getColor(Location(667, 337))
+          if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+            slot3StarLevel = 3
+          elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+            slot3StarLevel = 3
+          elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+            slot3StarLevel = 3
+          else local r, g, b = getColor(Location(644, 337))
+            if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+              slot3StarLevel = 2
+            elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+              slot3StarLevel = 2
+            elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+              slot3StarLevel = 2
+            else local r, g, b = getColor(Location(621, 337))
+              if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+                slot3StarLevel = 1
+              elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+                slot3StarLevel = 1
+              elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+                slot3StarLevel = 1
+              else
+                slot3StarLevel = 0
+              end
+            end
+          end
+        end
+      end
     end
-  elseif slot == 4 then
-    bestMatchIndex = existsMultiMax(levelBattleImages, battleSlot4Region)
-    if (bestMatchIndex == 1) then
-      return 40
-    elseif (bestMatchIndex == 2) then
-      return 35
-    elseif (bestMatchIndex == 3) then
-      return 30
-    elseif (bestMatchIndex == 4) then
-      return 25
-    elseif (bestMatchIndex == 5) then
-      return 20
-    elseif (bestMatchIndex == 6) then
-      return 15
-    else
-      return 0
+    local r, g, b = getColor(Location(540, 441))
+    if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+      slot4StarLevel = 6
+    elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+      slot4StarLevel = 6
+    elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+      slot4StarLevel = 6
+    else local r, g, b = getColor(Location(517, 441))
+      if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+        slot4StarLevel = 5
+      elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+        slot4StarLevel = 5
+      elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+        slot4StarLevel = 5
+      else local r, g, b = getColor(Location(494, 441))
+        if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+          slot4StarLevel = 4
+        elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+          slot4StarLevel = 4
+        elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+          slot4StarLevel = 4
+        else local r, g, b = getColor(Location(471, 441))
+          if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+            slot4StarLevel = 3
+          elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+            slot4StarLevel = 3
+          elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+            slot4StarLevel = 3
+          else local r, g, b = getColor(Location(448, 441))
+            if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+              slot4StarLevel = 2
+            elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+              slot4StarLevel = 2
+            elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+              slot4StarLevel = 2
+            else local r, g, b = getColor(Location(425, 441))
+              if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
+                slot4StarLevel = 1
+              elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
+                slot4StarLevel = 1
+              elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
+                slot4StarLevel = 1
+              else
+                slot4StarLevel = 0
+              end
+            end
+          end
+        end
+      end
     end
+  usePreviousSnap(false)
+  end
+function getBattleSlotLevel()
+  local accuracy = .8
+  if battleSlot1Region:exists(Pattern("level40Battle.png"):similar(accuracy), 0.1) then
+    slot1Level = 40
+  elseif battleSlot1Region:exists(Pattern("level35Battle.png"):similar(accuracy), 0.1) then
+    slot1Level = 35
+  elseif battleSlot1Region:exists(Pattern("level30Battle.png"):similar(accuracy), 0.1) then
+    slot1Level = 30
+  elseif battleSlot1Region:exists(Pattern("level25Battle.png"):similar(accuracy), 0.1) then
+    slot1Level = 25
+  elseif battleSlot1Region:exists(Pattern("level20Battle.png"):similar(accuracy), 0.1) then
+    slot1Level = 20
+  elseif battleSlot1Region:exists(Pattern("level15Battle.png"):similar(accuracy), 0.1) then
+    slot1Level = 15
+  else
+    slot1Level = 0
+  end
+  if battleSlot2Region:exists(Pattern("level40Battle.png"):similar(accuracy), 0.1) then
+    slot2Level = 40
+  elseif battleSlot2Region:exists(Pattern("level35Battle.png"):similar(accuracy), 0.1) then
+    slot2Level = 35
+  elseif battleSlot2Region:exists(Pattern("level30Battle.png"):similar(accuracy), 0.1) then
+    slot2Level = 30
+  elseif battleSlot2Region:exists(Pattern("level25Battle.png"):similar(accuracy), 0.1) then
+    slot2Level = 25
+  elseif battleSlot2Region:exists(Pattern("level20Battle.png"):similar(accuracy), 0.1) then
+    slot2Level = 20
+  elseif battleSlot2Region:exists(Pattern("level15Battle.png"):similar(accuracy), 0.1) then
+    slot2Level = 15
+  else
+    slot2Level = 0
+  end
+  if battleSlot3Region:exists(Pattern("level40Battle.png"):similar(accuracy), 0.1) then
+    slot3Level = 40
+  elseif battleSlot3Region:exists(Pattern("level35Battle.png"):similar(accuracy), 0.1) then
+    slot3Level = 35
+  elseif battleSlot3Region:exists(Pattern("level30Battle.png"):similar(accuracy), 0.1) then
+    slot3Level = 30
+  elseif battleSlot3Region:exists(Pattern("level25Battle.png"):similar(accuracy), 0.1) then
+    slot3Level = 25
+  elseif battleSlot3Region:exists(Pattern("level20Battle.png"):similar(accuracy), 0.1) then
+    slot3Level = 20
+  elseif battleSlot3Region:exists(Pattern("level15Battle.png"):similar(accuracy), 0.1) then
+    slot3Level = 15
+  else
+    slot3Level = 0
+  end
+  if battleSlot4Region:exists(Pattern("level40Battle.png"):similar(accuracy), 0.1) then
+    slot4Level = 40
+  elseif battleSlot4Region:exists(Pattern("level35Battle.png"):similar(accuracy), 0.1) then
+    slot4Level = 35
+  elseif battleSlot4Region:exists(Pattern("level30Battle.png"):similar(accuracy), 0.1) then
+    slot4Level = 30
+  elseif battleSlot4Region:exists(Pattern("level25Battle.png"):similar(accuracy), 0.1) then
+    slot4Level = 25
+  elseif battleSlot4Region:exists(Pattern("level20Battle.png"):similar(accuracy), 0.1) then
+    slot4Level = 20
+  elseif battleSlot4Region:exists(Pattern("level15Battle.png"):similar(accuracy), 0.1) then
+    slot4Level = 15
+  else
+    slot4Level = 0
   end
 end
 function replaceEmptyBattleSlot()
@@ -2120,11 +1805,14 @@ function replaceEmptyBattleSlot()
 end
 function checkMaxLevel()
   if stopMaxLevel then
-    if slot2MaxLevelRegion:exists(Pattern("maxLevel.png"), 2) then
+    getBattleSlotStarLevel()
+    getBattleSlotLevel()
+    isBattleSlotMax()
+    if slot2Max == true then
       isMaxLevel = true
-    elseif slot4MaxLevelRegion:exists(Pattern("maxLevel.png"), 0.1) then
+    elseif slot3Max == true then
       isMaxLevel = true
-    elseif slot3MaxLevelRegion:exists(Pattern("maxLevel.png"), 0.1) then
+    elseif slot4Max == true then
       isMaxLevel = true
     end
   end
