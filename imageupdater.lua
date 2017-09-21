@@ -220,7 +220,6 @@ httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/star2Select.png", imagePath .."star2Select.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/star3BattlePink.png", imagePath .."star3BattlePink.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/star3BattleWhite.png", imagePath .."star3BattleWhite.png")
-httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/star3BattleYellow.png", imagePath .."star3BattleYellow.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/star3Select.png", imagePath .."star3Select.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/star4BattlePink.png", imagePath .."star4BattlePink.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/star4BattleWhite.png", imagePath .."star4BattleWhite.png")
