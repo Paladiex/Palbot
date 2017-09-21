@@ -118,7 +118,7 @@ httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/mapHallOfDark.png", imagePath .."mapHallOfDark.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/mapHallOfFire.png", imagePath .."mapHallOfFire.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/mapHallOfLight.png", imagePath .."mapHallOfLight.png")
-httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/mapHallOfMagic.png", imagePath .."mapHallOfMagic.png")
+httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/mapHallofMagic.png", imagePath .."mapHallofMagic.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/mapHallOfWater.png", imagePath .."mapHallOfWater.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/mapHallOfWind.png", imagePath .."mapHallOfWind.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/mapHydeni.png", imagePath .."mapHydeni.png")
