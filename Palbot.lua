@@ -1392,8 +1392,7 @@ function StorageFodderEvaluater()
       if monLevelSpot:exists(Pattern("maxFodder40.png"):similar(.90), 0.1) then
         scriptExit("No more monsters to max!")
       end
-    elseif monLevelSpot:exists(Pattern("emptyFodder.png"):similar(.80), 0.1) then
-        print("empty")
+    elseif monLevelSpot:exists(Pattern("emptyFodder.png"):similar(.65), 0.1) then
     elseif checkMonsRegion:exists(Pattern("checkMons.png"):similar(.70), 0.1) then
     else
       if fodderFill > 0 then
