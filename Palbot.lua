@@ -1392,8 +1392,8 @@ function StorageFodderEvaluater()
       if monLevelSpot:exists(Pattern("maxFodder40.png"):similar(.90), 0.1) then
         scriptExit("No more monsters to max!")
       end
-    elseif monLevelSpot:exists(Pattern("emptyFodder.png"):similar(.80), 0.1) then
-    elseif checkMonsRegion:exists(Pattern("checkMons.png"):similar(.80), 0.1) then
+    elseif monLevelSpot:exists(Pattern("emptyFodder.png"):similar(.70), 0.1) then
+    elseif checkMonsRegion:exists(Pattern("checkMons.png"):similar(.70), 0.1) then
     else
       if fodderFill > 0 then
         click(Location (1511 - monX*156, 830 - monY*156))
@@ -1422,38 +1422,28 @@ function FindEmptyFodderSlots()
   bestMatchIndex = existsMultiMax(FodderSlotImages, FindEmptyFodderSlotsRegion)
   if (bestMatchIndex == 1) then
     fodderFill = 0
-    print(bestMatchIndex)
   elseif (bestMatchIndex == 2) then
     fodderFill = 1
-    print(bestMatchIndex)
   elseif (bestMatchIndex == 3) then
     fodderFill = 2
-    print(bestMatchIndex)
   elseif (bestMatchIndex == 4) then
     fodderFill = 3
-    print(bestMatchIndex)
   elseif (bestMatchIndex == 5) then
     fodderFill = 4
-    print(bestMatchIndex)
   else
     scriptExit("I can't find out how many fodder you need")
   end
   bestMatchIndex = existsMultiMax(FodderSlotImages, FindFillFodderSlotsRegion)
   if (bestMatchIndex == 1) then
     fodderFill = fodderFill - 0
-    print(bestMatchIndex)
   elseif (bestMatchIndex == 2) then
     fodderFill = fodderFill - 1
-    print(bestMatchIndex)
   elseif (bestMatchIndex == 3) then
     fodderFill = fodderFill - 2
-    print(bestMatchIndex)
   elseif (bestMatchIndex == 4) then
     fodderFill = fodderFill - 3
-    print(bestMatchIndex)
   elseif (bestMatchIndex == 5) then
     fodderFill = fodderFill - 4
-    print(bestMatchIndex)
   else
     scriptExit("I can't find out how many fodder you need")
   end
