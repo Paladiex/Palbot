@@ -1400,6 +1400,8 @@ function StorageFodderEvaluater()
         fodderFill = fodderFill - 1
         if fodderFill < 1 then
           fodderStorageOkRegion:click(Pattern("ok.png"):similar(.80))
+          monX = 0
+          monY = 0
           evaluateStorage = false
         end
       end
