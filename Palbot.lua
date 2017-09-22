@@ -510,6 +510,8 @@ function dialogBox()
   }
   addSpinner("refillOption", spinnerRefillOption, spinnerRefillOption[1])
   addTextView("  (refill options)")
+  addEditNumber("storageMonsters", 0)
+  addTextView("(Must select Auto-Switch)")
   newRow()
   addCheckBox("dim", "Dim Screen", false)
   addTextView("  ")
@@ -1406,7 +1408,7 @@ function StorageFodderEvaluater()
   end
 end
 function StorageFodderScrollBottom()
-  local a = 15
+  local a = (storageMonsters / 32)
   while a > 0 do
     dragDrop(Location(574, 581), Location(574, 273))
     wait (.1)
