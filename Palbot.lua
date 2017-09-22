@@ -172,7 +172,7 @@ mainStatRegion = Region(760, 350, 400, 60)
 runeSlotRegion = Region(630, 340, 130, 130)
 runeRarityRegion = Region(725, 445, 20, 20)
 runeRankRegion = Region(630, 350, 130, 30)
-grindstoneRegion = Region(750, 350, 350, 150)
+grindstoneRegion = Region(760, 450, 540, 140)
 enchantedGemRegion = Region(750, 350, 350, 150)
 raidJoinRegion = Region(1300, 845, 250, 65)
 raidReadyRegion = Region(1550, 950, 250, 75)
@@ -1422,28 +1422,38 @@ function FindEmptyFodderSlots()
   bestMatchIndex = existsMultiMax(FodderSlotImages, FindEmptyFodderSlotsRegion)
   if (bestMatchIndex == 1) then
     fodderFill = 0
+    print(bestMatchIndex)
   elseif (bestMatchIndex == 2) then
     fodderFill = 1
+    print(bestMatchIndex)
   elseif (bestMatchIndex == 3) then
     fodderFill = 2
+    print(bestMatchIndex)
   elseif (bestMatchIndex == 4) then
     fodderFill = 3
+    print(bestMatchIndex)
   elseif (bestMatchIndex == 5) then
     fodderFill = 4
+    print(bestMatchIndex)
   else
     scriptExit("I can't find out how many fodder you need")
   end
   bestMatchIndex = existsMultiMax(FodderSlotImages, FindFillFodderSlotsRegion)
   if (bestMatchIndex == 1) then
     fodderFill = fodderFill - 0
+    print(bestMatchIndex)
   elseif (bestMatchIndex == 2) then
     fodderFill = fodderFill - 1
+    print(bestMatchIndex)
   elseif (bestMatchIndex == 3) then
     fodderFill = fodderFill - 2
+    print(bestMatchIndex)
   elseif (bestMatchIndex == 4) then
     fodderFill = fodderFill - 3
+    print(bestMatchIndex)
   elseif (bestMatchIndex == 5) then
     fodderFill = fodderFill - 4
+    print(bestMatchIndex)
   else
     scriptExit("I can't find out how many fodder you need")
   end
