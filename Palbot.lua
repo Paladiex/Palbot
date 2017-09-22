@@ -1410,7 +1410,7 @@ end
 function StorageFodderScrollBottom()
   local a = (storageMonsters / 32)
   while a > 0 do
-    dragDrop(Location(574, 581), Location(574, 273))
+    dragDrop(Location(574, 583), Location(574, 273))
     wait (.1)
     dragDrop(Location(574, 582), Location(574, 273))
     a = a - 1
