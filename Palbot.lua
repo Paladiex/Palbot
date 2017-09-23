@@ -1384,6 +1384,7 @@ function StorageFodderEvaluater()
       dragDrop(Location(574, 273), Location(574, 582))
       wait (.1)
       dragDrop(Location(574, 273), Location(574, 583))
+      wait(.1)
     end
     monLevelSpot = Region(1436 - monX*156, 830 - monY*156, 150, 55)
     checkMonsRegion = Region(1491 - monX*156, 725 - monY*156, 90, 60)
