@@ -1381,10 +1381,7 @@ function StorageFodderEvaluater()
     if monX > 7 then monX = 0 monY = monY+1
     end
     if monY > 3 then monY = 0
-      dragDrop(Location(574, 273), Location(574, 582))
-      wait (.1)
-      dragDrop(Location(574, 273), Location(574, 583))
-      a = a + 1
+      swipe(Location(741, 741), Location(741, 122))
     end
     monLevelSpot = Region(1436 - monX*156, 830 - monY*156, 150, 55)
     checkMonsRegion = Region(1491 - monX*156, 725 - monY*156, 90, 60)
