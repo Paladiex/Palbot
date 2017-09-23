@@ -1452,7 +1452,7 @@ function fillEmptySlot()
     fodderStorageOkRegion:exists(Pattern("ok.png"):similar(.7), 2)
     FindEmptyFodderSlots()
     StorageFodderScrollBottom()
-    wait(.1)
+    wait(.5)
     StorageFodderEvaluater()
   end
 end
