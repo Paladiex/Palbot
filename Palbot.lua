@@ -1388,11 +1388,12 @@ function StorageFodderEvaluater()
     end
     monLevelSpot = Region(1436 - monX*156, 830 - monY*156, 150, 55)
     checkMonsRegion = Region(1491 - monX*156, 725 - monY*156, 90, 60)
+    emptyFodderRegion = Region(1450 - monX*156, 750 - monY*156, 120, 110)
     if  monLevelSpot:exists(Pattern("maxFodder.png"):similar(.80), 0.1) then
       if monLevelSpot:exists(Pattern("maxFodder40.png"):similar(.90), 0.1) then
         scriptExit("No more monsters to max!")
       end
-    elseif monLevelSpot:exists(Pattern("emptyFodder.png"):similar(.65), 0.1) then
+    elseif emptyFodderRegion:exists(Pattern("emptyFodder.png"):similar(.7), 0.1) then
     elseif checkMonsRegion:exists(Pattern("checkMons.png"):similar(.70), 0.1) then
     else
       if fodderFill > 0 then

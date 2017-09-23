@@ -1,2 +1,2 @@
-botVersion = "1.3.0"
-imageLibraryVersion = "1.0.0"
+botVersion = "1.0.0"
+imageLibraryVersion = "0.0.0"
