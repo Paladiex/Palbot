@@ -2420,15 +2420,10 @@ function liveArenaBattle()
   end
 end
 function closeArenaDialogBox()
-  toast("Close Arena Dialog Box")
-  arenaXRegion:highlight(2)
   arenaXRegion:existsClick(Pattern("closeX.png"), 2)
-  toast("Exit Arena Screen")
-  backButtonRegion:highlight(2)
   existsClick(Pattern("back2Button.png"):similar(.6), 3)
 end
 function closeCairoDungeonDialogBox()
-  closeXCairoDungeonRegion:highlight(2)
   closeXCairoDungeonRegion:existsClick(Pattern("closeX.png"), 2)
 end
 function closeScenarioDialogBox()
@@ -3653,7 +3648,6 @@ function findScenario()
   if existsDialogScenario() then
     clickScenarioStage()
   elseif dropInfoRegion:exists(Pattern("dropInfo.png"):similar(imgAccuracy), 0.1) then
-  	toast("Drop info close")
     closeDialogScenarioRegion:existsClick(Pattern("closeX.png"):similar(imgAccuracy), 2)
     clickScenario()
     clickScenarioStage()
