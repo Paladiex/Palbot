@@ -173,7 +173,7 @@ mainStatRegion = Region(760, 350, 400, 60)
 runeSlotRegion = Region(630, 340, 130, 130)
 runeRarityRegion = Region(725, 445, 20, 20)
 runeRankRegion = Region(630, 350, 130, 30)
-grindstoneRegion = Region(760, 450, 540, 140)
+grindstoneRegion = Region(760, 450, 300, 100)
 enchantedGemRegion = Region(750, 350, 350, 150)
 raidJoinRegion = Region(1300, 845, 250, 65)
 raidReadyRegion = Region(1550, 950, 250, 75)
@@ -1519,49 +1519,48 @@ function isBattleSlotMax()
     end
 end
 function getBattleSlotStarLevel()
-	local testlocreg = Region(0, 0, 540, 232)
     local r, g, b = getColor(Location(540, 232))
   usePreviousSnap(true)
-    if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+    if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
       slot1StarLevel = 6
-    elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+    elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
       slot1StarLevel = 6
-    elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+    elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
       slot1StarLevel = 6
     else local r, g, b = getColor(Location(517, 232))
-      if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+      if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
         slot1StarLevel = 5
-      elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+      elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
         slot1StarLevel = 5
-      elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+      elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
         slot1StarLevel = 5
       else local r, g, b = getColor(Location(494, 232))
-        if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+        if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
           slot1StarLevel = 4
-        elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+        elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
           slot1StarLevel = 4
-        elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+        elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
           slot1StarLevel = 4
         else local r, g, b = getColor(Location(471, 232))
-          if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+          if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
             slot1StarLevel = 3
-          elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+          elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
             slot1StarLevel = 3
-          elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+          elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
             slot1StarLevel = 3
           else local r, g, b = getColor(Location(448, 232))
-            if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+            if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
               slot1StarLevel = 2
-            elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+            elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
               slot1StarLevel = 2
-            elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+            elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
               slot1StarLevel = 2
             else local r, g, b = getColor(Location(425, 232))
-              if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+              if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
                 slot1StarLevel = 1
-              elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+              elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
                 slot1StarLevel = 1
-              elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+              elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
                 slot1StarLevel = 1
               else
                 slot1StarLevel = 0
@@ -1572,63 +1571,63 @@ function getBattleSlotStarLevel()
       end
     end
     local r, g, b = getColor(Location(344, 337))
-    if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+    if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
       slot2StarLevel = 6
       toast("slot2star 6")
-    elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+    elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
       slot2StarLevel = 6
       toast("slot2star 6")
-    elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+    elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
       slot2StarLevel = 6
       toast("slot2star 6")
     else local r, g, b = getColor(Location(321, 337))
-      if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+      if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
         slot2StarLevel = 5
         toast("slot2star 5")
-      elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+      elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
         slot2StarLevel = 5
         toast("slot2star 5")
-      elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+      elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
         slot2StarLevel = 5
         toast("slot2star 5")
       else local r, g, b = getColor(Location(298, 337))
-        if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+        if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
           slot2StarLevel = 4
           toast("slot2star 4")
-        elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+        elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
           slot2StarLevel = 4
           toast("slot2star 4")
-        elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+        elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
           slot2StarLevel = 4
           toast("slot2star 4")
         else local r, g, b = getColor(Location(275, 337))
-          if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+          if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
             slot2StarLevel = 3
             toast("slot2star 3")
-          elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+          elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
             slot2StarLevel = 3
             toast("slot2star 3")
-          elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+          elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
             slot2StarLevel = 3
             toast("slot2star 3")
           else local r, g, b = getColor(Location(252, 337))
-            if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+            if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
               slot2StarLevel = 2
               toast("slot2star 2")
-            elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+            elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
               slot2StarLevel = 2
               toast("slot2star 2")
-            elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+            elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
               slot2StarLevel = 2
               toast("slot2star 2")
             else local r, g, b = getColor(Location(229, 337))
-              if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+              if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
                 slot2StarLevel = 1
                 toast("slot2star 1")
-              elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+              elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
                 slot2StarLevel = 1
                 toast("slot2star 1")
-              elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+              elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
                 slot2StarLevel = 1
                 toast("slot2star 1")
               else
@@ -1641,63 +1640,63 @@ function getBattleSlotStarLevel()
       end
     end
     local r, g, b = getColor(Location(736, 337))
-    if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+    if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
       slot3StarLevel = 6
       toast("slot3star 6")
-    elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+    elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
       slot3StarLevel = 6
       toast("slot3star 6")
-    elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+    elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
       slot3StarLevel = 6
       toast("slot3star 6")
     else local r, g, b = getColor(Location(713, 337))
-      if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+      if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
         slot3StarLevel = 5
         toast("slot3star 5")
-      elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+      elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
         slot3StarLevel = 5
         toast("slot3star 5")
-      elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+      elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
         slot3StarLevel = 5
         toast("slot3star 5")
       else local r, g, b = getColor(Location(690, 337))
-        if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+        if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
           slot3StarLevel = 4
           toast("slot3star 4")
-        elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+        elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
           slot3StarLevel = 4
           toast("slot3star 4")
-        elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+        elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
           slot3StarLevel = 4
           toast("slot3star 4")
         else local r, g, b = getColor(Location(667, 337))
-          if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+          if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
             slot3StarLevel = 3
             toast("slot3star 3")
-          elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+          elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
             slot3StarLevel = 3
             toast("slot3star 3")
-          elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+          elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
             slot3StarLevel = 3
             toast("slot3star 3")
           else local r, g, b = getColor(Location(644, 337))
-            if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+            if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
               slot3StarLevel = 2
               toast("slot3star 2")
-            elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+            elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
               slot3StarLevel = 2
               toast("slot3star 2")
-            elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+            elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
               slot3StarLevel = 2
               toast("slot3star 2")
             else local r, g, b = getColor(Location(621, 337))
-              if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+              if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
                 slot3StarLevel = 1
                 toast("slot3star 1")
-              elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+              elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
                 slot3StarLevel = 1
                 toast("slot3star 1")
-              elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+              elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
                 slot3StarLevel = 1
                 toast("slot3star 1")
               else
@@ -1710,63 +1709,63 @@ function getBattleSlotStarLevel()
       end
     end
     local r, g, b = getColor(Location(540, 441))
-    if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+    if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
       slot4StarLevel = 6
       toast("slot4star 6")
-    elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+    elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
       slot4StarLevel = 6
       toast("slot4star 6")
-    elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+    elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
       slot4StarLevel = 6
       toast("slot4star 6")
     else local r, g, b = getColor(Location(517, 441))
-      if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+      if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
         slot4StarLevel = 5
         toast("slot4star 5")
-      elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+      elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
         slot4StarLevel = 5
         toast("slot4star 5")
-      elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+      elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
         slot4StarLevel = 5
         toast("slot4star 5")
       else local r, g, b = getColor(Location(494, 441))
-        if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+        if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
           slot4StarLevel = 4
           toast("slot4star 4")
-        elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+        elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
           slot4StarLevel = 4
           toast("slot4star 4")
-        elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+        elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
           slot4StarLevel = 4
           toast("slot4star 4")
         else local r, g, b = getColor(Location(471, 441))
-          if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+          if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
             slot4StarLevel = 3
             toast("slot4star 3")
-          elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+          elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
             slot4StarLevel = 3
             toast("slot4star 3")
-          elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+          elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
             slot4StarLevel = 3
             toast("slot4star 3")
           else local r, g, b = getColor(Location(448, 441))
-            if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+            if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
               slot4StarLevel = 2
               toast("slot4star 2")
-            elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+            elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
               slot4StarLevel = 2
               toast("slot4star 2")
-            elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+            elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
               slot4StarLevel = 2
               toast("slot4star 2")
             else local r, g, b = getColor(Location(425, 441))
-              if r > 230 and r < 240 and g > 230 and g < 240  and b > 230 and b < 240 then
+              if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
                 slot4StarLevel = 1
                 toast("slot4star 1")
-              elseif r > 240 and r < 260 and g > 50 and g < 70  and b > 210 and b < 260 then
+              elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
                 slot4StarLevel = 1
                 toast("slot4star 1")
-              elseif r > 250 and r < 260 and g > 200 and g < 210 and b > 10 and b < 15  then
+              elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
                 slot4StarLevel = 1
                 toast("slot4star 1")
               else
@@ -2137,7 +2136,7 @@ function runeKeep3 ()
   end
 end
 function sellGetRune ()
-  if grindstoneRegion:exists(Pattern("grindstone.png"):similar(.6), 0.1) then
+  if grindstoneRegion:exists(Pattern("grindTilde.png"):similar(.8), 0.1) then
     getRune()
   elseif enchantedGemRegion:exists(Pattern("enchantedGem.png"):similar(.6), 0.1) then
     getRune()
