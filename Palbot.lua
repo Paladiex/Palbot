@@ -154,6 +154,7 @@ keep2Star = false
 keep1Star = false
 keepAll = false
 keepPercent = false
+runTestHighlight = false
 end
 function defaultRegionLocation ()
   FindEmptyFodderSlotsRegion = Region(1540, 210, 30, 35)
@@ -172,7 +173,7 @@ mainStatRegion = Region(760, 350, 400, 60)
 runeSlotRegion = Region(630, 340, 130, 130)
 runeRarityRegion = Region(725, 445, 20, 20)
 runeRankRegion = Region(630, 350, 130, 30)
-grindstoneRegion = Region(760, 450, 540, 140)
+grindstoneRegion = Region(760, 450, 300, 100)
 enchantedGemRegion = Region(750, 350, 350, 150)
 raidJoinRegion = Region(1300, 845, 250, 65)
 raidReadyRegion = Region(1550, 950, 250, 75)
@@ -196,8 +197,8 @@ noLeaderSkillRegion = Region(1160, 360, 110, 55)
 noLeaderSkillYesRegion = Region(740, 620, 105, 65)
 arenaWingRegion = Region(1455, 200, 200, 750)
 arenaRankRegion = Region(910, 115, 400, 400)
-arenaMatchupRegion = Region(180, 200, 400, 400)
-arenaRivalRegion = Region(265, 295, 400, 400)
+arenaMatchupRegion = Region(200, 200, 250, 100)
+arenaRivalRegion = Region(200, 320, 250, 100)
 arenaRivalNumberRegion = Region(175, 325, 300, 150)
 arenaRivalDialogRegion = Region(0, 775, 125, 125)
 arenaBottomRegion = Region(985, 810, 230, 60)
@@ -312,21 +313,11 @@ function zoomTest()
   wait(4)
 end
 function testHighlight()
-  testRegion = Region(0, 0, 100, 100)
-  testRegion:highlight()
-  pauseRegion:highlight("pause")
-  wait(1)
-  playRegion:highlight()
-  wait(1)
-  victoryDiamondRegion:highlight()
-  wait(1)
-  startRegion:highlight("start")
-  wait(1)
-  replayRegion:highlight()
-  yesRegion:highlight()
-  backButtonRegion:highlight()
-  closeXCairoDungeonRegion:highlight()
-  dropInfoRegion:highlight()
+  while runTestHighlight do
+    arenaMatchupRegion:highlight(10)
+    arenaRivalRegion:highlight(10)
+    wait(5)
+  end
 end
 function isPro()
   if string.find(getVersion(), "pro") then
@@ -1379,6 +1370,10 @@ function StorageFodderEvaluater()
       evaluateStorage = false
     end
     if monX > 7 then monX = 0 monY = monY+1
+      dragDrop(Location(574, 273), Location(574, 582))
+      wait (.1)
+      dragDrop(Location(574, 273), Location(574, 583))
+      wait(.1)
     end
     if monY > 3 then monY = 0
       dragDrop(Location(574, 273), Location(574, 582))
@@ -1430,7 +1425,7 @@ function FindEmptyFodderSlots()
   elseif (bestMatchIndex == 5) then
     fodderFill = 4
   else
-    scriptExit("I can't find out how many fodder you need")
+    fodderFill = 1
   end
   bestMatchIndex = existsMultiMax(FodderSlotImages, FindFillFodderSlotsRegion)
   if (bestMatchIndex == 1) then
@@ -1444,7 +1439,7 @@ function FindEmptyFodderSlots()
   elseif (bestMatchIndex == 5) then
     fodderFill = fodderFill - 4
   else
-    scriptExit("I can't find out how many fodder you need")
+    fodderFill = 1
   end
 end
 function fillEmptySlot()
@@ -1458,15 +1453,15 @@ function fillEmptySlot()
   end
 end
 function isBattleSlotMax()
-    if slot1Level >= 15 and slot1StarLevel == 1 then
+    if slot1Level == 15 and slot1StarLevel == 1 then
       slot1Max = true
-    elseif slot1Level >= 20 and slot1StarLevel == 2 then
+    elseif slot1Level == 20 and slot1StarLevel == 2 then
       slot1Max = true
-    elseif slot1Level >= 25 and slot1StarLevel == 3 then
+    elseif slot1Level == 25 and slot1StarLevel == 3 then
       slot1Max = true
-    elseif slot1Level >= 30 and slot1StarLevel == 4 then
+    elseif slot1Level == 30 and slot1StarLevel == 4 then
       slot1Max = true
-    elseif slot1Level >= 35 and slot1StarLevel == 5 then
+    elseif slot1Level == 35 and slot1StarLevel == 5 then
       slot1Max = true
     elseif slot1Level == 40 and slot1StarLevel == 6 then
       slot1Max = true
@@ -1474,15 +1469,15 @@ function isBattleSlotMax()
     else
       slot1Max = false
     end
-    if slot2Level >= 15 and slot2StarLevel == 1 then
+    if slot2Level == 15 and slot2StarLevel == 1 then
       slot2Max = true
-    elseif slot2Level >= 20 and slot2StarLevel == 2 then
+    elseif slot2Level == 20 and slot2StarLevel == 2 then
       slot2Max = true
-    elseif slot2Level >= 25 and slot2StarLevel == 3 then
+    elseif slot2Level == 25 and slot2StarLevel == 3 then
       slot2Max = true
-    elseif slot2Level >= 30 and slot2StarLevel == 4 then
+    elseif slot2Level == 30 and slot2StarLevel == 4 then
       slot2Max = true
-    elseif slot2Level >= 35 and slot2StarLevel == 5 then
+    elseif slot2Level == 35 and slot2StarLevel == 5 then
       slot2Max = true
     elseif slot2Level == 40 and slot2StarLevel == 6 then
       slot2Max = true
@@ -1490,15 +1485,15 @@ function isBattleSlotMax()
     else
       slot2Max = false
     end
-    if slot3Level >= 15 and slot3StarLevel == 1 then
+    if slot3Level == 15 and slot3StarLevel == 1 then
       slot3Max = true
-    elseif slot3Level >= 20 and slot3StarLevel == 2 then
+    elseif slot3Level == 20 and slot3StarLevel == 2 then
       slot3Max = true
-    elseif slot3Level >= 25 and slot3StarLevel == 3 then
+    elseif slot3Level == 25 and slot3StarLevel == 3 then
       slot3Max = true
-    elseif slot3Level >= 30 and slot3StarLevel == 4 then
+    elseif slot3Level == 30 and slot3StarLevel == 4 then
       slot3Max = true
-    elseif slot3Level >= 35 and slot3StarLevel == 5 then
+    elseif slot3Level == 35 and slot3StarLevel == 5 then
       slot3Max = true
     elseif slot3Level == 40 and slot3StarLevel == 6 then
       slot3Max = true
@@ -1506,15 +1501,15 @@ function isBattleSlotMax()
     else
       slot3Max = false
     end
-    if slot4Level >= 15 and slot4StarLevel == 1 then
+    if slot4Level == 15 and slot4StarLevel == 1 then
       slot4Max = true
-    elseif slot4Level >= 20 and slot4StarLevel == 2 then
+    elseif slot4Level == 20 and slot4StarLevel == 2 then
       slot4Max = true
-    elseif slot4Level >= 25 and slot4StarLevel == 3 then
+    elseif slot4Level == 25 and slot4StarLevel == 3 then
       slot4Max = true
-    elseif slot4Level >= 30 and slot4StarLevel == 4 then
+    elseif slot4Level == 30 and slot4StarLevel == 4 then
       slot4Max = true
-    elseif slot4Level >= 35 and slot4StarLevel == 5 then
+    elseif slot4Level == 35 and slot4StarLevel == 5 then
       slot4Max = true
     elseif slot4Level == 40 and slot4StarLevel == 6 then
       slot4Max = true
@@ -1578,47 +1573,66 @@ function getBattleSlotStarLevel()
     local r, g, b = getColor(Location(344, 337))
     if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
       slot2StarLevel = 6
+      toast("slot2star 6")
     elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
       slot2StarLevel = 6
+      toast("slot2star 6")
     elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
       slot2StarLevel = 6
+      toast("slot2star 6")
     else local r, g, b = getColor(Location(321, 337))
       if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
         slot2StarLevel = 5
+        toast("slot2star 5")
       elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
         slot2StarLevel = 5
+        toast("slot2star 5")
       elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
         slot2StarLevel = 5
+        toast("slot2star 5")
       else local r, g, b = getColor(Location(298, 337))
         if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
           slot2StarLevel = 4
+          toast("slot2star 4")
         elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
           slot2StarLevel = 4
+          toast("slot2star 4")
         elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
           slot2StarLevel = 4
+          toast("slot2star 4")
         else local r, g, b = getColor(Location(275, 337))
           if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
             slot2StarLevel = 3
+            toast("slot2star 3")
           elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
             slot2StarLevel = 3
+            toast("slot2star 3")
           elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
             slot2StarLevel = 3
+            toast("slot2star 3")
           else local r, g, b = getColor(Location(252, 337))
             if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
               slot2StarLevel = 2
+              toast("slot2star 2")
             elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
               slot2StarLevel = 2
+              toast("slot2star 2")
             elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
               slot2StarLevel = 2
+              toast("slot2star 2")
             else local r, g, b = getColor(Location(229, 337))
               if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
                 slot2StarLevel = 1
+                toast("slot2star 1")
               elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
                 slot2StarLevel = 1
+                toast("slot2star 1")
               elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
                 slot2StarLevel = 1
+                toast("slot2star 1")
               else
                 slot2StarLevel = 0
+                toast("slot2star 0")
               end
             end
           end
@@ -1628,47 +1642,66 @@ function getBattleSlotStarLevel()
     local r, g, b = getColor(Location(736, 337))
     if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
       slot3StarLevel = 6
+      toast("slot3star 6")
     elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
       slot3StarLevel = 6
+      toast("slot3star 6")
     elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
       slot3StarLevel = 6
+      toast("slot3star 6")
     else local r, g, b = getColor(Location(713, 337))
       if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
         slot3StarLevel = 5
+        toast("slot3star 5")
       elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
         slot3StarLevel = 5
+        toast("slot3star 5")
       elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
         slot3StarLevel = 5
+        toast("slot3star 5")
       else local r, g, b = getColor(Location(690, 337))
         if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
           slot3StarLevel = 4
+          toast("slot3star 4")
         elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
           slot3StarLevel = 4
+          toast("slot3star 4")
         elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
           slot3StarLevel = 4
+          toast("slot3star 4")
         else local r, g, b = getColor(Location(667, 337))
           if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
             slot3StarLevel = 3
+            toast("slot3star 3")
           elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
             slot3StarLevel = 3
+            toast("slot3star 3")
           elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
             slot3StarLevel = 3
+            toast("slot3star 3")
           else local r, g, b = getColor(Location(644, 337))
             if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
               slot3StarLevel = 2
+              toast("slot3star 2")
             elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
               slot3StarLevel = 2
+              toast("slot3star 2")
             elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
               slot3StarLevel = 2
+              toast("slot3star 2")
             else local r, g, b = getColor(Location(621, 337))
               if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
                 slot3StarLevel = 1
+                toast("slot3star 1")
               elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
                 slot3StarLevel = 1
+                toast("slot3star 1")
               elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
                 slot3StarLevel = 1
+                toast("slot3star 1")
               else
                 slot3StarLevel = 0
+                toast("slot3star 0")
               end
             end
           end
@@ -1678,47 +1711,66 @@ function getBattleSlotStarLevel()
     local r, g, b = getColor(Location(540, 441))
     if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
       slot4StarLevel = 6
+      toast("slot4star 6")
     elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
       slot4StarLevel = 6
+      toast("slot4star 6")
     elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
       slot4StarLevel = 6
+      toast("slot4star 6")
     else local r, g, b = getColor(Location(517, 441))
       if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
         slot4StarLevel = 5
+        toast("slot4star 5")
       elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
         slot4StarLevel = 5
+        toast("slot4star 5")
       elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
         slot4StarLevel = 5
+        toast("slot4star 5")
       else local r, g, b = getColor(Location(494, 441))
         if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
           slot4StarLevel = 4
+          toast("slot4star 4")
         elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
           slot4StarLevel = 4
+          toast("slot4star 4")
         elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
           slot4StarLevel = 4
+          toast("slot4star 4")
         else local r, g, b = getColor(Location(471, 441))
           if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
             slot4StarLevel = 3
+            toast("slot4star 3")
           elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
             slot4StarLevel = 3
+            toast("slot4star 3")
           elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
             slot4StarLevel = 3
+            toast("slot4star 3")
           else local r, g, b = getColor(Location(448, 441))
             if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
               slot4StarLevel = 2
+              toast("slot4star 2")
             elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
               slot4StarLevel = 2
+              toast("slot4star 2")
             elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
               slot4StarLevel = 2
+              toast("slot4star 2")
             else local r, g, b = getColor(Location(425, 441))
               if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
                 slot4StarLevel = 1
+                toast("slot4star 1")
               elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
                 slot4StarLevel = 1
+                toast("slot4star 1")
               elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
                 slot4StarLevel = 1
+                toast("slot4star 1")
               else
                 slot4StarLevel = 0
+                toast("slot4star 0")
               end
             end
           end
@@ -1728,7 +1780,7 @@ function getBattleSlotStarLevel()
   usePreviousSnap(false)
   end
 function getBattleSlotLevel()
-  local accuracy = .8
+  local accuracy = .9
   if battleSlot1Region:exists(Pattern("level40Battle.png"):similar(accuracy), 0.1) then
     slot1Level = 40
   elseif battleSlot1Region:exists(Pattern("level35Battle.png"):similar(accuracy), 0.1) then
@@ -1746,48 +1798,69 @@ function getBattleSlotLevel()
   end
   if battleSlot2Region:exists(Pattern("level40Battle.png"):similar(accuracy), 0.1) then
     slot2Level = 40
+    toast("slot2level 40")
   elseif battleSlot2Region:exists(Pattern("level35Battle.png"):similar(accuracy), 0.1) then
     slot2Level = 35
+    toast("slot2level 35")
   elseif battleSlot2Region:exists(Pattern("level30Battle.png"):similar(accuracy), 0.1) then
     slot2Level = 30
+    toast("slot2level 30")
   elseif battleSlot2Region:exists(Pattern("level25Battle.png"):similar(accuracy), 0.1) then
     slot2Level = 25
+    toast("slot2level 25")
   elseif battleSlot2Region:exists(Pattern("level20Battle.png"):similar(accuracy), 0.1) then
     slot2Level = 20
+    toast("slot2level 20")
   elseif battleSlot2Region:exists(Pattern("level15Battle.png"):similar(accuracy), 0.1) then
     slot2Level = 15
+    toast("slot2level 15")
   else
     slot2Level = 0
+    toast("slot2level NotMax")
   end
   if battleSlot3Region:exists(Pattern("level40Battle.png"):similar(accuracy), 0.1) then
     slot3Level = 40
+    toast("slot3level 40")
   elseif battleSlot3Region:exists(Pattern("level35Battle.png"):similar(accuracy), 0.1) then
     slot3Level = 35
+    toast("slot3level 35")
   elseif battleSlot3Region:exists(Pattern("level30Battle.png"):similar(accuracy), 0.1) then
     slot3Level = 30
+    toast("slot3level 30")
   elseif battleSlot3Region:exists(Pattern("level25Battle.png"):similar(accuracy), 0.1) then
     slot3Level = 25
+    toast("slot3level 25")
   elseif battleSlot3Region:exists(Pattern("level20Battle.png"):similar(accuracy), 0.1) then
     slot3Level = 20
+    toast("slot3level 20")
   elseif battleSlot3Region:exists(Pattern("level15Battle.png"):similar(accuracy), 0.1) then
     slot3Level = 15
+    toast("slot3level 15")
   else
     slot3Level = 0
+    toast("slot3level NotMax")
   end
   if battleSlot4Region:exists(Pattern("level40Battle.png"):similar(accuracy), 0.1) then
     slot4Level = 40
+    toast("slot4level 40")
   elseif battleSlot4Region:exists(Pattern("level35Battle.png"):similar(accuracy), 0.1) then
     slot4Level = 35
+    toast("slot4level 35")
   elseif battleSlot4Region:exists(Pattern("level30Battle.png"):similar(accuracy), 0.1) then
     slot4Level = 30
+    toast("slot4level 30")
   elseif battleSlot4Region:exists(Pattern("level25Battle.png"):similar(accuracy), 0.1) then
     slot4Level = 25
+    toast("slot4level 25")
   elseif battleSlot4Region:exists(Pattern("level20Battle.png"):similar(accuracy), 0.1) then
     slot4Level = 20
+    toast("slot4level 20")
   elseif battleSlot4Region:exists(Pattern("level15Battle.png"):similar(accuracy), 0.1) then
     slot4Level = 15
+    toast("slot4level 15")
   else
     slot4Level = 0
+    toast("slot4level NotMax")
   end
 end
 function replaceEmptyBattleSlot()
@@ -1809,6 +1882,7 @@ function replaceEmptyBattleSlot()
 end
 function checkMaxLevel()
   if stopMaxLevel then
+    usePreviousSnap(false)
     getBattleSlotStarLevel()
     getBattleSlotLevel()
     isBattleSlotMax()
@@ -2062,7 +2136,7 @@ function runeKeep3 ()
   end
 end
 function sellGetRune ()
-  if grindstoneRegion:exists(Pattern("grindstone.png"):similar(.6), 0.1) then
+  if grindstoneRegion:exists(Pattern("grindTilde.png"):similar(.8), 0.1) then
     getRune()
   elseif enchantedGemRegion:exists(Pattern("enchantedGem.png"):similar(.6), 0.1) then
     getRune()
@@ -2346,6 +2420,7 @@ function liveArenaBattle()
 end
 function closeArenaDialogBox()
   arenaXRegion:existsClick(Pattern("closeX.png"), 2)
+  existsClick(Pattern("back2Button.png"):similar(.6), 3)
 end
 function closeCairoDungeonDialogBox()
   closeXCairoDungeonRegion:existsClick(Pattern("closeX.png"), 2)
@@ -2436,7 +2511,7 @@ function findArena()
         clickMatchupArena()
       end
     end
-  elseif backButtonRegion:exists(Pattern("backButton.png"):similar(0.9), 2) then
+  elseif backButtonRegion:exists(Pattern("backButton.png"):similar(0.8), 2) then
     moveLeft()
     if exists(Pattern("mapArena.png"):similar(imgAccuracy), 0.1) then
       clickMatchupArena()
@@ -2518,7 +2593,7 @@ function findLiveArena()
         clickLiveArena()
       end
     end
-  elseif backButtonRegion:exists(Pattern("backButton.png"):similar(0.9), 2) then
+  elseif backButtonRegion:exists(Pattern("backButton.png"):similar(0.8), 2) then
     moveLeft()
     if exists(Pattern("mapArena.png"):similar(imgAccuracy), 0.1) then
       clickLiveArena()
@@ -2533,6 +2608,9 @@ end
 function clickGiantB10()
   if dungeonListRegion:existsClick(Pattern("mapGiantsKeep.png"):similar(imgAccuracy), 1) then
     wait(2)
+    dragDrop(Location(1200, 835), Location(1200, 320))
+    wait(1)
+    dragDrop(Location(1200, 835), Location(1200, 320))
     if dungeonBattleRegion:exists(Pattern("mapB10.png"):targetOffset(setLocation(453, 0))) then
         dungeonBattleRegion:existsClick(Pattern("mapB10.png"):targetOffset(setLocation(453, 0)))
     elseif dungeonListRegion:exists(Pattern("mapGiantsKeep.png"):similar(imgAccuracy), 1) then
@@ -2545,6 +2623,9 @@ end
 function clickDragonB10()
   if dungeonListRegion:existsClick(Pattern("mapDragonsLair.png"):similar(imgAccuracy), 1) then
     wait(2)
+    dragDrop(Location(1200, 835), Location(1200, 320))
+    wait(1)
+    dragDrop(Location(1200, 835), Location(1200, 320))
     if dungeonBattleRegion:exists(Pattern("mapB10.png"):targetOffset(setLocation(453, 0))) then
         dungeonBattleRegion:existsClick(Pattern("mapB10.png"):targetOffset(setLocation(453, 0)))
     elseif dungeonListRegion:exists(Pattern("mapDragonsLair.png"):similar(imgAccuracy), 1) then
@@ -2557,6 +2638,9 @@ end
 function clickNecroB10()
   if dungeonListRegion:existsClick(Pattern("mapNecropolis.png"):similar(imgAccuracy), 1) then
     wait(2)
+    dragDrop(Location(1200, 835), Location(1200, 320))
+    wait(1)
+    dragDrop(Location(1200, 835), Location(1200, 320))
     if dungeonBattleRegion:exists(Pattern("mapB10.png"):targetOffset(setLocation(453, 0))) then
         dungeonBattleRegion:existsClick(Pattern("mapB10.png"):targetOffset(setLocation(453, 0)))
     elseif dungeonListRegion:exists(Pattern("mapNecropolis.png"):similar(imgAccuracy), 1) then
@@ -2688,7 +2772,7 @@ function findDungeon()
         clickDungeon()
       end
     end
-  elseif backButtonRegion:exists(Pattern("backButton.png"):similar(0.9), 0.1) then
+  elseif backButtonRegion:exists(Pattern("backButton.png"):similar(0.8), 0.1) then
     moveLeft()
     if exists(Pattern("mapCairoDungeon.png"):similar(imgAccuracy), 0.1) then
       existsClick(Pattern("mapCairoDungeon.png"):similar(imgAccuracy), 1)
@@ -2870,7 +2954,7 @@ function findHallB10()
         clickHallB10()
       end
     end
-  elseif backButtonRegion:exists(Pattern("backButton.png"):similar(0.9), 0.1) then
+  elseif backButtonRegion:exists(Pattern("backButton.png"):similar(0.8), 0.1) then
     moveLeft()
     if exists(Pattern("mapCairoDungeon.png"):similar(imgAccuracy), 0.1) then
       existsClick(Pattern("mapCairoDungeon.png"):similar(imgAccuracy), 1)
@@ -3069,7 +3153,7 @@ function findRift()
         clickRift()
       end
     end
-  elseif backButtonRegion:exists(Pattern("backButton.png"):similar(0.9), 0.1) then
+  elseif backButtonRegion:exists(Pattern("backButton.png"):similar(0.8), 0.1) then
     moveLeft()
     if exists(Pattern("mapRiftOfWorlds.png"), 0.1) then
       enterRift()
@@ -3567,7 +3651,7 @@ function findScenario()
     clickScenario()
     clickScenarioStage()
   elseif arenaRankRegion:exists(Pattern("arenaRank.png"):similar(imgAccuracy), 0.1) then
-    arenaXRegion:existsClick(Pattern("closeX.png"):similar(imgAccuracy), 2)
+	closeArenaDialogBox()
     clickScenario()
     clickScenarioStage()
   elseif existsScenario() then
@@ -3589,7 +3673,7 @@ function findScenario()
     closeToaDialogBox()
     clickScenario()
     clickScenarioStage()
-  elseif backButtonRegion:exists(Pattern("backButton.png"):similar(0.9), 0.1) then
+  elseif backButtonRegion:exists(Pattern("backButton.png"):similar(0.8), 0.1) then
     clickScenario()
     clickScenarioStage()
   end
@@ -3651,7 +3735,7 @@ function findTOA()
   elseif riftBackRegion:existsClick(Pattern("back2Button.png"), 3) then
     enterTOA()
     clickTOAStage()
-  elseif backButtonRegion:exists(Pattern("backButton.png"):similar(0.9), 0.1) then
+  elseif backButtonRegion:exists(Pattern("backButton.png"):similar(0.8), 0.1) then
     enterTOA()
     clickTOAStage()
   end
@@ -3793,31 +3877,31 @@ function findMagicShop()
   end
   if arenaRankRegion:exists(Pattern("arenaRank.png"), 0.1) then
     closeArenaDialogBox()
-    backButtonRegion:existsClick(Pattern("backButton.png"):similar(0.9), 2)
+    backButtonRegion:existsClick(Pattern("backButton.png"):similar(0.8), 2)
     getIslandStuff()
   elseif dropInfoRegion:exists(Pattern("dropInfo.png"):similar(imgAccuracy), 0.1) then
     closeScenarioDialogBox()
-    backButtonRegion:existsClick(Pattern("backButton.png"):similar(0.9), 2)
+    backButtonRegion:existsClick(Pattern("backButton.png"):similar(0.8), 2)
     getIslandStuff()
   elseif dialogCairoDungeonRegion:exists(Pattern("cairoDungeon.png"):similar(imgAccuracy), 0.1) then
     closeCairoDungeonDialogBox()
-    backButtonRegion:existsClick(Pattern("backButton.png"):similar(0.9), 2)
+    backButtonRegion:existsClick(Pattern("backButton.png"):similar(0.8), 2)
     getIslandStuff()
   elseif riftStrategyRegion:exists(Pattern("riftStrategy.png"), 0.1) then
     closeRiftDialogBox()
     clickRiftBack()
     wait(1)
-    backButtonRegion:existsClick(Pattern("backButton.png"):similar(0.9), 2)
+    backButtonRegion:existsClick(Pattern("backButton.png"):similar(0.8), 2)
     getIslandStuff()
   elseif riftBackRegion:existsClick(Pattern("back2Button.png"), 0.1) then
-    backButtonRegion:existsClick(Pattern("backButton.png"):similar(0.9), 2)
+    backButtonRegion:existsClick(Pattern("backButton.png"):similar(0.8), 2)
     clickMagicShop()
   elseif exists(Pattern("dialogTOA.png"):similar(imgAccuracy), 0.1) then
     closeToaDialogBox()
-    backButtonRegion:existsClick(Pattern("backButton.png"):similar(0.9), 2)
+    backButtonRegion:existsClick(Pattern("backButton.png"):similar(0.8), 2)
     getIslandStuff()
-  elseif backButtonRegion:exists(Pattern("backButton.png"):similar(0.9), 0.1) then
-    backButtonRegion:existsClick(Pattern("backButton.png"):similar(0.9), 2)
+  elseif backButtonRegion:exists(Pattern("backButton.png"):similar(0.8), 0.1) then
+    backButtonRegion:existsClick(Pattern("backButton.png"):similar(0.8), 2)
     getIslandStuff()
   elseif exists(Pattern("dialogMagicShop.png"), 2) then
     purchaseMagicShopScroll()
@@ -3897,7 +3981,7 @@ function runLiveArenaStart()
     if exists(Pattern("play.png"):similar(0.9), 0.1) then
       existsClick(Pattern("play.png"):similar(0.9), 1)
     end
-    if (backButtonRegion:exists(Pattern("backButton.png"):similar(0.9), 0.1) or dropInfoRegion:exists(Pattern("dropInfo.png"):similar(imgAccuracy), 0.1)) and not liveArenaDialogRegion:exists(Pattern("dialogLiveArena.png"):similar(imgAccuracy), 0.1) then
+    if (backButtonRegion:exists(Pattern("backButton.png"):similar(0.8), 0.1) or dropInfoRegion:exists(Pattern("dropInfo.png"):similar(imgAccuracy), 0.1)) and not liveArenaDialogRegion:exists(Pattern("dialogLiveArena.png"):similar(imgAccuracy), 0.1) then
       findLiveArena()
     end
   end
@@ -4076,6 +4160,8 @@ while true do
     runRiftRaidStart()
   elseif runQuickClick == true then
     runQuickClickStart()
+  elseif runTestHighlight == true then
+    testHighlight()
   elseif runLiveArena == true then
     runLiveArenaStart()
   elseif not runLiveArena or not runQuickClick or not runRiftRaid then
@@ -4247,7 +4333,7 @@ while true do
       yesRegion:existsClick(Pattern("yes.png"):similar(imgAccuracy * 0.9), 3)
       showBattleResult()
     end
-    if (backButtonRegion:exists(Pattern("backButton.png"):similar(runeAccuracy * 0.9), 0.1) or dropInfoRegion:exists(Pattern("dropInfo.png"):similar(imgAccuracy), 0.1) or riftBackRegion:exists(Pattern("back2Button.png"), 0.1)) and not arenaRankRegion:exists(Pattern("arenaRank.png"):similar(imgAccuracy), 0.1) then
+    if (backButtonRegion:exists(Pattern("backButton.png"):similar(runeAccuracy * 0.8), 0.1) or dropInfoRegion:exists(Pattern("dropInfo.png"):similar(imgAccuracy), 0.1) or riftBackRegion:exists(Pattern("back2Button.png"), 0.1)) and not arenaRankRegion:exists(Pattern("arenaRank.png"):similar(imgAccuracy), 0.1) then
       runScenarioDungeon()
       start()
     end
