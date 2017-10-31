@@ -1,6 +1,4 @@
 localPath = scriptPath()
-isTrial = false
-maxTrialTimeout = 3600
 commonLib = loadstring(httpGet("https://raw.githubusercontent.com/AnkuLua/commonLib/master/commonLib.lua"))()
 getNewestVersion = loadstring(httpGet("https://raw.githubusercontent.com/auto-config/Palbot-test/master/version.lua"))
 latestVersion = getNewestVersion()
@@ -64,7 +62,6 @@ maxNoActivityTimeout = 600
 maxConnectionTimeout = 600
 maxNoRaidActivity = 120
 waitTimer = 30
-timerTrial = 0
 searchMagicShopCount = 0
 mysticalCount = 0
 legendaryCount = 0
@@ -1695,11 +1692,6 @@ function checkMaxLevel()
       isMaxLevel = true
     end
   end
-end
-function dialogTrialTimeout()
-  dialogInit()
-  addTextView("1 hour reach in Trial Version.  Closing.", 14)
-  dialogShow("Trial Version")
 end
 function resetTimerNoActivity()
   timerNoActivity:set()
@@ -4015,10 +4007,6 @@ function runQuickClickStart()
     if playRegion:exists(Pattern("play.png"):similar(0.9), 0.1) then
       playRegion:existsClick(Pattern("play.png"):similar(0.9), 1)
     end
-    if isTrial and timerTrial:check() > maxTrialTimeout then
-      dialogTrialTimeout()
-      break
-    end
   end
 end
 function checkNoRaidActivity()
@@ -4122,7 +4110,6 @@ setAdvancedOptions()
 automaticUpdates ()
 showBattleResult("Begin")
 timerNoActivity = Timer()
-timerTrial = Timer()
 timerMagicShop = Timer()
 while true do
   if runRiftRaid == true then
@@ -4359,10 +4346,6 @@ while true do
     end
     if battleIconRegion:existsClick(Pattern("iconBattle.png"), 0.1) then
       findMap()
-    end
-    if isTrial and timerTrial:check() > maxTrialTimeout then
-      dialogTrialTimeout()
-      break
     end
   end
   wait(scanDelay)
