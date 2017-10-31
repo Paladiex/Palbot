@@ -2,7 +2,7 @@ localPath = scriptPath()
 isTrial = false
 maxTrialTimeout = 3600
 commonLib = loadstring(httpGet("https://raw.githubusercontent.com/AnkuLua/commonLib/master/commonLib.lua"))()
-getNewestVersion = loadstring(httpGet("https://raw.githubusercontent.com/Paladiex/Palbot/master/version.lua"))
+getNewestVersion = loadstring(httpGet("https://raw.githubusercontent.com/auto-config/Palbot-test/master/version.lua"))
 latestVersion = getNewestVersion()
 currentVersion = dofile(localPath .."version.lua")
 print (currentVersion)
@@ -19,14 +19,15 @@ battleSlotStarLevelImages = { "star6BattlePink.png", "star6BattleWhite.png", "st
   "star3BattlePink.png", "star3BattleWhite.png", "star2BattlePink.png",
   "star2BattleWhite.png", "star1BattleWhite.png", }
 FodderSlotImages = {"0FodderSlot.png", "1FodderSlot.png", "2FodderSlot.png", "3FodderSlot.png", "4FodderSlot.png"}
+runeRarityImages = {"runeLegendary.png", "runeHero.png", "runeRare.png", "runeMagic.png", "runeNormal.png"}
 function automaticUpdates ()
   if autoUpdate == true then
     if currentVersion == latestVersion then
       toast ("You are up to date!")
     else
-      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/version.lua", localPath .."version.lua")
-      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/Palbot.lua", localPath .."Palbot.lua")
-      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/imageupdater.lua", localPath .."imageupdater.lua")
+      httpDownload("https://raw.githubusercontent.com/auto-config/Palbot-test/master/version.lua", localPath .."version.lua")
+      httpDownload("https://raw.githubusercontent.com/auto-config/Palbot-test/master/Palbot.lua", localPath .."Palbot.lua")
+      httpDownload("https://raw.githubusercontent.com/auto-config/Palbot-test/master/imageupdater.lua", localPath .."imageupdater.lua")
       scriptExit("You have Updated Palbot!")
     end
   end
@@ -46,6 +47,7 @@ r5Count = 0
 r5Sold = 0
 runeSold = 0
 runLmt = 0
+bNum = 10
 customRunLmt = 0
 runLmtGroup = 0
 delayAmt = 0
@@ -75,6 +77,18 @@ compareW = 0
 compareH = 0
 nextFodder = 1
 fodderX = 1245
+nonFlatSub = 0
+runeSubCnt = 0
+runeSubPercCnt = 0
+runeDetect = 0.8
+maxDetect = 0.9
+rareNum = 0
+runeRarity6 = 0
+runeRarity5 = 0
+runeRarity4 = 0
+runeRarity3 = 0
+runeRarity2 = 0
+runeRarity1 = 0
 end
 function defaultTrueFalse ()
 isArenaRival = false
@@ -88,9 +102,9 @@ isUsedAllFriend = false
 isMoveRightFodderList = false
 runAutoSwitchFodder = false
 isSwitchFodderSlot1 = false
-isSwitchFodderSlot2 = true
-isSwitchFodderSlot3 = true
-isSwitchFodderSlot4 = true
+isSwitchFodderSlot2 = false
+isSwitchFodderSlot3 = false
+isSwitchFodderSlot4 = false
 sellAllRune = false
 saveAllRune = false
 save6Star = false
@@ -153,8 +167,13 @@ keep3Star = false
 keep2Star = false
 keep1Star = false
 keepAll = false
-keepPercent = false
 runTestHighlight = false
+keepSpdMain = false
+screenshotSell = false
+screenshotKeep = false
+sellingRune = false
+runRival = false
+runMatchUp = false
 end
 function defaultRegionLocation ()
   FindEmptyFodderSlotsRegion = Region(1540, 210, 30, 35)
@@ -170,8 +189,8 @@ fodderSlot3X = Location(435, 745)
 fodderSlot2X = Location(270, 745)
 fodderSlot1X = Location(110, 745)
 mainStatRegion = Region(760, 350, 400, 60)
-runeSlotRegion = Region(630, 340, 130, 130)
-runeRarityRegion = Region(725, 445, 20, 20)
+runeSlotRegion = Region(574, 242, 770, 100)
+runeRarityRegion = Region(1160, 340, 170, 70)
 runeRankRegion = Region(630, 350, 130, 30)
 grindstoneRegion = Region(760, 450, 300, 100)
 enchantedGemRegion = Region(750, 350, 350, 150)
@@ -299,11 +318,19 @@ slot10Region = Region(620, 825, 200, 225)
 closeNowYesRegion = Region(600, 630, 350, 200)
 closeNowRegion = Region(525, 420, 75, 80)
 friend1Location = Location(15, 1060)
+runeSubRegion = Region(578,469,360,244)
+runeStatRegion = Region(0, 200, 700, 250)
+slot1MaxRegion = Region(450,668,345,165)
+slot2MaxRegion = Region(825,668,345,165)
+slot3MaxRegion = Region(1215,668,345,165)
+slot4MaxRegion = Region(435,797,345,165)
 end
 function captureScreenshot()
+  setImagePath(localPath .. "Runes/")
   wait(1)
   rgn = Region(0, 0, getRealScreenSize():getX(), getRealScreenSize():getY())
-  rgn:save("aaatemp.png")
+  rgn:save(tostring("Rune" .. getNetworkTime() .. ".png"))
+  setImagePath(localPath .. "1920x1080")
 end
 function zoomTest()
   wait(1)
@@ -439,46 +466,67 @@ function dialogBox()
   spinnerFarmLoc = {
     "Current Battle",
     "------------------------------------------",
-    "Giant's Keep B10 + Arena",
-    "Dragon's Lair B10 + Arena",
-    "Necropolis B10 + Arena",
-    "Hall of Magic B10 + Arena",
-    "Hall of Light B10 + Arena",
-    "Hall of Dark B10 + Arena",
-    "Hall of Fire B10 + Arena",
-    "Hall of Water B10 + Arena",
-    "Hall of Wind B10 + Arena",
-    "Secret Dungeon 1st + Arena",
+    "Giant's Keep",
+    "Dragon's Lair",
+    "Necropolis",
+    "Hall of Magic",
+    "Hall of Light",
+    "Hall of Dark",
+    "Hall of Fire",
+    "Hall of Water",
+    "Hall of Wind",
+    "Secret Dungeon 1st",
     "------------------------------------------",
-    "Rift (Fire Beast) + Arena",
-    "Rift (Ice Beast) + Arena",
-    "Rift (Wind Beast) + Arena",
-    "Rift (Light Beast) + Arena",
-    "Rift (Dark Beast) + Arena",
-    "Rift Raid + Arena",
+    "Rift (Fire Beast)",
+    "Rift (Ice Beast)",
+    "Rift (Wind Beast)",
+    "Rift (Light Beast)",
+    "Rift (Dark Beast)",
+    "Rift Raid",
     "------------------------------------------",
-    "Chiruka Remains S1 + Arena  ",
-    "Mt. Runar S2 + Arena",
-    "Ferun Castle S1 + Arena",
-    "Aiden Forest S1 + Arena",
-    "Faimon Volcano S1 + Arena",
-    "Vrofagus Ruins S4 + Arena",
-    "Tamor Desert S3 + Arena",
-    "Hydeni Ruins S5 + Arena",
-    "Telain Forest S1 + Arena",
-    "Mt. White Ragon S2 + Arena",
-    "Kabir Ruins S4 + Arena",
-    "Mt. Siz S2 + Arena",
-    "Garen Forest S3 + Arena",
+    "Chiruka Remains S1",
+    "Mt. Runar S2",
+    "Ferun Castle S1",
+    "Aiden Forest S1",
+    "Faimon Volcano S1",
+    "Vrofagus Ruins S4",
+    "Tamor Desert S3",
+    "Hydeni Ruins S5",
+    "Telain Forest S1",
+    "Mt. White Ragon S2",
+    "Kabir Ruins S4",
+    "Mt. Siz S2",
+    "Garen Forest S3",
     "------------------------------------------",
-    "Toa + Arena",
+    "Toa",
     "Live Arena",
     "Speed QuickClick"
+  }
+  spinnerLevel = {
+    "B1",
+    "B2",
+    "B3",
+    "B4",
+    "B5",
+    "B6",
+    "B7",
+    "B8",
+    "B9",
+    "B10"
   }
   addTextView("Farming Mode: ")
   addSpinner("farmLoc", spinnerFarmLoc, spinnerFarmLoc[1])
   addTextView("  ")
-  addCheckBox("runMagicShop", "Check Magic Shop Scrolls", false)
+  addTextView("Dungeon level: ")
+  addSpinner("dungeonLevel", spinnerLevel, spinnerLevel[10])
+  newRow()
+  addTextView("Dungeon level only applies to Carios Dungeon.")
+  newRow()
+  addCheckBox("runRival", "Arena Rivals?", false)
+  addTextView("  ")
+  addCheckBox("runMatchUp", "Arena Match-Up?", false)
+  newRow()
+  addCheckBox("runMagicShop", "Check Magic Shop for scrolls:", false)
   newRow()
   spinnerBattleLimit = {
     "Infinite Runs",
@@ -502,7 +550,7 @@ function dialogBox()
   addSpinner("refillOption", spinnerRefillOption, spinnerRefillOption[1])
   addTextView("  (refill options)")
   addEditNumber("storageMonsters", 0)
-  addTextView("(Must select Auto-Switch)")
+  addTextView("(# of monsters in storage)")
   newRow()
   addCheckBox("dim", "Dim Screen", false)
   addTextView("  ")
@@ -510,37 +558,13 @@ function dialogBox()
   addTextView("  ")
   addCheckBox("nextArea", "Next stage", false)
   newRow()
-    addTextView("-------------------- Rune Options --------------------")
-    newRow()
-    spinnerRuneRarity = {
-    "Legendary",
-    "Hero",
-    "Rare",
-    "Magic",
-    "Normal"
-  }
-  addTextView("Min Rarity: ")
-  addSpinner("runeRaritySelect", spinnerRuneRarity, spinnerRuneRarity[1])
-  addTextView("  ")
-  spinnerRuneRank = {
-    "6*",
-    "5*",
-    "4*",
-    "3*",
-    "2*",
-    "1*"
-  }
-  addTextView("Min Rank: ")
-  addSpinner("runeRuneRankSelect", spinnerRuneRank, spinnerRuneRank[1])
-  addTextView("  ")
-  spinnerMainStat = {
-    "Save all",
-    "Save %/spd 2/4/6"
-  }
-  addTextView("Main Stat: ")
-  addSpinner("runeMainStatSelect", spinnerMainStat, spinnerMainStat[1])
-    newRow()
+  addTextView("-------------------- Rune Options --------------------")
+  newRow()
+  addTextView("Disable both will enable rune filter. Don't enable both.")
+  newRow()
   addCheckBox("sellAllRune", "Sell all runes?", false)
+  addTextView("  ")
+  addCheckBox("keepAll", "Keep all runes?", false)
   newRow()
   addTextView("-------------------- Advanced Options --------------------")
   newRow()
@@ -568,34 +592,37 @@ function dialogBox()
     "Slow"
   }
   spinnerImgDetectPct = {
-    "40",
-    "45",
-    "50",
-    "55",
     "60",
     "65",
     "70",
     "75",
     "80",
     "85",
-    "90"
+    "90",
+    "95",
+    "99"
   }
   spinnerRuneDetectPct = {
+    "60",
+    "65",
+    "70",
+    "75",
     "80",
-    "81",
-    "82",
-    "83",
-    "84",
     "85",
-    "86",
-    "87",
-    "88",
-    "89",
     "90",
-    "91",
-    "92",
-    "93",
-    "94"
+    "95",
+    "99"
+  }
+  spinnerMaxDetectPct = {
+    "60",
+    "65",
+    "70",
+    "75",
+    "80",
+    "85",
+    "90",
+    "95",
+    "99"
   }
   spinnerTextSize = {
     "8",
@@ -638,11 +665,14 @@ function dialogBox()
   addTextView("Scan Speed: ")
   addSpinner("scanSpeed", spinnerScanSpeed, spinnerScanSpeed[2])
   newRow()
-  addSpinner("imgDetectPct", spinnerImgDetectPct, spinnerImgDetectPct[7])
-  addTextView("% Image Accuracy")
+  addSpinner("imgDetectPct", spinnerImgDetectPct, spinnerImgDetectPct[3])
+  addTextView("% image accuracy")
   addTextView("    ")
-  addSpinner("runeDetectPct", spinnerRuneDetectPct, spinnerRuneDetectPct[11])
+  addSpinner("runeDetectPct", spinnerRuneDetectPct, spinnerRuneDetectPct[5])
   addTextView("% Rune Accuracy")
+  addTextView("    ")
+  addSpinner("maxDetectPct", spinnerMaxDetectPct, spinnerMaxDetectPct[7])
+  addTextView("% Maxlevel accuracy")
   newRow()
   addSpinner("textSize", spinnerTextSize, spinnerTextSize[5])
   addTextView("Text Size    ")
@@ -657,6 +687,96 @@ function dialogBox()
   addTextView("minutes.  Network Connection Warning")
   dialogShowFullScreen("QuickClick Summoners War")
 end
+function runeDialogBox()
+  dialogInit()
+  addTextView("Set keep rarity based on star grade.")
+  newRow()
+  spinnerRuneRarity6 = {
+    "None",
+    "Normal",
+    "Magic",
+    "Rare",
+    "Hero",
+    "Legendary"
+  }
+  spinnerRuneRarity5 = {
+    "None",
+    "Normal",
+    "Magic",
+    "Rare",
+    "Hero",
+    "Legendary"
+  }
+  spinnerRuneRarity4 = {
+    "None",
+    "Normal",
+    "Magic",
+    "Rare",
+    "Hero",
+    "Legendary"
+  }
+  spinnerRuneRarity3 = {
+    "None",
+    "Normal",
+    "Magic",
+    "Rare",
+    "Hero",
+    "Legendary"
+  }
+  spinnerRuneRarity2 = {
+    "None",
+    "Normal",
+    "Magic",
+    "Rare",
+    "Hero",
+    "Legendary"
+  }
+  spinnerRuneRarity1 = {
+    "None",
+    "Normal",
+    "Magic",
+    "Rare",
+    "Hero",
+    "Legendary"
+  }
+  addTextView("6*: ")
+  addSpinner("runeRaritySelect6", spinnerRuneRarity6, spinnerRuneRarity6[1])
+  addTextView("5*: ")
+  addSpinner("runeRaritySelect5", spinnerRuneRarity5, spinnerRuneRarity5[1])
+  addTextView("4*: ")
+  addSpinner("runeRaritySelect4", spinnerRuneRarity4, spinnerRuneRarity4[1])
+  newRow()
+  addTextView("3*: ")
+  addSpinner("runeRaritySelect3", spinnerRuneRarity3, spinnerRuneRarity3[1])
+  addTextView("2*: ")
+  addSpinner("runeRaritySelect2", spinnerRuneRarity2, spinnerRuneRarity2[1])
+  addTextView("1*: ")
+  addSpinner("runeRaritySelect1", spinnerRuneRarity1, spinnerRuneRarity1[1])
+  newRow()
+  addCheckBox("keepSpdMain", "Always Keep SPD(2)", false)
+  newRow()
+  spinnerSubPerc = {
+    "0%",
+    "25%",
+    "33%",
+    "50%",
+    "66%",
+    "75%",
+    "100%"
+  }
+  addTextView("Non-flat subs %: ")
+  addSpinner("nonFlatSubSelect", spinnerSubPerc, spinnerSubPerc[1])
+  newRow()
+  addTextView("Screenshot Runes: ")
+  addCheckBox("screenshotKeep", "Kept Runes?", false)
+  addTextView("  ")
+  addCheckBox("screenshotSell", "Sold Runes?", false)
+  newRow()
+  addTextView("Screen shots will be saved in the Runes folder.")
+  newRow()
+  addTextView("Advised to empty Runes folder after reviewing.")
+  dialogShowFullScreen("Rune Filter")
+end
 function advancedOptionsDialog()
   dialogInit()
   addTextView("Resolution: ")
@@ -665,10 +785,10 @@ function advancedOptionsDialog()
   addTextView("    Scan Speed: ")
   addSpinner("scanSpeed", spinnerScanSpeed, spinnerScanSpeed[2])
   newRow()
-  addSpinner("imgDetectPct", spinnerImgDetectPct, spinnerImgDetectPct[7])
+  addSpinner("imgDetectPct", spinnerImgDetectPct, spinnerImgDetectPct[3])
   addTextView("% Image Accuracy")
   addTextView("    ")
-  addSpinner("runeDetectPct", spinnerRuneDetectPct, spinnerRuneDetectPct[11])
+  addSpinner("runeDetectPct", spinnerRuneDetectPct, spinnerRuneDetectPct[5])
   addTextView("% Rune Accuracy")
   newRow()
   addSpinner("textSize", spinnerTextSize, spinnerTextSize[5])
@@ -680,101 +800,92 @@ function setDialogOptions()
   elseif farmLoc == spinnerFarmLoc[2] then
   elseif farmLoc == spinnerFarmLoc[3] then
     runGiant = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[4] then
     runDragon = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[5] then
     runNecro = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[6] then
     runHallMagic = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[7] then
     runHallLight = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[8] then
     runHallDark = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[9] then
     runHallFire = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[10] then
     runHallWater = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[11] then
     runHallWind = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[12] then
     runSD = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[13] then
   elseif farmLoc == spinnerFarmLoc[14] then
     runRiftFire = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[15] then
     runRiftIce = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[16] then
     runRiftWind = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[17] then
     runRiftLight = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[18] then
     runRiftDark = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[19] then
     runRiftRaid = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[20] then
   elseif farmLoc == spinnerFarmLoc[21] then
     runChiruka = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[22] then
     runRunar = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[23] then
     runFerun = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[24] then
     runAiden = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[25] then
     runFaimon = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[26] then
     runVrofagus = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[27] then
     runTamor = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[28] then
     runHydeni = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[29] then
     runTelain = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[30] then
     runWhiteRagon = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[31] then
     runKabir = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[32] then
     runSiz = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[33] then
     runGaren = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[34] then
   elseif farmLoc == spinnerFarmLoc[35] then
     runTOA = true
-    runArena = true
   elseif farmLoc == spinnerFarmLoc[36] then
     runLiveArena = true
   elseif farmLoc == spinnerFarmLoc[37] then
     runQuickClick = true
+  end
+  if dungeonLevel == spinnerLevel[1] then
+    bNum = 1
+  elseif dungeonLevel == spinnerLevel[2] then
+    bNum = 2
+  elseif dungeonLevel == spinnerLevel[3] then
+    bNum = 3
+  elseif dungeonLevel == spinnerLevel[4] then
+    bNum = 4
+  elseif dungeonLevel == spinnerLevel[5] then
+    bNum = 5
+  elseif dungeonLevel == spinnerLevel[6] then
+    bNum = 6
+  elseif dungeonLevel == spinnerLevel[7] then
+    bNum = 7
+  elseif dungeonLevel == spinnerLevel[8] then
+    bNum = 8
+  elseif dungeonLevel == spinnerLevel[9] then
+    bNum = 9
+  elseif dungeonLevel == spinnerLevel[10] then
+    bNum = 10
   end
   if runLmtOption == spinnerBattleLimit[1] then
     runNum = false
@@ -798,59 +909,143 @@ function setDialogOptions()
   elseif runLmtOption == spinnerBattleLimit[8] then
     runAutoSwitchFodder = true
   end
-  if runeRaritySelect == spinnerRuneRarity[1] then
-    keepLegendary = true
-  elseif runeRaritySelect == spinnerRuneRarity[2] then
-    keepLegendary = true
-    keepHero = true
-  elseif runeRaritySelect == spinnerRuneRarity[3] then
-    keepLegendary = true
-    keepHero = true
-    keepRare = true
-  elseif runeRaritySelect == spinnerRuneRarity[4] then
-    keepLegendary = true
-    keepHero = true
-    keepRare = true
-    keepMagic = true
-  elseif runeRaritySelect == spinnerRuneRarity[5] then
-    keepLegendary = true
-    keepHero = true
-    keepRare = true
-    keepMagic = true
-    keepNormal = true
+  if sellAllRune == false and keepAll == false then
+    if runeRaritySelect6 == spinnerRuneRarity6[1] then
+      runeRarity6 = 0
+    elseif runeRaritySelect6 == spinnerRuneRarity6[2] then
+      runeRarity6 = 1
+    elseif runeRaritySelect6 == spinnerRuneRarity6[3] then
+      runeRarity6 = 2
+    elseif runeRaritySelect6 == spinnerRuneRarity6[4] then
+      runeRarity6 = 3
+    elseif runeRaritySelect6 == spinnerRuneRarity6[5] then
+      runeRarity6 = 4
+    elseif runeRaritySelect6 == spinnerRuneRarity6[6] then
+      runeRarity6 = 5
+    end
+    if runeRaritySelect5 == spinnerRuneRarity5[1] then
+      runeRarity5 = 0
+    elseif runeRaritySelect5 == spinnerRuneRarity5[2] then
+      runeRarity5 = 1
+    elseif runeRaritySelect5 == spinnerRuneRarity5[3] then
+      runeRarity5 = 2
+    elseif runeRaritySelect5 == spinnerRuneRarity5[4] then
+      runeRarity5 = 3
+    elseif runeRaritySelect5 == spinnerRuneRarity5[5] then
+      runeRarity5 = 4
+    elseif runeRaritySelect5 == spinnerRuneRarity5[6] then
+      runeRarity5 = 5
+    end
+    if runeRaritySelect4 == spinnerRuneRarity4[1] then
+      runeRarity4 = 0
+    elseif runeRaritySelect4 == spinnerRuneRarity4[2] then
+      runeRarity4 = 1
+    elseif runeRaritySelect4 == spinnerRuneRarity4[3] then
+      runeRarity4 = 2
+    elseif runeRaritySelect4 == spinnerRuneRarity4[4] then
+      runeRarity4 = 3
+    elseif runeRaritySelect4 == spinnerRuneRarity4[5] then
+      runeRarity4 = 4
+    elseif runeRaritySelect4 == spinnerRuneRarity4[6] then
+      runeRarity4 = 5
+    end
+    if runeRaritySelect3 == spinnerRuneRarity3[1] then
+      runeRarity3 = 0
+    elseif runeRaritySelect3 == spinnerRuneRarity3[2] then
+      runeRarity3 = 1
+    elseif runeRaritySelect3 == spinnerRuneRarity3[3] then
+      runeRarity3 = 2
+    elseif runeRaritySelect3 == spinnerRuneRarity3[4] then
+      runeRarity3 = 3
+    elseif runeRaritySelect3 == spinnerRuneRarity3[5] then
+      runeRarity3 = 4
+    elseif runeRaritySelect3 == spinnerRuneRarity3[6] then
+      runeRarity3 = 5
+    end
+    if runeRaritySelect2 == spinnerRuneRarity2[1] then
+      runeRarity2 = 0
+    elseif runeRaritySelect2 == spinnerRuneRarity2[2] then
+      runeRarity2 = 1
+    elseif runeRaritySelect2 == spinnerRuneRarity2[3] then
+      runeRarity2 = 2
+    elseif runeRaritySelect2 == spinnerRuneRarity2[4] then
+      runeRarity2 = 3
+    elseif runeRaritySelect2 == spinnerRuneRarity2[5] then
+      runeRarity2 = 4
+    elseif runeRaritySelect2 == spinnerRuneRarity2[6] then
+      runeRarity2 = 5
+    end
+    if runeRaritySelect1 == spinnerRuneRarity1[1] then
+      runeRarity1 = 0
+    elseif runeRaritySelect1 == spinnerRuneRarity1[2] then
+      runeRarity1 = 1
+    elseif runeRaritySelect1 == spinnerRuneRarity1[3] then
+      runeRarity1 = 2
+    elseif runeRaritySelect1 == spinnerRuneRarity1[4] then
+      runeRarity1 = 3
+    elseif runeRaritySelect1 == spinnerRuneRarity1[5] then
+      runeRarity1 = 4
+    elseif runeRaritySelect1 == spinnerRuneRarity1[6] then
+      runeRarity1 = 5
+    end
+    if nonFlatSubSelect == spinnerSubPerc[1] then
+      nonFlatSub = 0
+    elseif nonFlatSubSelect == spinnerSubPerc[2] then
+      nonFlatSub = 25
+    elseif nonFlatSubSelect == spinnerSubPerc[3] then
+      nonFlatSub = 33
+    elseif nonFlatSubSelect == spinnerSubPerc[4] then
+      nonFlatSub = 50
+    elseif nonFlatSubSelect == spinnerSubPerc[5] then
+      nonFlatSub = 66
+    elseif nonFlatSubSelect == spinnerSubPerc[6] then
+      nonFlatSub = 75
+    elseif nonFlatSubSelect == spinnerSubPerc[7] then
+      nonFlatSub = 100
+    end
+    if runeDetectPct == spinnerRuneDetectPct[1] then
+      runeDetect = 0.6
+    elseif runeDetectPct == spinnerRuneDetectPct[2] then
+      runeDetect = 0.65
+    elseif runeDetectPct == spinnerRuneDetectPct[3] then
+      runeDetect = 0.7
+    elseif runeDetectPct == spinnerRuneDetectPct[4] then
+      runeDetect = 0.75
+    elseif runeDetectPct == spinnerRuneDetectPct[5] then
+      runeDetect = 0.8
+    elseif runeDetectPct == spinnerRuneDetectPct[6] then
+      runeDetect = 0.85
+    elseif runeDetectPct == spinnerRuneDetectPct[7] then
+      runeDetect = 0.9
+    elseif runeDetectPct == spinnerRuneDetectPct[8] then
+      runeDetect = 0.95
+    elseif runeDetectPct == spinnerRuneDetectPct[9] then
+      runeDetect = 0.99
+    end
+    if maxDetectPct == spinnerMaxDetectPct[1] then
+      maxDetect = 0.6
+    elseif maxDetectPct == spinnerMaxDetectPct[2] then
+      maxDetect = 0.65
+    elseif maxDetectPct == spinnerMaxDetectPct[3] then
+      maxDetect = 0.70
+    elseif maxDetectPct == spinnerMaxDetectPct[4] then
+      maxDetect = 0.75
+    elseif maxDetectPct == spinnerMaxDetectPct[5] then
+      maxDetect = 0.80
+    elseif maxDetectPct == spinnerMaxDetectPct[6] then
+      maxDetect = 0.85
+    elseif maxDetectPct == spinnerMaxDetectPct[7] then
+      maxDetect = 0.90
+    elseif maxDetectPct == spinnerMaxDetectPct[8] then
+      maxDetect = 0.95
+    elseif maxDetectPct == spinnerMaxDetectPct[9] then
+      maxDetect = 0.99
+    end
   end
-  if runeMainStatSelect == spinnerMainStat[1] then
-    keepAll = true
-  elseif runeMainStatSelect == spinnerMainStat[2] then
-    keepPercent = true
-  end
-  if runeRuneRankSelect == spinnerRuneRank[1] then
-    keep6Star = true
-  elseif runeRuneRankSelect == spinnerRuneRank[2] then
-    keep6Star = true
-    keep5Star = true
-  elseif runeRuneRankSelect == spinnerRuneRank[3] then
-    keep6Star = true
-    keep5Star = true
-    keep4Star = true
-  elseif runeRuneRankSelect == spinnerRuneRank[4] then
-    keep6Star = true
-    keep5Star = true
-    keep4Star = true
-    keep3Star = true
-  elseif runeRuneRankSelect == spinnerRuneRank[5] then
-    keep6Star = true
-    keep5Star = true
-    keep4Star = true
-    keep3Star = true
-    keep2Star = true
-  elseif runeRuneRankSelect == spinnerRuneRank[6] then
-    keep6Star = true
-    keep5Star = true
-    keep4Star = true
-    keep3Star = true
-    keep2Star = true
-    keep1Star = true
+  if runRival == false and runMatchUp == false then
+    runArena = false
+  else
+    runArena = true
   end
   if refillOption == spinnerRefillOption[1] then
     refillEnergy = false
@@ -1284,6 +1479,9 @@ function refill()
 end
 function defeated()
   reviveNoRegion:existsClick(Pattern("noRevive.png"):similar(.7), 3)
+  if runAutoSwitchFodder == true or stopMaxLevel == true then
+    isBattleSlotMax()
+  end
   victoryDiamondRegion:existsClick(Pattern("victoryDiamond.png"):similar(.7), 3)
   replayRegion:existsClick(Pattern("replay.png"):similar(.7), 3)
 end
@@ -1333,20 +1531,20 @@ function autoSwitchFodder()
 end
 function clearBattleSlotMax()
   usePreviousSnap(false)
-  getBattleSlotStarLevel()
-  getBattleSlotLevel()
-  isBattleSlotMax()
 ---  if slot1Max == true then
 ---   click(battleSlot1Region)
 ---  end
   if slot2Max == true then
     click(battleSlot2Region)
+    slot2Max = false
   end
   if slot3Max == true then
     click(battleSlot3Region)
+    slot3Max = false
   end
   if slot4Max == true then
     click(battleSlot4Region)
+    slot4Max = false
   end
 end
 function clickFriend()
@@ -1453,414 +1651,20 @@ function fillEmptySlot()
   end
 end
 function isBattleSlotMax()
-    if slot1Level == 15 and slot1StarLevel == 1 then
-      slot1Max = true
-    elseif slot1Level == 20 and slot1StarLevel == 2 then
-      slot1Max = true
-    elseif slot1Level == 25 and slot1StarLevel == 3 then
-      slot1Max = true
-    elseif slot1Level == 30 and slot1StarLevel == 4 then
-      slot1Max = true
-    elseif slot1Level == 35 and slot1StarLevel == 5 then
-      slot1Max = true
-    elseif slot1Level == 40 and slot1StarLevel == 6 then
-      slot1Max = true
-    elseif slot1StarLevel == 0 then
-    else
-      slot1Max = false
-    end
-    if slot2Level == 15 and slot2StarLevel == 1 then
-      slot2Max = true
-    elseif slot2Level == 20 and slot2StarLevel == 2 then
-      slot2Max = true
-    elseif slot2Level == 25 and slot2StarLevel == 3 then
-      slot2Max = true
-    elseif slot2Level == 30 and slot2StarLevel == 4 then
-      slot2Max = true
-    elseif slot2Level == 35 and slot2StarLevel == 5 then
-      slot2Max = true
-    elseif slot2Level == 40 and slot2StarLevel == 6 then
-      slot2Max = true
-    elseif slot2StarLevel == 0 then
-    else
-      slot2Max = false
-    end
-    if slot3Level == 15 and slot3StarLevel == 1 then
-      slot3Max = true
-    elseif slot3Level == 20 and slot3StarLevel == 2 then
-      slot3Max = true
-    elseif slot3Level == 25 and slot3StarLevel == 3 then
-      slot3Max = true
-    elseif slot3Level == 30 and slot3StarLevel == 4 then
-      slot3Max = true
-    elseif slot3Level == 35 and slot3StarLevel == 5 then
-      slot3Max = true
-    elseif slot3Level == 40 and slot3StarLevel == 6 then
-      slot3Max = true
-    elseif slot3StarLevel == 0 then
-    else
-      slot3Max = false
-    end
-    if slot4Level == 15 and slot4StarLevel == 1 then
-      slot4Max = true
-    elseif slot4Level == 20 and slot4StarLevel == 2 then
-      slot4Max = true
-    elseif slot4Level == 25 and slot4StarLevel == 3 then
-      slot4Max = true
-    elseif slot4Level == 30 and slot4StarLevel == 4 then
-      slot4Max = true
-    elseif slot4Level == 35 and slot4StarLevel == 5 then
-      slot4Max = true
-    elseif slot4Level == 40 and slot4StarLevel == 6 then
-      slot4Max = true
-    elseif slot4StarLevel == 0 then
-    else
-      slot4Max = false
-    end
-end
-function getBattleSlotStarLevel()
-    local r, g, b = getColor(Location(540, 232))
-  usePreviousSnap(true)
-    if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-      slot1StarLevel = 6
-    elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-      slot1StarLevel = 6
-    elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-      slot1StarLevel = 6
-    else local r, g, b = getColor(Location(517, 232))
-      if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-        slot1StarLevel = 5
-      elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-        slot1StarLevel = 5
-      elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-        slot1StarLevel = 5
-      else local r, g, b = getColor(Location(494, 232))
-        if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-          slot1StarLevel = 4
-        elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-          slot1StarLevel = 4
-        elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-          slot1StarLevel = 4
-        else local r, g, b = getColor(Location(471, 232))
-          if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-            slot1StarLevel = 3
-          elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-            slot1StarLevel = 3
-          elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-            slot1StarLevel = 3
-          else local r, g, b = getColor(Location(448, 232))
-            if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-              slot1StarLevel = 2
-            elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-              slot1StarLevel = 2
-            elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-              slot1StarLevel = 2
-            else local r, g, b = getColor(Location(425, 232))
-              if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-                slot1StarLevel = 1
-              elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-                slot1StarLevel = 1
-              elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-                slot1StarLevel = 1
-              else
-                slot1StarLevel = 0
-              end
-            end
-          end
-        end
-      end
-    end
-    local r, g, b = getColor(Location(344, 337))
-    if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-      slot2StarLevel = 6
-      toast("slot2star 6")
-    elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-      slot2StarLevel = 6
-      toast("slot2star 6")
-    elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-      slot2StarLevel = 6
-      toast("slot2star 6")
-    else local r, g, b = getColor(Location(321, 337))
-      if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-        slot2StarLevel = 5
-        toast("slot2star 5")
-      elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-        slot2StarLevel = 5
-        toast("slot2star 5")
-      elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-        slot2StarLevel = 5
-        toast("slot2star 5")
-      else local r, g, b = getColor(Location(298, 337))
-        if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-          slot2StarLevel = 4
-          toast("slot2star 4")
-        elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-          slot2StarLevel = 4
-          toast("slot2star 4")
-        elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-          slot2StarLevel = 4
-          toast("slot2star 4")
-        else local r, g, b = getColor(Location(275, 337))
-          if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-            slot2StarLevel = 3
-            toast("slot2star 3")
-          elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-            slot2StarLevel = 3
-            toast("slot2star 3")
-          elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-            slot2StarLevel = 3
-            toast("slot2star 3")
-          else local r, g, b = getColor(Location(252, 337))
-            if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-              slot2StarLevel = 2
-              toast("slot2star 2")
-            elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-              slot2StarLevel = 2
-              toast("slot2star 2")
-            elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-              slot2StarLevel = 2
-              toast("slot2star 2")
-            else local r, g, b = getColor(Location(229, 337))
-              if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-                slot2StarLevel = 1
-                toast("slot2star 1")
-              elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-                slot2StarLevel = 1
-                toast("slot2star 1")
-              elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-                slot2StarLevel = 1
-                toast("slot2star 1")
-              else
-                slot2StarLevel = 0
-                toast("slot2star 0")
-              end
-            end
-          end
-        end
-      end
-    end
-    local r, g, b = getColor(Location(736, 337))
-    if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-      slot3StarLevel = 6
-      toast("slot3star 6")
-    elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-      slot3StarLevel = 6
-      toast("slot3star 6")
-    elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-      slot3StarLevel = 6
-      toast("slot3star 6")
-    else local r, g, b = getColor(Location(713, 337))
-      if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-        slot3StarLevel = 5
-        toast("slot3star 5")
-      elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-        slot3StarLevel = 5
-        toast("slot3star 5")
-      elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-        slot3StarLevel = 5
-        toast("slot3star 5")
-      else local r, g, b = getColor(Location(690, 337))
-        if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-          slot3StarLevel = 4
-          toast("slot3star 4")
-        elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-          slot3StarLevel = 4
-          toast("slot3star 4")
-        elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-          slot3StarLevel = 4
-          toast("slot3star 4")
-        else local r, g, b = getColor(Location(667, 337))
-          if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-            slot3StarLevel = 3
-            toast("slot3star 3")
-          elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-            slot3StarLevel = 3
-            toast("slot3star 3")
-          elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-            slot3StarLevel = 3
-            toast("slot3star 3")
-          else local r, g, b = getColor(Location(644, 337))
-            if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-              slot3StarLevel = 2
-              toast("slot3star 2")
-            elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-              slot3StarLevel = 2
-              toast("slot3star 2")
-            elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-              slot3StarLevel = 2
-              toast("slot3star 2")
-            else local r, g, b = getColor(Location(621, 337))
-              if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-                slot3StarLevel = 1
-                toast("slot3star 1")
-              elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-                slot3StarLevel = 1
-                toast("slot3star 1")
-              elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-                slot3StarLevel = 1
-                toast("slot3star 1")
-              else
-                slot3StarLevel = 0
-                toast("slot3star 0")
-              end
-            end
-          end
-        end
-      end
-    end
-    local r, g, b = getColor(Location(540, 441))
-    if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-      slot4StarLevel = 6
-      toast("slot4star 6")
-    elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-      slot4StarLevel = 6
-      toast("slot4star 6")
-    elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-      slot4StarLevel = 6
-      toast("slot4star 6")
-    else local r, g, b = getColor(Location(517, 441))
-      if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-        slot4StarLevel = 5
-        toast("slot4star 5")
-      elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-        slot4StarLevel = 5
-        toast("slot4star 5")
-      elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-        slot4StarLevel = 5
-        toast("slot4star 5")
-      else local r, g, b = getColor(Location(494, 441))
-        if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-          slot4StarLevel = 4
-          toast("slot4star 4")
-        elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-          slot4StarLevel = 4
-          toast("slot4star 4")
-        elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-          slot4StarLevel = 4
-          toast("slot4star 4")
-        else local r, g, b = getColor(Location(471, 441))
-          if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-            slot4StarLevel = 3
-            toast("slot4star 3")
-          elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-            slot4StarLevel = 3
-            toast("slot4star 3")
-          elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-            slot4StarLevel = 3
-            toast("slot4star 3")
-          else local r, g, b = getColor(Location(448, 441))
-            if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-              slot4StarLevel = 2
-              toast("slot4star 2")
-            elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-              slot4StarLevel = 2
-              toast("slot4star 2")
-            elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-              slot4StarLevel = 2
-              toast("slot4star 2")
-            else local r, g, b = getColor(Location(425, 441))
-              if r > 220 and r < 230 and g > 225 and g < 235 and b > 225 and b < 235 then
-                slot4StarLevel = 1
-                toast("slot4star 1")
-              elseif r > 240 and r < 250 and g > 50 and g < 60  and b > 210 and b < 230 then
-                slot4StarLevel = 1
-                toast("slot4star 1")
-              elseif r > 250 and r <260 and g > 200 and g < 210 and b > 10 and b < 15  then
-                slot4StarLevel = 1
-                toast("slot4star 1")
-              else
-                slot4StarLevel = 0
-                toast("slot4star 0")
-              end
-            end
-          end
-        end
-      end
-    end
-  usePreviousSnap(false)
+  slot2MaxRegion:highlight(1)
+  if slot2MaxRegion:exists(Pattern("levelDone.png"):similar(maxDetect), 0.1) then
+    slot2Max = true
+    toast("Slot2Max")
   end
-function getBattleSlotLevel()
-  local accuracy = .9
-  if battleSlot1Region:exists(Pattern("level40Battle.png"):similar(accuracy), 0.1) then
-    slot1Level = 40
-  elseif battleSlot1Region:exists(Pattern("level35Battle.png"):similar(accuracy), 0.1) then
-    slot1Level = 35
-  elseif battleSlot1Region:exists(Pattern("level30Battle.png"):similar(accuracy), 0.1) then
-    slot1Level = 30
-  elseif battleSlot1Region:exists(Pattern("level25Battle.png"):similar(accuracy), 0.1) then
-    slot1Level = 25
-  elseif battleSlot1Region:exists(Pattern("level20Battle.png"):similar(accuracy), 0.1) then
-    slot1Level = 20
-  elseif battleSlot1Region:exists(Pattern("level15Battle.png"):similar(accuracy), 0.1) then
-    slot1Level = 15
-  else
-    slot1Level = 0
+  slot3MaxRegion:highlight(1)
+  if slot3MaxRegion:exists(Pattern("levelDone.png"):similar(maxDetect), 0.1) then
+    slot3Max = true
+    toast("Slot3Max")
   end
-  if battleSlot2Region:exists(Pattern("level40Battle.png"):similar(accuracy), 0.1) then
-    slot2Level = 40
-    toast("slot2level 40")
-  elseif battleSlot2Region:exists(Pattern("level35Battle.png"):similar(accuracy), 0.1) then
-    slot2Level = 35
-    toast("slot2level 35")
-  elseif battleSlot2Region:exists(Pattern("level30Battle.png"):similar(accuracy), 0.1) then
-    slot2Level = 30
-    toast("slot2level 30")
-  elseif battleSlot2Region:exists(Pattern("level25Battle.png"):similar(accuracy), 0.1) then
-    slot2Level = 25
-    toast("slot2level 25")
-  elseif battleSlot2Region:exists(Pattern("level20Battle.png"):similar(accuracy), 0.1) then
-    slot2Level = 20
-    toast("slot2level 20")
-  elseif battleSlot2Region:exists(Pattern("level15Battle.png"):similar(accuracy), 0.1) then
-    slot2Level = 15
-    toast("slot2level 15")
-  else
-    slot2Level = 0
-    toast("slot2level NotMax")
-  end
-  if battleSlot3Region:exists(Pattern("level40Battle.png"):similar(accuracy), 0.1) then
-    slot3Level = 40
-    toast("slot3level 40")
-  elseif battleSlot3Region:exists(Pattern("level35Battle.png"):similar(accuracy), 0.1) then
-    slot3Level = 35
-    toast("slot3level 35")
-  elseif battleSlot3Region:exists(Pattern("level30Battle.png"):similar(accuracy), 0.1) then
-    slot3Level = 30
-    toast("slot3level 30")
-  elseif battleSlot3Region:exists(Pattern("level25Battle.png"):similar(accuracy), 0.1) then
-    slot3Level = 25
-    toast("slot3level 25")
-  elseif battleSlot3Region:exists(Pattern("level20Battle.png"):similar(accuracy), 0.1) then
-    slot3Level = 20
-    toast("slot3level 20")
-  elseif battleSlot3Region:exists(Pattern("level15Battle.png"):similar(accuracy), 0.1) then
-    slot3Level = 15
-    toast("slot3level 15")
-  else
-    slot3Level = 0
-    toast("slot3level NotMax")
-  end
-  if battleSlot4Region:exists(Pattern("level40Battle.png"):similar(accuracy), 0.1) then
-    slot4Level = 40
-    toast("slot4level 40")
-  elseif battleSlot4Region:exists(Pattern("level35Battle.png"):similar(accuracy), 0.1) then
-    slot4Level = 35
-    toast("slot4level 35")
-  elseif battleSlot4Region:exists(Pattern("level30Battle.png"):similar(accuracy), 0.1) then
-    slot4Level = 30
-    toast("slot4level 30")
-  elseif battleSlot4Region:exists(Pattern("level25Battle.png"):similar(accuracy), 0.1) then
-    slot4Level = 25
-    toast("slot4level 25")
-  elseif battleSlot4Region:exists(Pattern("level20Battle.png"):similar(accuracy), 0.1) then
-    slot4Level = 20
-    toast("slot4level 20")
-  elseif battleSlot4Region:exists(Pattern("level15Battle.png"):similar(accuracy), 0.1) then
-    slot4Level = 15
-    toast("slot4level 15")
-  else
-    slot4Level = 0
-    toast("slot4level NotMax")
+  slot4MaxRegion:highlight(1)
+  if slot4MaxRegion:exists(Pattern("levelDone.png"):similar(maxDetect), 0.1) then
+    slot4Max = true
+    toast("Slot4Max")
   end
 end
 function replaceEmptyBattleSlot()
@@ -1883,9 +1687,6 @@ end
 function checkMaxLevel()
   if stopMaxLevel then
     usePreviousSnap(false)
-    getBattleSlotStarLevel()
-    getBattleSlotLevel()
-    isBattleSlotMax()
     if slot2Max == true then
       isMaxLevel = true
     elseif slot3Max == true then
@@ -1946,21 +1747,31 @@ function stopSoundVibrate()
 end
 function findRuneRarity()
   runeRarityRegion:highlight()
-  local loc = Location(735, 455)
-  local r,g,b = getColor(loc)
-  if (r > 40 and b < 40 and g < 40) then
+  local bestMatchIndex = existsMultiMax(runeRarityImages, runeRarityRegion)
+  if (bestMatchIndex == 1) then
     runeRarity = "Legendary"
-  elseif (r > 40 and b > 40 and g < 40) then
+    rareNum = 5
+    runeSubCnt = 4
+  elseif (bestMatchIndex == 2) then
     runeRarity = "Hero"
-  elseif (r < 40 and b > 40 and g > 40) then
+    rareNum = 4
+    runeSubCnt = 3
+  elseif (bestMatchIndex == 3) then
     runeRarity = "Rare"
-  elseif (r < 40 and b < 40 and g > 40) then
+    rareNum = 3
+    runeSubCnt = 2
+  elseif (bestMatchIndex == 4) then
     runeRarity = "Magic"
-  elseif (r > 40 and b < 40 and g > 40) then
+    rareNum = 2
+    runeSubCnt = 1
+  elseif (bestMatchIndex == 5) then
     runeRarity = "Normal"
+    rareNum = 1
+    runeSubCnt = 0
   else
-    runeRarity = "NONE"
-    scriptExit ( "This rune's rarity cannot be determined")
+    runeRarity = "Legendary"
+    rareNum = 5
+    runeSubCnt = 1
   end
   runeRarityRegion:highlight()
 end
@@ -1996,7 +1807,7 @@ function findRuneRank()
             if (r > 200 and g > 200 and b > 200) then
               runeRank = 1
             else
-              runeRank = "NONE"
+              runeRank = 6
             end
           end
         end
@@ -2007,24 +1818,27 @@ function findRuneRank()
 end
 function findRuneSlot()
   runeSlotRegion:highlight()
-  local loc = Location(731, 384)
-  local r, g, b = getColor(loc)
-  if (r > 70 and r < 150 and g > 70 and g < 150 and b > 70 and b < 150) then
+  if(runeSlotRegion:exists(Pattern("slotOne.png"):similar(.9), .5)) then
+    runeSlot = 1
+    slotString = "1"
+  elseif(runeSlotRegion:exists(Pattern("slotTwo.png"):similar(.9), .5)) then
     runeSlot = 2
+    slotString = "2"
+  elseif(runeSlotRegion:exists(Pattern("slotThree.png"):similar(.9), .5)) then
+    runeSlot = 3
+    slotString = "3"
+  elseif (runeSlotRegion:exists(Pattern("slotFour.png"):similar(.9), .5)) then
+    runeSlot = 4
+    slotString = "4"
+  elseif(runeSlotRegion:exists(Pattern("slotFive.png"):similar(.9), .5)) then
+    runeSlot = 5
+    slotString = "5"
+  elseif (runeSlotRegion:exists(Pattern("slotSix.png"):similar(.9), .5)) then
+    runeSlot = 6
+    slotString = "6"
   else
-    local loc = Location(697, 447)
-    local r, g, b = getColor(loc)
-    if (r > 70 and r < 150 and g > 70 and g < 150 and b > 70 and b < 150) then
-      runeSlot = 4
-    else
-      local loc = Location(660, 387)
-      local r, g, b = getColor(loc)
-      if (r > 70 and r < 150 and g > 70 and g < 150 and b > 70 and b < 150) then
-        runeSlot = 6
-      else
-        runeSlot = 0
-      end
-    end
+    runeSlot = 1
+    slotString = "1/3/5"
   end
   runeSlotRegion:highlight()
 end
@@ -2060,10 +1874,26 @@ function findMainStat()
   elseif (bestMatchIndex == 8) then
     mainStat = ("ACC")
   else mainStat = ("NONE")
+    scriptExit ( "This rune's main stat cannot be determined")
   end
   mainStatRegion:highlight()
 end
+function subEval()
+  if runeSubRegion:exists(Pattern("runeSubPercentage.png"):similar(0.8)) then
+    subTable = listToTable(runeSubRegion:findAll(Pattern("runeSubPercentage.png"):similar(0.8)))
+    runeSubPercCnt = tableLength(subTable)
+  else
+    runeSubPercCnt = 0
+  end
+  if runeSubRegion:exists((Pattern("runeSubSPD.png"):similar(0.8)), 3) then
+    runeSubPercCnt = runeSubPercCnt + 1
+  end
+  subMatch = math.floor(runeSubPercCnt / runeSubCnt * 100)
+end
 function sellRune()
+  if screenshotSell == true then
+    captureScreenshot()
+  end
   sellRegion:existsClick(Pattern("sell.png"):similar(.6))
   runeYesRegion:existsClick(Pattern("yes.png"):similar(.6))
   if runeRank == 6 then r6Sold = r6Sold + 1
@@ -2072,6 +1902,9 @@ function sellRune()
   end
 end
 function getRune()
+  if screenshotKeep == true then
+    captureScreenshot()
+  end
   getRegion:existsClick(Pattern("get.png"):similar(.6))
   if runeRank == 6 then r6Count = r6Count + 1
   elseif runeRank == 5 then r5Count = r5Count + 1
@@ -2079,74 +1912,111 @@ function getRune()
   end
 end
 function runeKeep1 ()
-  if runeRarity == "Legendary" and keepLegendary == true then
-    runeKeep2 ()
-  elseif runeRarity == "Hero" and keepHero == true then
-    runeKeep2 ()
-  elseif runeRarity == "Rare" and keepRare == true then
-    runeKeep2 ()
-  elseif runeRarity == "Magic" and keepMagic == true then
-    runeKeep2 ()
-  elseif runeRarity == "Normal" and keepNormal == true then
-    runeKeep2 ()
-  else
-    sellRune()
-  end
-end
-function runeKeep2 ()
-  if runeRank == 6 and keep6Star == true then
+  if runeRank == 6 and rareNum >= runeRarity6 then
     runeKeep3 ()
-  elseif runeRank == 5 and keep5Star == true then
+  elseif runeRank == 5 and rareNum >= runeRarity5 then
     runeKeep3 ()
-  elseif runeRank == 4 and keep4Star == true then
+  elseif runeRank == 4 and rareNum >= runeRarity4 then
     runeKeep3 ()
-  elseif runeRank == 3 and keep3Star == true then
+  elseif runeRank == 3 and rareNum >= runeRarity3 then
     runeKeep3 ()
-  elseif runeRank == 2 and keep2Star == true then
+  elseif runeRank == 2 and rareNum >= runeRarity2 then
     runeKeep3 ()
-  elseif runeRank == 1 and keep1Star == true then
+  elseif runeRank == 1 and rareNum >= runeRarity1 then
     runeKeep3 ()
   else
-    sellRune()
+    sellingRune = true
+    keepSell = "Selling Rune"
+    runeKeep5 ()
   end
 end
 function runeKeep3 ()
-  if keepAll == true then
-    getRune()
-  elseif runeSlot == 2 and keepPercent == true and mainStat == ("HP") then
-    sellRune()
-  elseif runeSlot == 2 and keepPercent == true and mainStat == ("ATK") then
-    sellRune()
-  elseif runeSlot == 2 and keepPercent == true and mainStat == ("DEF") then
-    sellRune()
-  elseif runeSlot == 4 and keepPercent == true and mainStat == ("HP") then
-    sellRune()
-  elseif runeSlot == 4 and keepPercent == true and mainStat == ("ATK") then
-    sellRune()
-  elseif runeSlot == 4 and keepPercent == true and mainStat == ("DEF") then
-    sellRune()
-  elseif runeSlot == 6 and keepPercent == true and mainStat == ("HP") then
-    sellRune()
-  elseif runeSlot == 6 and keepPercent == true and mainStat == ("ATK") then
-    sellRune()
-  elseif runeSlot == 6 and keepPercent == true and mainStat == ("DEF") then
-    sellRune()
+  if runeSlot == 2 and mainStat == ("HP") then
+    sellingRune = true
+    keepSell = "Selling Rune"
+    runeKeep5 ()
+  elseif runeSlot == 2 and mainStat == ("ATK") then
+    sellingRune = true
+    keepSell = "Selling Rune"
+    runeKeep5 ()
+  elseif runeSlot == 2 and mainStat == ("DEF") then
+    sellingRune = true
+    keepSell = "Selling Rune"
+    runeKeep5 ()
+  elseif runeSlot == 4 and mainStat == ("HP") then
+    sellingRune = true
+    keepSell = "Selling Rune"
+    runeKeep5 ()
+  elseif runeSlot == 4 and mainStat == ("ATK") then
+    sellingRune = true
+    keepSell = "Selling Rune"
+    runeKeep5 ()
+  elseif runeSlot == 4 and mainStat == ("DEF") then
+    sellingRune = true
+    keepSell = "Selling Rune"
+    runeKeep5 ()
+  elseif runeSlot == 6 and mainStat == ("HP") then
+    sellingRune = true
+    keepSell = "Selling Rune"
+    runeKeep5 ()
+  elseif runeSlot == 6 and mainStat == ("ATK") then
+    sellingRune = true
+    keepSell = "Selling Rune"
+    runeKeep5 ()
+  elseif runeSlot == 6 and mainStat == ("DEF") then
+    sellingRune = true
+    keepSell = "Selling Rune"
+    runeKeep5 ()
   else
-    getRune ()
+    runeKeep4 ()
   end
 end
+function tableLength(T)
+    local count = 0
+    for _ in pairs(T) do count = count + 1 end
+    return count
+end
+function runeKeep4 ()
+  if keepSpdMain == true and mainStat == ("SPD") then
+    sellingRune = false
+    keepSell = "Keeping Rune"
+    runeKeep5 ()
+  elseif subMatch < nonFlatSub then
+    sellingRune = true
+    keepSell = "Selling Rune"
+    runeKeep5 ()
+  else
+    sellingRune = false
+    keepSell = "Keeping Rune"
+    runeKeep5 ()
+  end
+end
+function runeKeep5 ()
+  setHighlightTextStyle(16777215, 4294967295, textSizeNum)
+  runeStatString = " " .. runeRank .. " star \n" .. runeRarity .. "(" .. slotString .. ") rune \n Main Stat: " .. mainStat .. "\n Matching subs: " .. subMatch .. "% \n" .. keepSell .. " "
+  runeStatRegion:highlight(runeStatString)
+  if sellingRune == true then
+    sellRune()
+  else
+    getRune()
+  end
+  runeStatRegion:highlight(runeStatString)
+end
 function sellGetRune ()
-  if grindstoneRegion:exists(Pattern("grindTilde.png"):similar(.8), 0.1) then
+  if grindstoneRegion:exists(Pattern("grindTilde.png"):similar(imgAccuracy), 0.1) then
     getRune()
   elseif enchantedGemRegion:exists(Pattern("enchantedGem.png"):similar(.6), 0.1) then
     getRune()
   elseif sellAllRune == true then
     sellRune()
+  elseif keepAll == true then
+    getRune()
   else
     findRuneRarity()
     findRuneRank()
     findRuneSlot()
     findMainStat()
+    subEval()
     runeKeep1()
   end
 end
@@ -2229,11 +2099,13 @@ function refreshList()
   refreshList2Region:existsClick(Pattern("refreshList2.png"):similar(imgAccuracy * 0.8), 2)
 end
 function existsArenaRival()
-  if arenaRivalNumberRegion:exists(Pattern("arenaRivalNumber.png"):similar(imgAccuracy), 3) then
-    arenaRivalRegion:existsClick(Pattern("arenaRivalNumber.png"), 3)
-    isArenaRival = true
-      toast("Finding a Rival")
-  else
+  if runRival == true then
+    if arenaRivalNumberRegion:exists(Pattern("arenaRivalNumber.png"):similar(imgAccuracy), 3) then
+      arenaRivalRegion:existsClick(Pattern("arenaRivalNumber.png"), 3)
+      isArenaRival = true
+        toast("Finding a Rival")
+    end
+  elseif runMatchUp == true then
     arenaMatchupRegion:existsClick(Pattern("matchUp.png"), 0.1)
     isArenaRival = false
       toast("Finding a Matchup")
@@ -2286,7 +2158,7 @@ function arenaBattle()
         wait(1)
         startRegion:existsClick(Pattern("start.png"):similar(imgAccuracy), 2)
         waitClickArenaRival()
-      else
+      elseif runMatchUp == true then
         arenaMatchupRegion:existsClick(Pattern("matchUp.png"), 0.1)
         if arenaWingRegion:exists(Pattern("wing.png"):similar(imgAccuracy), 2) then
           arenaWingRegion:existsClick(Pattern("wing.png"):similar(imgAccuracy), 2)
@@ -2419,10 +2291,15 @@ function liveArenaBattle()
   end
 end
 function closeArenaDialogBox()
+  toast("Close Arena Dialog Box")
+  arenaXRegion:highlight(2)
   arenaXRegion:existsClick(Pattern("closeX.png"), 2)
+  toast("Exit Arena Screen")
+  backButtonRegion:highlight(2)
   existsClick(Pattern("back2Button.png"):similar(.6), 3)
 end
 function closeCairoDungeonDialogBox()
+  closeXCairoDungeonRegion:highlight(2)
   closeXCairoDungeonRegion:existsClick(Pattern("closeX.png"), 2)
 end
 function closeScenarioDialogBox()
@@ -2611,11 +2488,19 @@ function clickGiantB10()
     dragDrop(Location(1200, 835), Location(1200, 320))
     wait(1)
     dragDrop(Location(1200, 835), Location(1200, 320))
-    if dungeonBattleRegion:exists(Pattern("mapB10.png"):targetOffset(setLocation(453, 0))) then
-        dungeonBattleRegion:existsClick(Pattern("mapB10.png"):targetOffset(setLocation(453, 0)))
+    if bNum < 7 then
+      wait(1)
+      dragDrop(Location(1200, 320), Location(1200, 835))
+      if bNum < 4 then
+        wait(1)
+        dragDrop(Location(1200, 320), Location(1200, 835))
+      end
+    end
+    if dungeonBattleRegion:exists(Pattern("mapB"..bNum..".png"):targetOffset(setLocation(453, 0))) then
+        dungeonBattleRegion:existsClick(Pattern("mapB"..bNum..".png"):targetOffset(setLocation(453, 0)))
     elseif dungeonListRegion:exists(Pattern("mapGiantsKeep.png"):similar(imgAccuracy), 1) then
         keyevent(4)
-        toast("Couldn't find B10, going back")
+        toast("Couldn't find B"..bNum..", going back")
         findDungeon()
     end
   end
@@ -2626,11 +2511,19 @@ function clickDragonB10()
     dragDrop(Location(1200, 835), Location(1200, 320))
     wait(1)
     dragDrop(Location(1200, 835), Location(1200, 320))
-    if dungeonBattleRegion:exists(Pattern("mapB10.png"):targetOffset(setLocation(453, 0))) then
-        dungeonBattleRegion:existsClick(Pattern("mapB10.png"):targetOffset(setLocation(453, 0)))
+    if bNum < 7 then
+      wait(1)
+      dragDrop(Location(1200, 320), Location(1200, 835))
+      if bNum < 4 then
+        wait(1)
+        dragDrop(Location(1200, 320), Location(1200, 835))
+      end
+    end
+    if dungeonBattleRegion:exists(Pattern("mapB"..bNum..".png"):targetOffset(setLocation(453, 0))) then
+        dungeonBattleRegion:existsClick(Pattern("mapB"..bNum..".png"):targetOffset(setLocation(453, 0)))
     elseif dungeonListRegion:exists(Pattern("mapDragonsLair.png"):similar(imgAccuracy), 1) then
         keyevent(4)
-        toast("Couldn't find B10, going back")
+        toast("Couldn't find B"..bNum..", going back")
         findDungeon()
     end
   end
@@ -2641,11 +2534,19 @@ function clickNecroB10()
     dragDrop(Location(1200, 835), Location(1200, 320))
     wait(1)
     dragDrop(Location(1200, 835), Location(1200, 320))
-    if dungeonBattleRegion:exists(Pattern("mapB10.png"):targetOffset(setLocation(453, 0))) then
-        dungeonBattleRegion:existsClick(Pattern("mapB10.png"):targetOffset(setLocation(453, 0)))
+    if bNum < 7 then
+      wait(1)
+      dragDrop(Location(1200, 320), Location(1200, 835))
+      if bNum < 4 then
+        wait(1)
+        dragDrop(Location(1200, 320), Location(1200, 835))
+      end
+    end
+    if dungeonBattleRegion:exists(Pattern("mapB"..bNum..".png"):targetOffset(setLocation(453, 0))) then
+        dungeonBattleRegion:existsClick(Pattern("mapB"..bNum..".png"):targetOffset(setLocation(453, 0)))
     elseif dungeonListRegion:exists(Pattern("mapNecropolis.png"):similar(imgAccuracy), 1) then
         keyevent(4)
-        toast("Couldn't find B10, going back")
+        toast("Couldn't find B"..bNum..", going back")
         findDungeon()
     end
   end
@@ -2657,7 +2558,7 @@ function clickSD()
         sdChargeRegion:existsClick(Pattern("sdCharge.png"), 1)
     elseif dungeonListRegion:exists(Pattern("mapSD.png"):similar(imgAccuracy), 1) then
         keyevent(4)
-        toast("Couldn't find B10, going back")
+        toast("Couldn't find B"..bNum..", going back")
         findDungeon()
     end
   end
@@ -2789,37 +2690,103 @@ end
 function clickHallofMagicB10()
   if dungeonListRegion:existsClick(Pattern("mapHallofMagic.png"):similar(imgAccuracy), 1) then
     wait(2)
-    dungeonBattleRegion:click(Pattern("mapB10.png"):targetOffset(setLocation(453, 0)))
+    dragDrop(Location(1200, 835), Location(1200, 320))
+    wait(1)
+    dragDrop(Location(1200, 835), Location(1200, 320))
+    if bNum < 7 then
+      wait(1)
+      dragDrop(Location(1200, 320), Location(1200, 835))
+      if bNum < 4 then
+        wait(1)
+        dragDrop(Location(1200, 320), Location(1200, 835))
+      end
+    end
+    dungeonBattleRegion:click(Pattern("mapB"..bNum..".png"):targetOffset(setLocation(453, 0)))
   end
 end
 function clickHallofLightB10()
   if dungeonListRegion:existsClick(Pattern("mapHallofLight.png"):similar(imgAccuracy), 1) then
     wait(2)
-    dungeonBattleRegion:click(Pattern("mapB10.png"):targetOffset(setLocation(453, 0)))
+    dragDrop(Location(1200, 835), Location(1200, 320))
+    wait(1)
+    dragDrop(Location(1200, 835), Location(1200, 320))
+    if bNum < 7 then
+      wait(1)
+      dragDrop(Location(1200, 320), Location(1200, 835))
+      if bNum < 4 then
+        wait(1)
+        dragDrop(Location(1200, 320), Location(1200, 835))
+      end
+    end
+    dungeonBattleRegion:click(Pattern("mapB"..bNum..".png"):targetOffset(setLocation(453, 0)))
   end
 end
 function clickHallofDarkB10()
   if dungeonListRegion:existsClick(Pattern("mapHallofDark.png"):similar(imgAccuracy), 1) then
     wait(2)
-    dungeonBattleRegion:click(Pattern("mapB10.png"):targetOffset(setLocation(453, 0)))
+    dragDrop(Location(1200, 835), Location(1200, 320))
+    wait(1)
+    dragDrop(Location(1200, 835), Location(1200, 320))
+    if bNum < 7 then
+      wait(1)
+      dragDrop(Location(1200, 320), Location(1200, 835))
+      if bNum < 4 then
+        wait(1)
+        dragDrop(Location(1200, 320), Location(1200, 835))
+      end
+    end
+    dungeonBattleRegion:click(Pattern("mapB"..bNum..".png"):targetOffset(setLocation(453, 0)))
   end
 end
 function clickHallofFireB10()
   if dungeonListRegion:existsClick(Pattern("mapHallofFire.png"):similar(imgAccuracy), 1) then
     wait(2)
-    dungeonBattleRegion:click(Pattern("mapB10.png"):targetOffset(setLocation(453, 0)))
+    dragDrop(Location(1200, 835), Location(1200, 320))
+    wait(1)
+    dragDrop(Location(1200, 835), Location(1200, 320))
+    if bNum < 7 then
+      wait(1)
+      dragDrop(Location(1200, 320), Location(1200, 835))
+      if bNum < 4 then
+        wait(1)
+        dragDrop(Location(1200, 320), Location(1200, 835))
+      end
+    end
+    dungeonBattleRegion:click(Pattern("mapB"..bNum..".png"):targetOffset(setLocation(453, 0)))
   end
 end
 function clickHallofWaterB10()
   if dungeonListRegion:existsClick(Pattern("mapHallofWater.png"):similar(imgAccuracy), 1) then
     wait(2)
-    dungeonBattleRegion:click(Pattern("mapB10.png"):targetOffset(setLocation(453, 0)))
+    dragDrop(Location(1200, 835), Location(1200, 320))
+    wait(1)
+    dragDrop(Location(1200, 835), Location(1200, 320))
+    if bNum < 7 then
+      wait(1)
+      dragDrop(Location(1200, 320), Location(1200, 835))
+      if bNum < 4 then
+        wait(1)
+        dragDrop(Location(1200, 320), Location(1200, 835))
+      end
+    end
+    dungeonBattleRegion:click(Pattern("mapB"..bNum..".png"):targetOffset(setLocation(453, 0)))
   end
 end
 function clickHallofWindB10()
   if dungeonListRegion:existsClick(Pattern("mapHallofWind.png"):similar(imgAccuracy), 1) then
     wait(2)
-    dungeonBattleRegion:click(Pattern("mapB10.png"):targetOffset(setLocation(453, 0)))
+    dragDrop(Location(1200, 835), Location(1200, 320))
+    wait(1)
+    dragDrop(Location(1200, 835), Location(1200, 320))
+    if bNum < 7 then
+      wait(1)
+      dragDrop(Location(1200, 320), Location(1200, 835))
+      if bNum < 4 then
+        wait(1)
+        dragDrop(Location(1200, 320), Location(1200, 835))
+      end
+    end
+    dungeonBattleRegion:click(Pattern("mapB"..bNum..".png"):targetOffset(setLocation(453, 0)))
   end
 end
 function clickHallB10()
@@ -3647,6 +3614,7 @@ function findScenario()
   if existsDialogScenario() then
     clickScenarioStage()
   elseif dropInfoRegion:exists(Pattern("dropInfo.png"):similar(imgAccuracy), 0.1) then
+  	toast("Drop info close")
     closeDialogScenarioRegion:existsClick(Pattern("closeX.png"):similar(imgAccuracy), 2)
     clickScenario()
     clickScenarioStage()
@@ -4146,6 +4114,9 @@ defaultValues ()
 defaultTrueFalse ()
 defaultRegionLocation ()
 dialogBox()
+if sellAllRune == false and keepAll == false then
+  runeDialogBox()
+end
 setDialogOptions()
 setAdvancedOptions()
 automaticUpdates ()
@@ -4173,6 +4144,9 @@ while true do
       runLmt = runLmt - 1
       showBattleResult("Start Battle")
       resetTimerNoActivity()
+      if runAutoSwitchFodder == true or stopMaxLevel == true then
+        isBattleSlotMax()
+      end
       victory()
       showBattleResult("Battle Start")
       printBattleMessage()
