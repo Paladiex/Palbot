@@ -1,5 +1,6 @@
 localPath = scriptPath()
 imagePath = (localPath .. "1920x1080/")
+httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/closePurchaseNew.png", imagePath .."closePurchaseNew.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/1starBattle.png", imagePath .."1starBattle.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/1starFodder.png", imagePath .."1starFodder.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/2starBattle.png", imagePath .."2starBattle.png")
