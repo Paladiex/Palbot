@@ -1,6 +1,8 @@
 localPath = scriptPath()
+isTrial = false
+maxTrialTimeout = 3600
 commonLib = loadstring(httpGet("https://raw.githubusercontent.com/AnkuLua/commonLib/master/commonLib.lua"))()
-getNewestVersion = loadstring(httpGet("https://raw.githubusercontent.com/Paladiex/Palbot/master/version.lua"))
+getNewestVersion = loadstring(httpGet("https://raw.githubusercontent.com/digaomatias/Palbot-test/master/version.lua"))
 latestVersion = getNewestVersion()
 currentVersion = dofile(localPath .."version.lua")
 print (currentVersion)
@@ -23,9 +25,9 @@ function automaticUpdates ()
     if currentVersion == latestVersion then
       toast ("You are up to date!")
     else
-      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/version.lua", localPath .."version.lua")
-      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/Palbot.lua", localPath .."Palbot.lua")
-      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/imageupdater.lua", localPath .."imageupdater.lua")
+      httpDownload("https://raw.githubusercontent.com/digaomatias/Palbot-test/master/version.lua", localPath .."version.lua")
+      httpDownload("https://raw.githubusercontent.com/digaomatias/Palbot-test/master/Palbot.lua", localPath .."Palbot.lua")
+      httpDownload("https://raw.githubusercontent.com/digaomatias/Palbot-test/master/imageupdater.lua", localPath .."imageupdater.lua")
       scriptExit("You have Updated Palbot!")
     end
   end
@@ -33,6 +35,7 @@ end
 function defaultValues()
   monX = 0
   monY = 0
+  storageScrollY = 0
 winCount = 0
 loseCount = 0
 arenaWinCount = 0
@@ -62,6 +65,7 @@ maxNoActivityTimeout = 600
 maxConnectionTimeout = 600
 maxNoRaidActivity = 120
 waitTimer = 30
+timerTrial = 0
 searchMagicShopCount = 0
 mysticalCount = 0
 legendaryCount = 0
@@ -194,6 +198,7 @@ enchantedGemRegion = Region(750, 350, 350, 150)
 raidJoinRegion = Region(1300, 845, 250, 65)
 raidReadyRegion = Region(1550, 950, 250, 75)
 okRaidRegion = Region(910, 615, 100, 80)
+raidAcceptRegion = Region(730, 245, 130, 45)
 raidVictoryTotalRegion = Region(125, 600, 150, 50)
   raidLossTotalRegion = Region(125, 725, 150, 50)
 raidOkRegion = Region(825, 625, 250, 250)
@@ -237,8 +242,8 @@ notEnoughWingRegion = Region(850, 355, 260, 65)
 rechargeFlashRegion = Region(455, 395, 195, 235)
 yesPurchaseRegion = Region(745, 635, 110, 60)
 okPurchaseRegion = Region(915, 625, 90, 60)
---closePurchaseRegion = Region(900, 895, 125, 60)
-  closePurchaseRegion = Region(1568, 121, 61, 60)
+closePurchaseRegion = Region(900, 895, 125, 60)
+refillClosePurchaseRegion = Region(1526, 88, 129, 112)
 dialogTextCenterRegion = Region(600, 0, 750, 275)
 dialogToaRegion = Region(710, 65, 305, 85)
 closeXCairoDungeonRegion = Region(1635, 75, 70, 70)
@@ -322,6 +327,10 @@ slot1MaxRegion = Region(450,668,345,165)
 slot2MaxRegion = Region(825,668,345,165)
 slot3MaxRegion = Region(1215,668,345,165)
 slot4MaxRegion = Region(435,797,345,165)
+bossBuffRegion = Region(1420,75,485,115)
+miniBossLocation = Location(1211, 278)
+fodderInfoRegion = Region(795,146,305,80)
+fodderCloseLocation = Location(1541,186)
 end
 function captureScreenshot()
   setImagePath(localPath .. "Runes/")
@@ -1459,8 +1468,7 @@ function refill()
     rechargeFlashRegion:existsClick(Pattern("rechargeFlash.png"):similar(imgAccuracy), 3)
     yesPurchaseRegion:existsClick(Pattern("yesPurchase.png"):similar(imgAccuracy), 3)
     okPurchaseRegion:existsClick(Pattern("okPurchase.png"):similar(imgAccuracy), 3)
-    --closePurchaseRegion:existsClick(Pattern("closePurchase.png"):similar(imgAccuracy), 3)
-    closePurchaseRegion:existsClick(Pattern("closePurchaseNew.png"):similar(imgAccuracy), 3)
+    refillClosePurchaseRegion:existsClick(Pattern("closeX.png"):similar(imgAccuracy), 3)
   else
     refillNoRegion:existsClick(Pattern("noPurchase.png"):similar(imgAccuracy), 3)
     while waitTimer > 0 do
@@ -1559,29 +1567,45 @@ function clickFriend()
   end
   isClickFriend = true
 end
+function fodderPicker()
+
+end
 function StorageFodderEvaluater()
+  while storageScrollY > 0 do
+    storageScrollY = storageScrollY - 1 
+      dragDrop(Location(574, 273), Location(574, 582))      
+      wait (.1)
+      dragDrop(Location(574, 273), Location(574, 583))
+      wait(.1)
+  end
+
   evaluateStorage = true
-  while evaluateStorage do
+  while evaluateStorage do    
+    if fodderInfoRegion:exists(Pattern("userLevel.png"):similar(.75), 0.1) then
+      click(fodderCloseLocation)
+    end
     if fodderFill < 1 then
       fodderStorageOkRegion:click(Pattern("ok.png"):similar(.80))
       evaluateStorage = false
     end
-    if monX > 7 then monX = 0 monY = monY+1
-      dragDrop(Location(574, 273), Location(574, 582))
-      wait (.1)
-      dragDrop(Location(574, 273), Location(574, 583))
-      wait(.1)
+    if monX > 7 then 
+      monX = 0 
+      monY = monY+1
     end
     if monY > 3 then monY = 0
-      dragDrop(Location(574, 273), Location(574, 582))
+      storageScrollY = storageScrollY + 1 
+      dragDrop(Location(574, 273), Location(574, 582))      
       wait (.1)
       dragDrop(Location(574, 273), Location(574, 583))
       wait(.1)
     end
     monLevelSpot = Region(1436 - monX*156, 830 - monY*156, 150, 55)
+    monLevelSpot:highlight(1)
     checkMonsRegion = Region(1491 - monX*156, 725 - monY*156, 90, 60)
+    checkMonsRegion:highlight(1)
     emptyFodderRegion = Region(1450 - monX*156, 750 - monY*156, 120, 110)
-    if  monLevelSpot:exists(Pattern("maxFodder.png"):similar(.75), 0.1) then
+    emptyFodderRegion:highlight(1)
+    if  monLevelSpot:exists(Pattern("maxFodder.png"):similar(.65), 0.1) then
       if monLevelSpot:exists(Pattern("maxFodder40.png"):similar(.90), 0.1) then
         scriptExit("No more monsters to max!")
       end
@@ -1590,17 +1614,24 @@ function StorageFodderEvaluater()
     else
       if fodderFill > 0 then
         click(Location (1511 - monX*156, 830 - monY*156))
-        fodderFill = fodderFill - 1
+        fodderFill = fodderFill - 1        
         if fodderFill < 1 then
-          fodderStorageOkRegion:click(Pattern("ok.png"):similar(.80))
-          monX = 0
+          monX = 0 
           monY = 0
-          evaluateStorage = false
+          fodderStorageOkRegion:click(Pattern("ok.png"):similar(.80))
+          if fodderInfoRegion:exists(Pattern("userLevel.png"):similar(.75), 0.1) then
+            click(fodderCloseLocation)
+          else
+            evaluateStorage = false
+          end
         end
       end
     end
     monX = monX+1
   end
+end
+function FodderScrollRight()  
+    swipe(Location(110, 741), Location(1100, 741))
 end
 function StorageFodderScrollBottom()
   local a = (storageMonsters / 32)
@@ -1694,6 +1725,11 @@ function checkMaxLevel()
       isMaxLevel = true
     end
   end
+end
+function dialogTrialTimeout()
+  dialogInit()
+  addTextView("1 hour reach in Trial Version.  Closing.", 14)
+  dialogShow("Trial Version")
 end
 function resetTimerNoActivity()
   timerNoActivity:set()
@@ -2114,6 +2150,11 @@ function waitClickArenaRival()
   end
 end
 function arenaBattle()
+  wait(2)
+  if runRival == true and runMatchUp == false then
+    click(Location (325, 370))
+    isArenaRival = true
+  end
   existsArenaRival()
   if arenaWingRegion:exists(Pattern("wing.png"):similar(imgAccuracy), 2) then
     arenaWingRegion:existsClick(Pattern("wing.png"):similar(imgAccuracy), 2)
@@ -2193,6 +2234,19 @@ function arenaBattle()
               waitClickArenaRival()
             end
           end
+        end
+      elseif runMatchUp == false then
+        if farmLoc == spinnerFarmLoc[19] then
+          runRiftRaid = true
+          arenaCheck = false
+          closeArenaDialogBox()
+          runScenarioDungeon()
+          runRiftRaidStart()
+        else
+          arenaCheck = false
+          closeArenaDialogBox()
+          runScenarioDungeon()
+          start()
         end
       end
     end
@@ -4009,6 +4063,10 @@ function runQuickClickStart()
     if playRegion:exists(Pattern("play.png"):similar(0.9), 0.1) then
       playRegion:existsClick(Pattern("play.png"):similar(0.9), 1)
     end
+    if isTrial and timerTrial:check() > maxTrialTimeout then
+      dialogTrialTimeout()
+      break
+    end
   end
 end
 function checkNoRaidActivity()
@@ -4026,6 +4084,9 @@ function runRiftRaidStart ()
     raidJoinRegion:highlight()
     raidJoinRegion:existsClick(Pattern("raidJoinParty.png"):similar(0.6), 0.1)
     raidJoinRegion:highlight()
+    raidAcceptRegion:highlight()
+    raidAcceptRegion:existsClick(Pattern("riftRaidAccept.png"):similar(0.6), 0.1)
+    raidAcceptRegion:highlight()
     raidReadyRegion:highlight()
     raidReadyRegion:existsClick(Pattern("raidReady.png"):similar(0.6), 0.1)
     if raidReadyRegion:existsClick(Pattern("raidStart.png"):similar(0.6), 0.1) then
@@ -4091,8 +4152,8 @@ function runRiftRaidStart ()
     raidGetRegion:existsClick(Pattern("get.png"):similar(0.6), 0.1)
     raidGetRegion:highlight()
     sameSessionRegion:highlight()
-    if sameSessionRegion:exists(Pattern("sameSession.png"):similar(0.6), 2) then
-      refillYesRegion:existsClick(Pattern("yes.png"):similar(0.6), 0.1)
+    if sameSessionRegion:exists(Pattern("sameSession.png"):similar(0.6), 0.1) then
+      refillYesRegion:existsClick(Pattern("yes.png"):similar(0.6), 2)
     end
     sameSessionRegion:highlight()
     if checkNoRaidActivity == true then
@@ -4112,8 +4173,10 @@ setAdvancedOptions()
 automaticUpdates ()
 showBattleResult("Begin")
 timerNoActivity = Timer()
+timerTrial = Timer()
 timerMagicShop = Timer()
-while true do
+local miniBossFound = false
+while true do  
   if runRiftRaid == true then
     findRift ()
     clickRiftRaid()
@@ -4124,13 +4187,26 @@ while true do
     testHighlight()
   elseif runLiveArena == true then
     runLiveArenaStart()
-  elseif not runLiveArena or not runQuickClick or not runRiftRaid then
+  else
     if startRegion:exists(Pattern("start.png"):similar(imgAccuracy), 0.1) then
       start()
-    end
+    end 
+    if runNecro and not miniBossFound then      
+      toast("searching miniBossBuff")
+      bossBuffRegion:highlight(1)
+      if bossBuffRegion:exists(Pattern("nb10MiniBossBuff.png"):similar(imgAccuracy), 0.1) then
+        toast("Mini boss buff found.")
+        click(miniBossLocation)
+        miniBossFound = true
+      else
+        toast("Mini boss buff not found.")
+      end
+      bossBuffRegion:highlight(0)
+    end       
     if victoryDiamondRegion:exists(Pattern("victoryDiamond.png"):similar(.7), 0.1) and not victoryDefeatStageRegion:exists(Pattern("arena.png"):similar(.7), 0.3) then
       winCount = winCount + 1
       runLmt = runLmt - 1
+      miniBossFound = false
       showBattleResult("Start Battle")
       resetTimerNoActivity()
       if runAutoSwitchFodder == true or stopMaxLevel == true then
@@ -4154,6 +4230,7 @@ while true do
     if reviveNoRegion:exists(Pattern("noRevive.png"):similar(imgAccuracy), 0.1) then
       loseCount = loseCount + 1
       runLmt = runLmt - 1
+      miniBossFound = false
       showBattleResult("Battle Start")
       printBattleMessage()
       resetTimerNoActivity()
@@ -4348,6 +4425,10 @@ while true do
     end
     if battleIconRegion:existsClick(Pattern("iconBattle.png"), 0.1) then
       findMap()
+    end
+    if isTrial and timerTrial:check() > maxTrialTimeout then
+      dialogTrialTimeout()
+      break
     end
   end
   wait(scanDelay)
