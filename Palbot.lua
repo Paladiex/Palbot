@@ -25,9 +25,9 @@ function automaticUpdates ()
     if currentVersion == latestVersion then
       toast ("You are up to date!")
     else
-      httpDownload("https://raw.githubusercontent.com/digaomatias/Palbot-test/master/version.lua", localPath .."version.lua")
-      httpDownload("https://raw.githubusercontent.com/digaomatias/Palbot-test/master/Palbot.lua", localPath .."Palbot.lua")
-      httpDownload("https://raw.githubusercontent.com/digaomatias/Palbot-test/master/imageupdater.lua", localPath .."imageupdater.lua")
+      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/version.lua", localPath .."version.lua")
+      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/Palbot.lua", localPath .."Palbot.lua")
+      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/imageupdater.lua", localPath .."imageupdater.lua")
       scriptExit("You have Updated Palbot!")
     end
   end
