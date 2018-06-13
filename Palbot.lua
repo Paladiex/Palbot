@@ -329,7 +329,7 @@ slot3MaxRegion = Region(1215,668,345,165)
 slot4MaxRegion = Region(435,797,345,165)
 bossBuffRegion = Region(1420,75,485,115)
 miniBossLocation = Location(1211, 278)
-fodderInfoRegion = Region(795,146,305,80)
+--fodderInfoRegion = Region(795,146,305,80)
 fodderCloseLocation = Location(1541,186)
 end
 function captureScreenshot()
@@ -1581,9 +1581,9 @@ function StorageFodderEvaluater()
 
   evaluateStorage = true
   while evaluateStorage do    
-    if fodderInfoRegion:exists(Pattern("userLevel.png"):similar(.75), 0.1) then
-      click(fodderCloseLocation)
-    end
+    --if fodderInfoRegion:exists(Pattern("userLevel.png"):similar(.75), 0.1) then
+      --click(fodderCloseLocation)
+    --end
     if fodderFill < 1 then
       fodderStorageOkRegion:click(Pattern("ok.png"):similar(.80))
       evaluateStorage = false
@@ -1619,9 +1619,9 @@ function StorageFodderEvaluater()
           monX = 0 
           monY = 0
           fodderStorageOkRegion:click(Pattern("ok.png"):similar(.80))
-          if fodderInfoRegion:exists(Pattern("userLevel.png"):similar(.75), 0.1) then
-            click(fodderCloseLocation)
-          else
+          --if fodderInfoRegion:exists(Pattern("userLevel.png"):similar(.75), 0.1) then
+            --click(fodderCloseLocation)
+          --else
             evaluateStorage = false
           end
         end
