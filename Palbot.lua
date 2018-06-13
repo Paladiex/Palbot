@@ -1623,7 +1623,7 @@ function StorageFodderEvaluater()
             --click(fodderCloseLocation)
           --else
             evaluateStorage = false
-          end
+          --end
         end
       end
     end
