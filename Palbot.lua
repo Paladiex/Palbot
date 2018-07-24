@@ -203,7 +203,7 @@ raidVictoryTotalRegion = Region(125, 600, 150, 50)
   raidLossTotalRegion = Region(125, 725, 150, 50)
 raidOkRegion = Region(825, 625, 250, 250)
 sameSessionRegion = Region(780, 360, 180, 50)
-raidGetRegion = Region(1035, 635, 145, 115)
+raidGetRegion = Region(1056, 715, 127, 74)
 startRegion = Region(1490, 765, 125, 55)
 startDialogRegion = Region(0, 0, 500, 75)
 victoryDefeatRegion = Region(860, 105, 230, 145)
@@ -4079,6 +4079,7 @@ end
 function resetNoRaidActivity()
   timerNoRaidActivity:set()
 end
+
 function runRiftRaidStart ()
   while runRiftRaid do
     raidJoinRegion:highlight()
@@ -4161,6 +4162,7 @@ function runRiftRaidStart ()
     end
   end
 end
+
 defaultValues ()
 defaultTrueFalse ()
 defaultRegionLocation ()
