@@ -304,4 +304,5 @@ httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/mapB7.png", imagePath .."mapB7.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/mapB8.png", imagePath .."mapB8.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/mapB9.png", imagePath .."mapB9.png")
+httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/1920x1080/fodderAttributes.png", imagePath .."fodderAttributes.png")
 scriptExit("You have Updated the Palbot image library!")
