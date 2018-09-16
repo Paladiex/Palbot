@@ -2,7 +2,7 @@ localPath = scriptPath()
 isTrial = false
 maxTrialTimeout = 3600
 commonLib = loadstring(httpGet("https://raw.githubusercontent.com/AnkuLua/commonLib/master/commonLib.lua"))()
-getNewestVersion = loadstring(httpGet("https://raw.githubusercontent.com/Paladiex/Palbot/master/version.lua"))
+getNewestVersion = loadstring(httpGet("https://raw.githubusercontent.com/Paladiex/Palbot/dev-digaomatias/version.lua"))
 latestVersion = getNewestVersion()
 currentVersion = dofile(localPath .."version.lua")
 print (currentVersion)
@@ -25,9 +25,9 @@ function automaticUpdates ()
     if currentVersion == latestVersion then
       toast ("You are up to date!")
     else
-      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/version.lua", localPath .."version.lua")
-      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/Palbot.lua", localPath .."Palbot.lua")
-      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/imageupdater.lua", localPath .."imageupdater.lua")
+      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/dev-digaomatias/version.lua", localPath .."version.lua")
+      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/dev-digaomatias/Palbot.lua", localPath .."Palbot.lua")
+      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/dev-digaomatias/imageupdater.lua", localPath .."imageupdater.lua")
       scriptExit("You have Updated Palbot!")
     end
   end
@@ -189,6 +189,7 @@ fodderSlot4X = Location(595, 745)
 fodderSlot3X = Location(435, 745)
 fodderSlot2X = Location(270, 745)
 fodderSlot1X = Location(110, 745)
+prepareButtonRegion = Region(1002, 837, 180, 180)
 mainStatRegion = Region(760, 350, 400, 60)
 runeSlotRegion = Region(574, 242, 770, 100)
 runeRarityRegion = Region(1160, 340, 170, 70)
@@ -558,6 +559,8 @@ function dialogBox()
   addTextView("  (refill options)")
   addEditNumber("storageMonsters", 0)
   addTextView("(# of monsters in storage)")
+  newRow()
+  addCheckBox("useFriend", "Use friend monster:", false)
   newRow()
   addCheckBox("dim", "Dim Screen", false)
   addTextView("  ")
@@ -1456,9 +1459,15 @@ end
 function replayOrNext()
   if nextArea then
     nextRegion:existsClick(Pattern("next.png"), 5)
-    toaNextStageRegion:existsClick(Pattern("next.png"), 0.1)
+    toaNextStageRegion:existsClick(Pattern("next.png"), 0.1)  
+  elseif isMaxLevel then
+    prepareButtonRegion:existsClick(Pattern("Prepare.png"), 5) 
   elseif not replayRegion:existsClick(Pattern("replay.png"), 5) then
-    toaNextStageRegion:existsClick(Pattern("next.png"), 0.1)
+    toast("Searching prepare button")
+    prepareButtonRegion:highlight(1)
+    if not prepareButtonRegion:existsClick(Pattern("Prepare.png"), 5) then
+      toaNextStageRegion:existsClick(Pattern("next.png"), 0.1)
+    end
   end
 end
 function refill()
@@ -4265,7 +4274,7 @@ while true do
     if toaNextStageRegion:exists(Pattern("next.png"):similar(imgAccuracy), 0.1) then
       replayOrNext()
     end
-    if replayRegion:exists(Pattern("replay.png"), 0.1) then
+    if replayRegion:exists(Pattern("replay.png"), 0.1) or prepareButtonRegion:exists(Pattern("Prepare.png"), 0.1) then
       replayOrNext()
       start()
     end
