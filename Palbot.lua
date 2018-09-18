@@ -2,7 +2,7 @@ localPath = scriptPath()
 isTrial = false
 maxTrialTimeout = 3600
 commonLib = loadstring(httpGet("https://raw.githubusercontent.com/AnkuLua/commonLib/master/commonLib.lua"))()
-getNewestVersion = loadstring(httpGet("https://raw.githubusercontent.com/Paladiex/Palbot/dev-digaomatias/version.lua"))
+getNewestVersion = loadstring(httpGet("https://raw.githubusercontent.com/Paladiex/Palbot/master/version.lua"))
 latestVersion = getNewestVersion()
 currentVersion = dofile(localPath .."version.lua")
 print (currentVersion)
@@ -25,9 +25,9 @@ function automaticUpdates ()
     if currentVersion == latestVersion then
       toast ("You are up to date!")
     else
-      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/dev-digaomatias/version.lua", localPath .."version.lua")
-      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/dev-digaomatias/Palbot.lua", localPath .."Palbot.lua")
-      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/dev-digaomatias/imageupdater.lua", localPath .."imageupdater.lua")
+      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/version.lua", localPath .."version.lua")
+      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/Palbot.lua", localPath .."Palbot.lua")
+      httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/master/imageupdater.lua", localPath .."imageupdater.lua")
       scriptExit("You have Updated Palbot!")
     end
   end
@@ -190,6 +190,7 @@ fodderSlot3X = Location(435, 745)
 fodderSlot2X = Location(270, 745)
 fodderSlot1X = Location(110, 745)
 prepareButtonRegion = Region(1002, 837, 180, 180)
+prepareTextRegion = Region(431, 495, 180, 180)
 mainStatRegion = Region(760, 350, 400, 60)
 runeSlotRegion = Region(574, 242, 770, 100)
 runeRarityRegion = Region(1160, 340, 170, 70)
@@ -236,15 +237,18 @@ runeYesRegion = Region(740, 625, 100, 55)
 sellRegion = Region(750, 820, 100, 60)
 getRegion = Region(985, 635, 500, 515)
 runeSellTextRegion = Region(535, 360, 865, 130)
+crystalRefillRegion = Region(589, 449, 300, 300)
+heartRefillRegion = Region(238, 547, 200, 200)
+shopRefillRegion = Region(658, 579, 180, 180)
 refillYesRegion = Region(735, 625, 105, 55)
 refillNoRegion = Region(1050, 625, 120, 60)
-notEnoughEnergyRegion = Region(955, 355, 225, 65)
+notEnoughEnergyRegion = Region(863, 301, 340, 180)
 notEnoughWingRegion = Region(850, 355, 260, 65)
 rechargeFlashRegion = Region(695, 395, 195, 235)
 yesPurchaseRegion = Region(745, 635, 110, 60)
 okPurchaseRegion = Region(915, 625, 90, 60)
 closePurchaseRegion = Region(900, 895, 125, 60)
-refillClosePurchaseRegion = Region(1526, 88, 129, 112)
+refillClosePurchaseRegion = Region(1698, 16, 200, 200)
 dialogTextCenterRegion = Region(600, 0, 750, 275)
 dialogToaRegion = Region(710, 65, 305, 85)
 closeXCairoDungeonRegion = Region(1635, 75, 70, 70)
@@ -553,14 +557,16 @@ function dialogBox()
   newRow()
   spinnerRefillOption = {
     "NO Refills",
-    "Refill Energy with Crystals  "
+    "Refill Energy with Crystals  ",
+    "Refill Energy with Hearts  ",
+    "Refill with both  "
   }
   addSpinner("refillOption", spinnerRefillOption, spinnerRefillOption[1])
   addTextView("  (refill options)")
   addEditNumber("storageMonsters", 0)
   addTextView("(# of monsters in storage)")
   newRow()
-  addCheckBox("useFriend", "Use friend monster:", false)
+  addCheckBox("useFriend", "Use friend monster", false)
   newRow()
   addCheckBox("dim", "Dim Screen", false)
   addTextView("  ")
@@ -1061,6 +1067,11 @@ function setDialogOptions()
     refillEnergy = false
   elseif refillOption == spinnerRefillOption[2] then
     refillEnergy = true
+  elseif refillOption == spinnerRefillOption[3] then
+    refillHeart = true
+  else
+    refillHeart= true
+    refillEnergy = true
   end
   if isPro() and dim then
     setBrightness(1)
@@ -1462,6 +1473,7 @@ function replayOrNext()
     toaNextStageRegion:existsClick(Pattern("next.png"), 0.1)  
   elseif isMaxLevel then
     prepareButtonRegion:existsClick(Pattern("Prepare.png"), 5) 
+    prepareTextRegion:existsClick(Pattern("PrepareText.png"), 5) 
   elseif not replayRegion:existsClick(Pattern("replay.png"), 5) then
     toast("Searching prepare button")
     prepareButtonRegion:highlight(1)
@@ -1471,10 +1483,10 @@ function replayOrNext()
   end
 end
 function refill()
-  if refillEnergy then
+  if refillEnergy or refillHeart then
     toast("Refilling Energy")
-    refillYesRegion:existsClick(Pattern("yesRecharge.png"):similar(imgAccuracy * 0.9), 3)
-    rechargeFlashRegion:existsClick(Pattern("rechargeFlash.png"):similar(imgAccuracy), 3)
+    shopRefillRegion:existsClick(Pattern("RefillShop.png"):similar(imgAccuracy * 0.9), 3)
+    crystalRefillRegion:existsClick(Pattern("CrystalRefill.png"):similar(imgAccuracy), 3)
     yesPurchaseRegion:existsClick(Pattern("yesPurchase.png"):similar(imgAccuracy), 3)
     okPurchaseRegion:existsClick(Pattern("okPurchase.png"):similar(imgAccuracy), 3)
     refillClosePurchaseRegion:existsClick(Pattern("closeX.png"):similar(imgAccuracy), 3)
@@ -4059,7 +4071,7 @@ function runQuickClickStart()
     if sellGetRegion:exists(Pattern("sell.png"):similar(.6)) then
       sellGetRune()
       start()
-    end
+    end   
     if replayRegion:exists(Pattern("replay.png"):similar(imgAccuracy), 0.1) then
       replayOrNext()
       start()
@@ -4068,7 +4080,7 @@ function runQuickClickStart()
       refill()
       replayOrNext()
       start()
-    end
+    end    
     if playRegion:exists(Pattern("play.png"):similar(0.9), 0.1) then
       playRegion:existsClick(Pattern("play.png"):similar(0.9), 1)
     end
