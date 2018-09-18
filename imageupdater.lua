@@ -306,4 +306,8 @@ httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/dev-digaomatias/
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/dev-digaomatias/1920x1080/mapB9.png", imagePath .."mapB9.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/dev-digaomatias/1920x1080/fodderAttributes.png", imagePath .."fodderAttributes.png")
 httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/dev-digaomatias/1920x1080/Prepare.png", imagePath .."Prepare.png")
+httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/dev-digaomatias/1920x1080/PrepareText.png", imagePath .."PrepareText.png")
+httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/dev-digaomatias/1920x1080/RefillShop.png", imagePath .."RefillShop.png")
+httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/dev-digaomatias/1920x1080/CrystalRefill.png", imagePath .."CrystalRefill.png")
+httpDownload("https://raw.githubusercontent.com/Paladiex/Palbot/dev-digaomatias/1920x1080/HeartRefill.png", imagePath .."HeartRefill.png")
 scriptExit("You have Updated the Palbot image library!")
