@@ -241,11 +241,7 @@ crystalRefillRegion = Region(589, 449, 300, 300)
 heartRefillRegion = Region(238, 547, 200, 200)
 shopRefillRegion = Region(658, 579, 180, 180)
 refillYesRegion = Region(735, 625, 105, 55)
-<<<<<<< HEAD
-refillNoRegion = Region(1050, 625, 120, 60)
-=======
 refillNoRegion = Region(1318, 196, 210, 210)
->>>>>>> dev-digaomatias
 notEnoughEnergyRegion = Region(863, 301, 340, 180)
 notEnoughWingRegion = Region(850, 355, 260, 65)
 rechargeFlashRegion = Region(695, 395, 195, 235)
@@ -2578,9 +2574,20 @@ function clickGiantB10()
     end
   end
 end
+function findDragonFloor()
+  if dungeonBattleRegion:exists(Pattern("mapB"..bNum..".png"):targetOffset(setLocation(453, 0))) then
+    return dungeonBattleRegion:existsClick(Pattern("mapB"..bNum..".png"):targetOffset(setLocation(453, 0)))
+  end
+
+  return false
+end
 function clickDragonB10()
   if dungeonListRegion:existsClick(Pattern("mapDragonsLair.png"):similar(imgAccuracy), 1) then
     wait(2)
+    if findDragonFloor() then
+      return true
+    end
+    wait(1)
     dragDrop(Location(1200, 835), Location(1200, 320))
     wait(1)
     dragDrop(Location(1200, 835), Location(1200, 320))
@@ -2592,12 +2599,10 @@ function clickDragonB10()
         dragDrop(Location(1200, 320), Location(1200, 835))
       end
     end
-    if dungeonBattleRegion:exists(Pattern("mapB"..bNum..".png"):targetOffset(setLocation(453, 0))) then
-        dungeonBattleRegion:existsClick(Pattern("mapB"..bNum..".png"):targetOffset(setLocation(453, 0)))
-    elseif dungeonListRegion:exists(Pattern("mapDragonsLair.png"):similar(imgAccuracy), 1) then
-        keyevent(4)
-        toast("Couldn't find B"..bNum..", going back")
-        findDungeon()
+    if not findDragonFloor() and dungeonListRegion:exists(Pattern("mapDragonsLair.png"):similar(imgAccuracy), 1) then
+      keyevent(4)
+      toast("Couldn't find B"..bNum..", going back")
+      findDungeon()
     end
   end
 end
@@ -4163,7 +4168,9 @@ function runRiftRaidStart ()
         if sameSessionRegion:exists(Pattern("sameSession.png"):similar(0.6), 0.1) then
           refillNoRegion:existsClick(Pattern("closePurchaseNew.png"):similar(0.6), 0.1)
         end
-        existsClick(Pattern("closeX.png"):similar(.6), 3)
+        while exists(Pattern("closeX.png"):similar(.6), 3) do
+          existsClick(Pattern("closeX.png"):similar(.6), 3)
+        end   
         existsClick(Pattern("back2Button.png"):similar(.6), 3)
         findArena()
       else
